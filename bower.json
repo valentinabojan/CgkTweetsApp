@@ -1,0 +1,35 @@
+{
+  "name": "tweets",
+  "description": "tweets",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "angular": "~1.4.7",
+    "bootstrap": "3.3.0",
+    "angular-route": "~1.4.7",
+    "ui-bootstrap": "~0.14.3",
+    "angular-bootstrap": "~0.14.3",
+    "moment": "~2.10.6",
+    "angular-messages": "~1.4.8",
+    "angular-loading-bar": "~0.8.0"
+  },
+  "install": {
+    "path": {
+      "js": "js/",
+      "css": "css/"
+    }
+  },
+  "resolutions": {
+    "angular": "~1.4.7"
+  }
+}

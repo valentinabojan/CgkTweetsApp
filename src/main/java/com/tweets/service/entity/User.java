@@ -1,10 +1,12 @@
 package com.tweets.service.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 public class User {
 
     @Id
+    @Field(value = "_id")
     private String username;
 
     private String password;

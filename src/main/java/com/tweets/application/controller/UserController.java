@@ -25,16 +25,16 @@ public class UserController {
     CustomerService customerService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<Customer> login(@RequestBody User user, HttpServletResponse response) {
-        String sessionID = userService.loginUser(user);
+    public ResponseEntity<Boolean> login(@RequestBody User user, HttpServletResponse response) {
+        String username = userService.loginUser(user);
 
-        if (sessionID == null) {
+        if (username == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Cookie cookie = new Cookie("sessionID", sessionID.toString());
+        Cookie cookie = new Cookie("sessionID", username.toString());
         response.addCookie(cookie);
 
-        return new ResponseEntity<>(customerService.findAllCustomers().get(0), HttpStatus.OK);
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
     }
 }

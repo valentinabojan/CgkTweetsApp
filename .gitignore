@@ -1,0 +1,25 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+
+*.war
+*.ear
+
+# Working files #
+.idea
+*.iml
+
+# Sonar #
+.sonar
+
+# JS Dependencies #
+node_modules/
+bower_components/
+
+# Compiled files and others #
+target/
+out/
+*~

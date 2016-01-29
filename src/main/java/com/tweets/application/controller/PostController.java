@@ -19,9 +19,9 @@ public class PostController {
     @Autowired
     CustomerService customerService;
 
-    @RequestMapping(value = "/abc", method = GET)
-    public List<Customer> greeting(@CookieValue(name = "sessionID", defaultValue = "") String sessionID, HttpServletResponse response) {
-        if (sessionID.isEmpty()) {
+    @RequestMapping(method = GET)
+    public List<Customer> greeting(@CookieValue(name = "username", defaultValue = "") String username, HttpServletResponse response) {
+        if (username.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return null;
         } else
