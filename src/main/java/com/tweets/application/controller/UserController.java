@@ -1,8 +1,7 @@
 package com.tweets.application.controller;
 
-import com.tweets.service.CustomerService;
+import com.tweets.service.TweetsService;
 import com.tweets.service.UserService;
-import com.tweets.service.entity.Customer;
 import com.tweets.service.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,7 @@ public class UserController {
     UserService userService;
 
     @Autowired
-    CustomerService customerService;
+    TweetsService customerService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<Boolean> login(@RequestBody User user, HttpServletResponse response) {
@@ -32,7 +31,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Cookie cookie = new Cookie("sessionID", username.toString());
+        Cookie cookie = new Cookie("username", username.toString());
         response.addCookie(cookie);
 
         return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
