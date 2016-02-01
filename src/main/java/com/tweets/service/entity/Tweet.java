@@ -1,11 +1,12 @@
 package com.tweets.service.entity;
 
+import com.sun.istack.internal.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 import java.util.List;
-
 
 public class Tweet {
 
@@ -13,7 +14,12 @@ public class Tweet {
     @Field(value = "_id")
     private String id;
 
+    @NotNull
+    @NotEmpty(message = "Title is missing.")
     private String title;
+
+    @NotNull
+    @NotEmpty(message = "Body is missing.")
     private String body;
     private String author;
     private List<String> comments;
@@ -87,5 +93,61 @@ public class Tweet {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public static class TweetBuilder {
+        private Tweet tweet;
+
+        private TweetBuilder() {
+            tweet = new Tweet();
+        }
+
+        public TweetBuilder withId(String id) {
+            tweet.id = id;
+            return this;
+        }
+
+        public TweetBuilder withTitle(String title) {
+            tweet.title = title;
+            return this;
+        }
+
+        public TweetBuilder withBody(String body) {
+            tweet.body = body;
+            return this;
+        }
+
+        public TweetBuilder withAuthor(String author) {
+            tweet.author = author;
+            return this;
+        }
+
+        public TweetBuilder withComments(List<String> comments) {
+            tweet.comments = comments;
+            return this;
+        }
+
+        public TweetBuilder withUsersWhoLiked(List<String> usersWhoLiked) {
+            tweet.usersWhoLiked = usersWhoLiked;
+            return this;
+        }
+
+        public TweetBuilder withUsersWhoDisliked(List<String> usersWhoDisliked) {
+            tweet.usersWhoDisliked = usersWhoDisliked;
+            return this;
+        }
+
+        public TweetBuilder withDate(LocalDate date) {
+            tweet.date = date;
+            return this;
+        }
+
+        public static TweetBuilder tweet() {
+            return new TweetBuilder();
+        }
+
+        public Tweet build() {
+            return tweet;
+        }
     }
 }

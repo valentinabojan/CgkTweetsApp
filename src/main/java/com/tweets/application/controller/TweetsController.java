@@ -24,7 +24,7 @@ public class TweetsController {
         if (username.isEmpty())
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
 
-        tweetsService.createNewTweet(tweet);
+        tweetsService.createNewTweet(tweet, username);
 
         return new ResponseEntity(HttpStatus.OK);
     }
