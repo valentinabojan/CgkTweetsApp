@@ -11,12 +11,12 @@ public class UserService {
     @Autowired
     UserRepository repository;
 
-    public String loginUser(User user) {
+    public User loginUser(User user) {
         User userFromDB = repository.findByUsername(user.getUsername());
 
         if (!user.getPassword().equals(userFromDB.getPassword()))
             return null;
 
-        return user.getUsername();
+        return user;
     }
 }

@@ -24,16 +24,16 @@ public class UserController {
     TweetsService customerService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> login(@RequestBody User user, HttpServletResponse response) {
-        String username = userService.loginUser(user);
+    public ResponseEntity<User> login(@RequestBody User user, HttpServletResponse response) {
+        User loggedUser = userService.loginUser(user);
 
-        if (username == null) {
+        if (loggedUser.getUsername() == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Cookie cookie = new Cookie("username", username.toString());
+        Cookie cookie = new Cookie("username", loggedUser.getUsername());
         response.addCookie(cookie);
 
-        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
+        return new ResponseEntity<>(loggedUser, HttpStatus.OK);
     }
 }
