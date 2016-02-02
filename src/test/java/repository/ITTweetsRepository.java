@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,5 +35,12 @@ public class ITTweetsRepository {
 
         assertThat(newTweet.getId()).isNotNull();
         assertThat(newTweet.getTitle()).isEqualTo(tweet.getTitle());
+    }
+
+    @Test
+    public void givenATweet_findByDateOrderByDateDesc_findTweet() {
+        List<Tweet> foundTweet = tweetsRepository.findAll();
+
+        assertThat(foundTweet.get(0).getId()).isNotNull();
     }
 }
