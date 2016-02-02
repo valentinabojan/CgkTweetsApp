@@ -20,5 +20,17 @@
             <i class="glyphicon glyphicon-send" style="margin-right: 1em"></i>
             Post
         </button>
+        <div class="panel panel-default" ng-repeat="tweet in vm.tweets">
+            <div class="panel-heading">
+                <h3 class="panel-title" >{{tweet.title}} <i>by {{tweet.author}}</i></h3>
+            </div>
+            <div class="panel-body">
+                {{tweet.body}}
+            </div>
+            <div class="panel-body">
+                {{tweet.body}}
+            </div>
+        </div>
     </form>
+
 </div>

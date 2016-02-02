@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -23,8 +26,8 @@ public class TweetsController {
 
     @RequestMapping(method = POST)
     public ResponseEntity<Tweet> postNewTweet(@RequestBody Tweet tweet, @CookieValue(name = "username", defaultValue = "") String username) {
-        if (username.isEmpty())
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        /*if (username.isEmpty())
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);*/
 
         try {
             Tweet newTweet = tweetsService.createNewTweet(tweet, username);
@@ -33,5 +36,18 @@ public class TweetsController {
         } catch (ValidationException e) {
             return new ResponseEntity(new StringTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(method = GET)
+    public ResponseEntity getTweets(@CookieValue(name = "username", defaultValue = "") String username) {
+        /*if (username.isEmpty())
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);*/
+
+        List<Tweet> listOfTweets = tweetsService.findTweets();
+        if (listOfTweets.size() == 0){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(listOfTweets, HttpStatus.OK);
     }
 }

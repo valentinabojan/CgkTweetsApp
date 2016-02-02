@@ -1,6 +1,6 @@
 package service;
 
-import com.tweets.repository.TweetsRepository;
+import com.tweets.repository .TweetsRepository;
 import com.tweets.service.TweetsService;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
@@ -11,8 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -68,6 +71,19 @@ public class UTTweetsService {
         Tweet tweet = TweetsFixture.createTweetWithoutBody();
 
         service.createNewTweet(tweet, "John Doe");
+    }
+
+    @Test
+    public void givenATweet_findAllByOrderByDateDesc_returnTweet() {
+        List<Tweet> tweets = new ArrayList<>();
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        tweets.add(tweet);
+        Mockito.when(mockRepository.findAllByOrderByDateDesc(new PageRequest(0, 10))).thenReturn(tweets);
+
+        service.findTweets();
+
+        assertThat(tweets.get(0).getTitle()).isEqualTo(tweet.getTitle());
+        assertThat(tweets.get(0).getBody()).isEqualTo(tweet.getBody());
     }
 
 }

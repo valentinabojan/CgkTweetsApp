@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -39,8 +40,10 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweet_findByDateOrderByDateDesc_findTweet() {
-        List<Tweet> foundTweet = tweetsRepository.findAll();
+        List<Tweet> foundTweet = tweetsRepository.findAllByOrderByDateDesc(new PageRequest(0, 10));
 
         assertThat(foundTweet.get(0).getId()).isNotNull();
+        assertThat(foundTweet.get(0).getTitle()).isEqualTo(tweet.getTitle());
     }
+
 }

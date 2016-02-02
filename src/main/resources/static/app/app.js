@@ -5,13 +5,13 @@
             return {
                 response: function(response){
                     return response || $q.when(response);
-                },
-                responseError: function(rejection) {
+                }
+                /*responseError: function(rejection) {
                     if (rejection.status === 401) {
                         window.location = "/#/login";
                     }
                     return $q.reject(rejection);
-                }
+                }*/
             }
         }])
         .config(function($routeProvider, $httpProvider, cfpLoadingBarProvider){

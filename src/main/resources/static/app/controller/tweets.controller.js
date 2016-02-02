@@ -14,10 +14,11 @@
         function activate() {
             // TODO: Get posts
             tweetsService
-                .getBooks()
+                .getTweets()
                 .then(function(data){
                     vm.tweets = data;
                     console.log("bbbbb");
+                    console.log(data);
                 }, function(){
                     vm.noTweets = true;
                 });

@@ -14,6 +14,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -64,5 +67,17 @@ public class UTTweetsController {
         ResponseEntity response = tweetsController.postNewTweet(tweet, AUTHOR);
 
         assertThat((Tweet)response.getBody()).isEqualTo(tweet);
+    }
+
+    @Test
+    public void givenATweet_findTweet_returns200OK() {
+        Tweet tweet = TweetsFixture.createTweetWithoutTitle();
+        List<Tweet> expectedTweets = new ArrayList<>();
+        expectedTweets.add(tweet);
+        Mockito.when(mockTweetsService.findTweets()).thenReturn(expectedTweets);
+
+        ResponseEntity response = tweetsController.getTweets(AUTHOR);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }

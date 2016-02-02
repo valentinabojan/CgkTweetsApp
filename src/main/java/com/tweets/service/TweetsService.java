@@ -4,6 +4,7 @@ import com.tweets.repository.TweetsRepository;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -11,6 +12,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -32,6 +34,10 @@ public class TweetsService {
         tweet.setAuthor(author);
 
         return repository.insert(tweet);
+    }
+
+    public List<Tweet> findTweets() {
+        return repository.findAllByOrderByDateDesc(new PageRequest(0, 10));
     }
 
     private void validateTweet(Tweet tweet) {
