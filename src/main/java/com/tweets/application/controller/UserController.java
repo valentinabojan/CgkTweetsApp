@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     TweetsService customerService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login222", method = RequestMethod.POST)
     public ResponseEntity<User> login(@RequestBody User user, HttpServletResponse response) {
         User loggedUser = userService.loginUser(user);
 
