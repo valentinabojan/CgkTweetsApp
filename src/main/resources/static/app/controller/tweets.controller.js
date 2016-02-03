@@ -19,6 +19,13 @@
 
         vm.postTweet = postTweet;
         vm.pagingFunction = pagingFunction;
+        vm.getDate = getDate;
+
+
+        function getDate(dateArray){
+            var date = new Date(dateArray[0], dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
+            return moment(date).format('MM-DD-YYYY hh:mm:ss');
+        }
 
         function pagingFunction() {
             vm.page++;
@@ -30,6 +37,7 @@
                 .getTweets(vm.page, vm.pageSize)
                 .then(function(data){
                     vm.tweets.push.apply(vm.tweets, data);
+                    if(vm.page==0)console.log(data);
                 }, function(){
                     vm.noTweets = true;
                 });
