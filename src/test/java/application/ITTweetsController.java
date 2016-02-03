@@ -52,7 +52,7 @@ public class ITTweetsController {
         requestHeaders.add("Cookie", "username=" + "John Doe");
         HttpEntity requestEntity = new HttpEntity(tweet, requestHeaders);
 
-        ResponseEntity<Tweet[]> responseEntity = restTemplate.exchange(PATH + "/tweets", HttpMethod.GET, requestEntity, Tweet[].class);
+        ResponseEntity<Tweet[]> responseEntity = restTemplate.exchange(PATH + "/tweets?page=0&size=5", HttpMethod.GET, requestEntity, Tweet[].class);
         Tweet[] tweets = responseEntity.getBody();
 
         assertThat(tweets[0].getTitle()).isNotNull();

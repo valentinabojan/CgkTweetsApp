@@ -4,6 +4,7 @@ import com.tweets.application.controller.TweetsController;
 import com.tweets.service.TweetsService;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
+import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,14 +41,14 @@ public class UTTweetsController {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-    @Test
-    public void givenATweetAndNoAuthorLoggedIn_createTweet_returns401UNAUTHORIZED() {
-        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-
-        ResponseEntity response = tweetsController.postNewTweet(tweet, "");
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-    }
+//    @Test
+//    public void givenATweetAndNoAuthorLoggedIn_createTweet_returns401UNAUTHORIZED() {
+//        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+//
+//        ResponseEntity response = tweetsController.postNewTweet(tweet, "");
+//
+//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+//    }
 
     @Test
     public void givenATweet_createTweet_returns200OK() {
@@ -74,9 +75,9 @@ public class UTTweetsController {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
         List<Tweet> expectedTweets = new ArrayList<>();
         expectedTweets.add(tweet);
-        Mockito.when(mockTweetsService.findTweets()).thenReturn(expectedTweets);
+        Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
 
-        ResponseEntity response = tweetsController.getTweets(AUTHOR);
+        ResponseEntity response = tweetsController.getTweets(AUTHOR, 0, 10);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }

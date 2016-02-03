@@ -18,9 +18,9 @@
                 });
         }
 
-        function getTweets() {
+        function getTweets(page, size) {
             console.log("service");
-            return $http.get("/tweets")
+            return $http.get("/tweets?page=" + page + "&size=" + size)
                 .then(function (response) {
                     return response.data;
                     //console.log(response.data);

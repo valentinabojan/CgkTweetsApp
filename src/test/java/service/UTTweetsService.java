@@ -4,6 +4,7 @@ import com.tweets.repository .TweetsRepository;
 import com.tweets.service.TweetsService;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
+import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class UTTweetsService {
 
         Tweet newTweet = service.createNewTweet(tweet, "John Doe");
 
-        assertThat(newTweet.getDate()).isEqualTo(LocalDate.now());
+        assertThat(newTweet.getDate()).isNotNull();
     }
 
     @Test
@@ -80,7 +82,7 @@ public class UTTweetsService {
         tweets.add(tweet);
         Mockito.when(mockRepository.findAllByOrderByDateDesc(new PageRequest(0, 10))).thenReturn(tweets);
 
-        service.findTweets();
+        service.findTweets(new PageParams(0, 10));
 
         assertThat(tweets.get(0).getTitle()).isEqualTo(tweet.getTitle());
         assertThat(tweets.get(0).getBody()).isEqualTo(tweet.getBody());

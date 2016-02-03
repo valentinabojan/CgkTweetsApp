@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Tweet {
@@ -34,7 +35,7 @@ public class Tweet {
     //@JsonDeserialize(using = LocalDateDeserializer.class)
     //@JsonSerialize(using = LocalDateSerializer.class)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDate date;
+    private LocalDateTime date;
 
     public Tweet() {
     }
@@ -96,11 +97,11 @@ public class Tweet {
         this.usersWhoDisliked = usersWhoDisliked;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -146,7 +147,7 @@ public class Tweet {
             return this;
         }
 
-        public TweetBuilder withDate(LocalDate date) {
+        public TweetBuilder withDate(LocalDateTime date) {
             tweet.date = date;
             return this;
         }

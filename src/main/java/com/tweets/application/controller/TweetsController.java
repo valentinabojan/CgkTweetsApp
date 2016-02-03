@@ -4,13 +4,11 @@ import com.tweets.application.transferobject.StringTO;
 import com.tweets.service.TweetsService;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
+import com.tweets.service.valueobject.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,11 +37,12 @@ public class TweetsController {
     }
 
     @RequestMapping(method = GET)
-    public ResponseEntity getTweets(@CookieValue(name = "username", defaultValue = "") String username) {
+    public ResponseEntity getTweets(@CookieValue(name = "username", defaultValue = "") String username,
+                                    @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         /*if (username.isEmpty())
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);*/
 
-        List<Tweet> listOfTweets = tweetsService.findTweets();
+        List<Tweet> listOfTweets = tweetsService.findTweets(new PageParams(page, size));
         if (listOfTweets.size() == 0){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }

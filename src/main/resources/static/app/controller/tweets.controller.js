@@ -8,27 +8,38 @@
 
         vm.tweets = [];
         vm.noTweets = false;
+        vm.page = 0;
+        vm.pageSize = 5;
 
         activate();
 
         function activate() {
-            // TODO: Get posts
+            getTweets();
+        }
+
+        vm.postTweet = postTweet;
+        vm.pagingFunction = pagingFunction;
+
+        function pagingFunction() {
+            vm.page++;
+            getTweets();
+        }
+
+        function getTweets() {
             tweetsService
-                .getTweets()
+                .getTweets(vm.page, vm.pageSize)
                 .then(function(data){
-                    vm.tweets = data;
-                    console.log("bbbbb");
-                    console.log(data);
+                    vm.tweets.push.apply(vm.tweets, data);
                 }, function(){
                     vm.noTweets = true;
                 });
         }
 
-        vm.postTweet = postTweet;
-
         function postTweet(addTweetForm) {
             if(addTweetForm.$invalid)
                 return;
+
+            console.log(vm.tweet);
 
             tweetsService
                 .createTweet(vm.tweet)
