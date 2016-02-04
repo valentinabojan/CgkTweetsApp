@@ -1,0 +1,27 @@
+.midnightblueColor {
+    color: midnightblue;
+}
+
+.borrowedBooksRowColor {
+    background-color: darkseagreen;
+}
+
+.overdueBooksRowColor {
+    background-color: lightsalmon;
+}
+
+.greenColor {
+    color: green;
+}
+
+.orangeColor {
+    color: #d58512;
+}
+
+.darkRedColor {
+    color: darkred;
+}
+
+.grayColor {
+    color: lightgrey;
+}

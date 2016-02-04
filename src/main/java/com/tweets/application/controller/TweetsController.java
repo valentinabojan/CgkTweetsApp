@@ -24,9 +24,6 @@ public class TweetsController {
 
     @RequestMapping(method = POST)
     public ResponseEntity<Tweet> postNewTweet(@RequestBody Tweet tweet, @CookieValue(name = "username", defaultValue = "") String username) {
-        /*if (username.isEmpty())
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);*/
-
         try {
             Tweet newTweet = tweetsService.createNewTweet(tweet, username);
 
@@ -39,9 +36,6 @@ public class TweetsController {
     @RequestMapping(method = GET)
     public ResponseEntity getTweets(@CookieValue(name = "username", defaultValue = "") String username,
                                     @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        /*if (username.isEmpty())
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);*/
-
         List<Tweet> listOfTweets = tweetsService.findTweets(new PageParams(page, size));
         if (listOfTweets.size() == 0){
             return new ResponseEntity(HttpStatus.NOT_FOUND);

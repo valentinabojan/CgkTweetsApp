@@ -1,6 +1,6 @@
 package com.tweets.configuration.security;
 
-import com.tweets.service.SecUserDetailsService;
+import com.tweets.service.UserSecurityDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +14,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -27,16 +25,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationSuccess authSuccess;
 
     @Autowired
-    private EntryPointConfig entryPointConfig;
+    private AuthenticationFailure authFailHandler;
 
     @Autowired
-    private AuthenticationFailedHandler authFailHandler;
+    UserSecurityDetailsService userDetailsService ;
 
     @Autowired
-    SecUserDetailsService userDetailsService ;
-
-    @Autowired
-    public void configAuthBuilder(AuthenticationManagerBuilder builder) throws Exception {
+    public void configAuthentication(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService);
     }
 
@@ -44,7 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .exceptionHandling()
-                .authenticationEntryPoint(entryPointConfig)
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
@@ -57,20 +51,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(authSuccess)
                 .failureHandler(authFailHandler)
                 .loginProcessingUrl("/auth/login")
-                .defaultSuccessUrl("/static/index1", true)
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login.html#?error")
                 .and()
                 .logout()
                 .logoutUrl("/auth/logout")
-                .logoutSuccessHandler(logoutSuccess)
-                .and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+                .logoutSuccessHandler(logoutSuccess);
+//                .and()
+//                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
 
-    private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName("X-XSRF-TOKEN");
-        return repository;
-    }
+//    private CsrfTokenRepository csrfTokenRepository() {
+//        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+//        repository.setHeaderName("X-XSRF-TOKEN");
+//        return repository;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

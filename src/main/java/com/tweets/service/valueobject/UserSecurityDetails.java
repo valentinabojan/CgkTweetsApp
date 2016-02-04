@@ -1,15 +1,16 @@
-package com.tweets.service.entity;
+package com.tweets.service.valueobject;
 
+import com.tweets.service.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class SecUserDetails implements UserDetails {
+public class UserSecurityDetails implements UserDetails {
 
     private User user;
 
-    public SecUserDetails(User user) {
+    public UserSecurityDetails(User user) {
         this.user = user;
     }
 
