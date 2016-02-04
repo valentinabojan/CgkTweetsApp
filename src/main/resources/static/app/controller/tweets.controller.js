@@ -11,20 +11,19 @@
         vm.page = 0;
         vm.pageSize = 5;
 
+        vm.postTweet = postTweet;
+        vm.pagingFunction = pagingFunction;
+        vm.getDate = getDate;
+
         activate();
 
         function activate() {
             getTweets();
         }
 
-        vm.postTweet = postTweet;
-        vm.pagingFunction = pagingFunction;
-        vm.getDate = getDate;
-
-
         function getDate(dateArray){
-            var date = new Date(dateArray[0], dateArray[1], dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
-            return moment(date).format('MM-DD-YYYY hh:mm:ss');
+            var date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
+            return moment(date).format('DD-MM-YYYY hh:mm:ss');
         }
 
         function pagingFunction() {
