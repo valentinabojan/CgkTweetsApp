@@ -23,7 +23,7 @@
 
         function getDate(dateArray){
             var date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
-            return moment(date).format('DD-MM-YYYY hh:mm:ss');
+            return moment(date).format('DD-MM-YYYY hh:mm:ss A');
         }
 
         function pagingFunction() {
