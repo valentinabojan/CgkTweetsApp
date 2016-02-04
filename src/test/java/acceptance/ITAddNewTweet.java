@@ -1,6 +1,7 @@
 package acceptance;
 
 import acceptance.pageobject.AddNewTweetPage;
+import acceptance.pageobject.ListTweetPage;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -13,6 +14,7 @@ public class ITAddNewTweet extends BaseAcceptance {
 
     private static WebDriver driver = getDriver();
     private static AddNewTweetPage addNewTweetPage;
+    private static ListTweetPage listTweetPage;
 
     private static String TITLE = "Default title";
     private static String BODY = "Default body";
@@ -24,6 +26,7 @@ public class ITAddNewTweet extends BaseAcceptance {
         login();
 
         addNewTweetPage = new AddNewTweetPage(driver, getWait());
+        listTweetPage = new ListTweetPage(driver);
     }
 
     @AfterClass
@@ -54,7 +57,7 @@ public class ITAddNewTweet extends BaseAcceptance {
 
         addNewTweetPage.clickOnSubmitButton();
 
-        // TODO Assert that the new tweet appears in the list above the form
-//        assertThat(memberDetailsPage.getNameText()).isEqualTo("John Doe");
+        assertThat(listTweetPage.getFirstTweetTitle()).isEqualTo(TITLE);
+        assertThat(listTweetPage.getFirstTweetBody()).isEqualTo(BODY);
     }
 }

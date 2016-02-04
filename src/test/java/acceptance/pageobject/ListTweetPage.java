@@ -1,5 +1,6 @@
 package acceptance.pageobject;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,5 +20,13 @@ public class ListTweetPage {
 
     public List<WebElement> getListOfTweets() {
         return listAllTweets;
+    }
+
+    public String getFirstTweetTitle() {
+        return listAllTweets.get(0).findElement(By.id("title")).getText();
+    }
+
+    public String getFirstTweetBody() {
+        return listAllTweets.get(0).findElement(By.id("body")).getText();
     }
 }

@@ -49,7 +49,6 @@ public class AddNewTweetPage {
 
     public void clickOnSubmitButton(){
         submitTweetButton.click();
-        // TODO Wait until the new tweet appears to be the first in the list
     }
 
     public String getTitleRequiredMessage(){
