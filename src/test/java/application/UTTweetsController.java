@@ -62,11 +62,7 @@ public class UTTweetsController {
 
     @Test
     public void givenATweet_findTweet_returns200OK() {
-        Tweet tweet = TweetsFixture.createTweetWithoutTitle();
-        Integer likesCount = tweet.getUsersWhoLiked().size();
-        Integer dislikesCount = tweet.getUsersWhoDisliked().size();
-        Integer commentsCount = tweet.getComments().size();
-        TweetTO tweetTO = new TweetTO(tweet, likesCount, dislikesCount, commentsCount);
+        TweetTO tweetTO = new TweetTO(TweetsFixture.createTweetWithoutTitle());
         List<TweetTO> expectedTweets = new ArrayList<>();
         expectedTweets.add(tweetTO);
         Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);

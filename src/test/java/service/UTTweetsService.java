@@ -1,5 +1,6 @@
 package service;
 
+import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
 import com.tweets.service.TweetsService;
 import com.tweets.service.UserSecurityDetailsService;
@@ -13,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,10 +82,10 @@ public class UTTweetsService {
 
     @Test
     public void givenATweet_findAllByOrderByDateDesc_returnTweet() {
-        List<Tweet> tweets = new ArrayList<>();
-        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        List<TweetTO> tweets = new ArrayList<>();
+        TweetTO tweet = new TweetTO(TweetsFixture.createTweetWithTitleAndBody());
         tweets.add(tweet);
-        Mockito.when(mockRepository.findAllByOrderByDateDesc(new PageRequest(0, 10))).thenReturn(tweets);
+        Mockito.when(mockRepository.findAllByOrderByDateDesc(new PageParams(0, 10))).thenReturn(tweets);
 
         service.findTweets(new PageParams(0, 10));
 

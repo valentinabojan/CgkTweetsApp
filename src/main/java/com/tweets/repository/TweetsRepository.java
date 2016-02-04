@@ -1,16 +1,39 @@
 package com.tweets.repository;
 
+import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.entity.Tweet;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.Query;
+import com.tweets.service.valueobject.PageParams;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface TweetsRepository extends MongoRepository<Tweet, String> {
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
-    //@Query(fields = "{comments: 0}")
-    public List<Tweet> findAllByOrderByDateDesc(Pageable pageable);
+@Repository
+public class TweetsRepository {
 
+    @Autowired
+    private MongoOperations mongoOperations;
+
+    public Tweet insert(Tweet tweet) {
+        mongoOperations.insert(tweet);
+
+        return tweet;
+    }
+
+    public List<TweetTO> findAllByOrderByDateDesc(PageParams pageParams){
+        AggregationOperation sortByDate = sort(Sort.Direction.DESC, "date");
+        AggregationOperation project = project("title", "body", "author", "date")
+                                            .and("comments").size().as("commentsCount")
+                                            .and("usersWhoLiked").size().as("usersWhoLikedCount")
+                                            .and("usersWhoDisliked").size().as("usersWhoDislikedCount");
+        AggregationOperation skip = skip(pageParams.getPage() * pageParams.getSize());
+        AggregationOperation limit = limit(pageParams.getSize());
+
+        return mongoOperations.aggregate(newAggregation(sortByDate, project, skip, limit), Tweet.class, TweetTO.class).getMappedResults();
+    }
 }

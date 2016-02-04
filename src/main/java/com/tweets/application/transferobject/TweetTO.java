@@ -35,16 +35,15 @@ public class TweetTO {
         this.commentsCount = commentsCount;
     }
 
-    public TweetTO(Tweet tweet, Integer usersWhoLikedCount,
-                   Integer usersWhoDislikedCount, Integer commentsCount) {
+    public TweetTO(Tweet tweet) {
         this.id = tweet.getId();
         this.title = tweet.getTitle();
         this.body = tweet.getBody();
         this.author = tweet.getAuthor();
-        this.usersWhoLikedCount = usersWhoLikedCount;
-        this.usersWhoDislikedCount = usersWhoDislikedCount;
+        this.usersWhoLikedCount = tweet.getUsersWhoLiked().size();
+        this.usersWhoDislikedCount = tweet.getUsersWhoDisliked().size();
         this.date = tweet.getDate();
-        this.commentsCount = commentsCount;
+        this.commentsCount = tweet.getComments().size();
 
     }
 

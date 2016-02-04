@@ -6,14 +6,11 @@ import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,20 +40,7 @@ public class TweetsService {
     }
 
     public List<TweetTO> findTweets(PageParams pageParams) {
-        List<Tweet> tweets = repository.findAllByOrderByDateDesc(new PageRequest(pageParams.getPage(), pageParams.getSize()));
-        TweetTO tweetTO;
-        List<TweetTO> tweetTOList = new ArrayList<>();
-        for(Tweet tweet : tweets) {
-            Integer likesCount = tweet.getUsersWhoLiked().size();
-            Integer dislikesCount = tweet.getUsersWhoDisliked().size();
-            Integer commentsCount = tweet.getComments().size();
-
-            tweetTO = new TweetTO(tweet, likesCount, dislikesCount, commentsCount);
-            tweetTOList.add(tweetTO);
-        }
-
-        return tweetTOList;
-
+        return repository.findAllByOrderByDateDesc(pageParams);
     }
 
     private void validateTweet(Tweet tweet) {

@@ -1,14 +1,15 @@
 package repository;
 
+import com.tweets.application.transferobject.TweetTO;
 import com.tweets.configuration.AppConfig;
 import com.tweets.repository.TweetsRepository;
 import com.tweets.service.entity.Tweet;
+import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -40,7 +41,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweet_findByDateOrderByDateDesc_findTweet() {
-        List<Tweet> foundTweet = tweetsRepository.findAllByOrderByDateDesc(new PageRequest(0, 10));
+        List<TweetTO> foundTweet = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
 
         assertThat(foundTweet.get(0).getId()).isNotNull();
         assertThat(foundTweet.get(0).getTitle()).isEqualTo(tweet.getTitle());
