@@ -27,5 +27,4 @@
 
             $httpProvider.interceptors.push('authHttpResponseInterceptor');
         });
-
 })();

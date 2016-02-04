@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="Tweets">
+<html>
 <head lang="en">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,14 +13,16 @@
 </head>
 
 <body style="background-color: #0d3349">
+
 <div class="container">
+    <ng-include src="'app/template/header.html'"></ng-include>
+
     <ng-view></ng-view>
 </div>
 
 <script src="components/jquery/jquery.js"></script>
 <script src="components/angular/angular.js"></script>
 <script src="components/angular-route/angular-route.js"></script>
-
 <script src="components/bootstrap/dist/js/bootstrap.js"></script>
 <script src="components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="components/moment/moment.js"></script>
@@ -29,8 +31,10 @@
 <script src="components/remarkable-bootstrap-notify/dist/bootstrap-notify.js"></script>
 <script src='components/ngInfiniteScroll/build/ng-infinite-scroll.js'></script>
 
+<script src="app/angular-init.js"></script>
 <script src="app/app.js"></script>
 <script src="app/controller/tweets.controller.js"></script>
+<script src="app/controller/header.controller.js"></script>
 <script src="app/service/tweets.service.js"></script>
 
 </body>

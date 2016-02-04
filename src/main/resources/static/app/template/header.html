@@ -1,0 +1,25 @@
+<div class="well well-lg" ng-controller="HeaderController as vm"
+     style="vertical-align: middle; background-color: #2a6496; border-color: #2a6496;">
+    <div class="row">
+        <div class="col-sm-6" style="vertical-align: middle">
+            <div class="h1 midnightblueColor" style="margin-top: 0">
+                <img src="http://icons.iconarchive.com/icons/tristan-edwards/sevenesque/32/Messages-icon.png"/>
+                <span style="font-family:Calibri; color: #dbdbdb;">Welcome on Tweets!</span>
+            </div>
+        </div>
+
+        <div class="col-sm-6 text-right" >
+            <div>
+                <i class="glyphicon glyphicon-user" style="color: #0d3349; margin-right: 5px"></i>
+                <span style="color: #dbdbdb;">Hello, <i>{{vm.principal}}</i></span>
+            </div>
+
+            <div style="margin-top: 5px;">
+                <a href="/auth/logout" style="color: #0d3349;">
+                    <i class="glyphicon glyphicon-off" style="margin-right: 5px"></i>
+                    <span style="color: #dbdbdb;">Logout</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

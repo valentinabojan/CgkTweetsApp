@@ -15,7 +15,7 @@ public class LogoutSuccess extends SimpleUrlLogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_OK);
-        setDefaultTargetUrl("/#?logout");
+        setDefaultTargetUrl("/");
         authentication.setAuthenticated(false);
 
         super.onLogoutSuccess(request, response, authentication);
