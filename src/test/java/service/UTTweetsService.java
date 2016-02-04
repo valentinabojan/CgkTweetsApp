@@ -1,7 +1,8 @@
 package service;
 
-import com.tweets.repository .TweetsRepository;
+import com.tweets.repository.TweetsRepository;
 import com.tweets.service.TweetsService;
+import com.tweets.service.UserSecurityDetailsService;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
@@ -14,8 +15,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +29,17 @@ public class UTTweetsService {
     @Mock
     private TweetsRepository mockRepository;
 
+    @Mock
+    private UserSecurityDetailsService mockUserService;
+
+    private static String AUTHOR = "John Doe";
+
     @Test
     public void givenAValidTweet_createTweet_returnsTheNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
         Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
 
-        Tweet newTweet = service.createNewTweet(tweet, "John Doe");
+        Tweet newTweet = service.createNewTweet(tweet);
 
         assertThat(newTweet.getTitle()).isEqualTo(tweet.getTitle());
         assertThat(newTweet.getBody()).isEqualTo(tweet.getBody());
@@ -46,7 +50,7 @@ public class UTTweetsService {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
         Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
 
-        Tweet newTweet = service.createNewTweet(tweet, "John Doe");
+        Tweet newTweet = service.createNewTweet(tweet);
 
         assertThat(newTweet.getDate()).isNotNull();
     }
@@ -55,8 +59,9 @@ public class UTTweetsService {
     public void givenAValidTweet_createTweet_setsAuthorForNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
         Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
+        Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
 
-        Tweet newTweet = service.createNewTweet(tweet, "John Doe");
+        Tweet newTweet = service.createNewTweet(tweet);
 
         assertThat(newTweet.getAuthor()).isNotEmpty();
     }
@@ -65,14 +70,14 @@ public class UTTweetsService {
     public void givenATweetWithoutTitle_createTweet_throwsValidationException() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
 
-        service.createNewTweet(tweet, "John Doe");
+        service.createNewTweet(tweet);
     }
 
     @Test(expected = ValidationException.class)
     public void givenATweetWithoutBody_createTweet_throwsValidationException() {
         Tweet tweet = TweetsFixture.createTweetWithoutBody();
 
-        service.createNewTweet(tweet, "John Doe");
+        service.createNewTweet(tweet);
     }
 
     @Test

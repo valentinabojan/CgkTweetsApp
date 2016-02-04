@@ -24,9 +24,9 @@ public class TweetsController {
     TweetsService tweetsService;
 
     @RequestMapping(method = POST)
-    public ResponseEntity<Tweet> postNewTweet(@RequestBody Tweet tweet, @CookieValue(name = "username", defaultValue = "") String username) {
+    public ResponseEntity<Tweet> postNewTweet(@RequestBody Tweet tweet) {
         try {
-            Tweet newTweet = tweetsService.createNewTweet(tweet, username);
+            Tweet newTweet = tweetsService.createNewTweet(tweet);
 
             return new ResponseEntity(newTweet, HttpStatus.CREATED);
         } catch (ValidationException e) {
@@ -35,15 +35,10 @@ public class TweetsController {
     }
 
     @RequestMapping(method = GET)
-    public ResponseEntity getTweets(@CookieValue(name = "username", defaultValue = "") String username,
-                                    @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        /*if (username.isEmpty())
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);*/
-
+    public ResponseEntity getTweets(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         List<TweetTO> listOfTweets = tweetsService.findTweets(new PageParams(page, size));
-        if (listOfTweets.size() == 0){
+        if (listOfTweets.isEmpty())
             return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         return new ResponseEntity<>(listOfTweets, HttpStatus.OK);
     }

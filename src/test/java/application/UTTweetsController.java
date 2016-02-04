@@ -24,8 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class UTTweetsController {
 
-    private final static String AUTHOR = "John Doe";
-
     @InjectMocks
     private TweetsController tweetsController;
 
@@ -35,28 +33,19 @@ public class UTTweetsController {
     @Test
     public void givenAnInvalidTweet_createTweet_returns400BADREQUEST() {
         Tweet invalidTweet = TweetsFixture.createTweetWithoutTitle();
-        Mockito.when(mockTweetsService.createNewTweet(invalidTweet, AUTHOR)).thenThrow(ValidationException.class);
+        Mockito.when(mockTweetsService.createNewTweet(invalidTweet)).thenThrow(ValidationException.class);
 
-        ResponseEntity response = tweetsController.postNewTweet(invalidTweet, AUTHOR);
+        ResponseEntity response = tweetsController.postNewTweet(invalidTweet);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-//    @Test
-//    public void givenATweetAndNoAuthorLoggedIn_createTweet_returns401UNAUTHORIZED() {
-//        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-//
-//        ResponseEntity response = tweetsController.postNewTweet(tweet, "");
-//
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-//    }
-
     @Test
     public void givenATweet_createTweet_returns200OK() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
-        Mockito.when(mockTweetsService.createNewTweet(tweet, AUTHOR)).thenReturn(tweet);
+        Mockito.when(mockTweetsService.createNewTweet(tweet)).thenReturn(tweet);
 
-        ResponseEntity response = tweetsController.postNewTweet(tweet, AUTHOR);
+        ResponseEntity response = tweetsController.postNewTweet(tweet);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
@@ -64,9 +53,9 @@ public class UTTweetsController {
     @Test
     public void givenATweet_createTweet_returnsTheNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
-        Mockito.when(mockTweetsService.createNewTweet(tweet, AUTHOR)).thenReturn(tweet);
+        Mockito.when(mockTweetsService.createNewTweet(tweet)).thenReturn(tweet);
 
-        ResponseEntity response = tweetsController.postNewTweet(tweet, AUTHOR);
+        ResponseEntity response = tweetsController.postNewTweet(tweet);
 
         assertThat((Tweet)response.getBody()).isEqualTo(tweet);
     }
@@ -82,7 +71,7 @@ public class UTTweetsController {
         expectedTweets.add(tweetTO);
         Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
 
-        ResponseEntity response = tweetsController.getTweets(AUTHOR, 0, 10);
+        ResponseEntity response = tweetsController.getTweets(0, 10);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }

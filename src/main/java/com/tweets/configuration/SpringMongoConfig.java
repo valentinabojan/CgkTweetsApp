@@ -22,14 +22,14 @@ public class SpringMongoConfig extends AbstractMongoConfiguration {
         return new MongoClient("127.0.0.1", 27017);
     }
 
-    public @Bean
-    MongoDbFactory getMongoDbFactory() throws Exception {
-        return new SimpleMongoDbFactory(new MongoClient("localhost",27017), "tweets");
-    }
-
-    public @Bean
-    MongoTemplate getMongoTemplate() throws Exception {
-        MongoTemplate mongoTemplate = new MongoTemplate(getMongoDbFactory());
-        return mongoTemplate;
-    }
+//    public @Bean
+//    MongoDbFactory getMongoDbFactory() throws Exception {
+//        return new SimpleMongoDbFactory(new MongoClient("localhost",27017), "tweets");
+//    }
+//
+//    public @Bean
+//    MongoTemplate getMongoTemplate() throws Exception {
+//        MongoTemplate mongoTemplate = new MongoTemplate(getMongoDbFactory());
+//        return mongoTemplate;
+//    }
 }

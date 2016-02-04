@@ -32,12 +32,17 @@ public class AddNewTweetPage {
     @FindBy(how = How.ID, using = "submitTweet")
     WebElement submitTweetButton;
 
+    @FindBy(how = How.ID, using = "logout")
+    WebElement logoutButton;
+
     public void enterTextIntoTitleField(String title){
+        titleField.clear();
         titleField.sendKeys(title);
         wait.until(ExpectedConditions.textToBePresentInElementValue(titleField, title));
     }
 
     public void enterTextIntoBodyField(String body){
+        bodyField.clear();
         bodyField.sendKeys(body);
         wait.until(ExpectedConditions.textToBePresentInElementValue(bodyField, body));
     }
@@ -55,5 +60,9 @@ public class AddNewTweetPage {
     public String getBodyRequiredMessage(){
         wait.until(ExpectedConditions.visibilityOf(bodyRequiredMsg));
         return bodyRequiredMsg.getText();
+    }
+
+    public void clickOnLogoutButton(){
+        logoutButton.click();
     }
 }

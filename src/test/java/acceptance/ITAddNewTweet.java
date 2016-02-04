@@ -1,6 +1,7 @@
 package acceptance;
 
 import acceptance.pageobject.AddNewTweetPage;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,11 +19,16 @@ public class ITAddNewTweet extends BaseAcceptance {
 
     @BeforeClass
     public static void setup() {
-        driver.get(baseUrl + "#/login");
+        driver.get(baseUrl);
 
         login();
 
         addNewTweetPage = new AddNewTweetPage(driver, getWait());
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        addNewTweetPage.clickOnLogoutButton();
     }
 
     @Test

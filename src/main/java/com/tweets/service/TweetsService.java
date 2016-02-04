@@ -25,16 +25,19 @@ public class TweetsService {
     @Autowired
     TweetsRepository repository;
 
+    @Autowired
+    UserSecurityDetailsService userService;
+
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-    public Tweet createNewTweet(Tweet tweet, String author) {
+    public Tweet createNewTweet(Tweet tweet) {
         validateTweet(tweet);
 
         tweet.setComments(new ArrayList<>());
         tweet.setUsersWhoDisliked(new ArrayList<>());
         tweet.setUsersWhoLiked(new ArrayList<>());
         tweet.setDate(LocalDateTime.now());
-        tweet.setAuthor(author);
+        tweet.setAuthor(userService.getPrincipalName());
 
         return repository.insert(tweet);
     }

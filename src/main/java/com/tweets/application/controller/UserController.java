@@ -1,10 +1,9 @@
 package com.tweets.application.controller;
 
+import com.tweets.service.UserSecurityDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,15 +13,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Component()
 public class UserController {
 
+    @Autowired
+    UserSecurityDetailsService service;
+
     @RequestMapping(method = GET)
     public ResponseEntity<String> getPrincipalDetails() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            Object principal = auth.getPrincipal();
-            if (principal instanceof UserDetails)
-                return new ResponseEntity(((UserDetails) principal).getUsername(), HttpStatus.OK);
-        }
+        String principalName = service.getPrincipalName();
 
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (principalName == null)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity(principalName, HttpStatus.OK);
     }
 }

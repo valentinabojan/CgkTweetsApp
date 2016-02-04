@@ -14,7 +14,7 @@ public class ITListTweets extends BaseAcceptance {
 
     @BeforeClass
     public static void setup() {
-        driver.get(baseUrl + "#/login");
+        driver.get(baseUrl);
 
         login();
 

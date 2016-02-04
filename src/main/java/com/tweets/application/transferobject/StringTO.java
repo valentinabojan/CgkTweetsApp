@@ -4,8 +4,6 @@ public class StringTO {
 
     private String value;
 
-    public StringTO(){}
-
     public StringTO(String value) {
         this.value = value;
     }
