@@ -1,10 +1,15 @@
 <div infinite-scroll="vm.pagingFunction()" infinite-scroll-distance="0" class="well" infinite-scroll-disabled="vm.noTweets">
     <div class="panel panel-default" ng-repeat="tweet in vm.tweets">
-        <div class="panel-heading">
-            <h3 class="panel-title"><b>{{tweet.title}}</b> <i>by {{tweet.author}}, on {{vm.getDate(tweet.date)}}</i></h3>
-        </div>
-        <div class="panel-body">
-            {{tweet.body}}
+    <div class="panel-heading">
+        <h3 class="panel-title" >{{tweet.title}} <i>by {{tweet.author}}, on {{vm.getDate(tweet.date)}}</i></h3>
+    </div>
+    <div class="panel-body">
+        {{tweet.body}}
+        <div>
+            {{tweet.usersWhoLikedCount ? tweet.usersWhoLikedCount + " people like this." : ""}}
+            {{tweet.usersWhoDislikedCount ? tweet.usersWhoDislikedCount + " people dislike this." : ""}}
+            {{tweet.commentsCount ? tweet.commentsCount + " people commented on this." : ""}}
         </div>
     </div>
+</div>
 </div>

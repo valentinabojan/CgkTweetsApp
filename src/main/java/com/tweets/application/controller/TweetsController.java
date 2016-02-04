@@ -1,6 +1,7 @@
 package com.tweets.application.controller;
 
 import com.tweets.application.transferobject.StringTO;
+import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.TweetsService;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
@@ -36,7 +37,10 @@ public class TweetsController {
     @RequestMapping(method = GET)
     public ResponseEntity getTweets(@CookieValue(name = "username", defaultValue = "") String username,
                                     @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        List<Tweet> listOfTweets = tweetsService.findTweets(new PageParams(page, size));
+        /*if (username.isEmpty())
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);*/
+
+        List<TweetTO> listOfTweets = tweetsService.findTweets(new PageParams(page, size));
         if (listOfTweets.size() == 0){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }

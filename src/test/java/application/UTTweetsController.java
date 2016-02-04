@@ -1,6 +1,7 @@
 package application;
 
 import com.tweets.application.controller.TweetsController;
+import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.TweetsService;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
@@ -73,8 +74,12 @@ public class UTTweetsController {
     @Test
     public void givenATweet_findTweet_returns200OK() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
-        List<Tweet> expectedTweets = new ArrayList<>();
-        expectedTweets.add(tweet);
+        Integer likesCount = tweet.getUsersWhoLiked().size();
+        Integer dislikesCount = tweet.getUsersWhoDisliked().size();
+        Integer commentsCount = tweet.getComments().size();
+        TweetTO tweetTO = new TweetTO(tweet, likesCount, dislikesCount, commentsCount);
+        List<TweetTO> expectedTweets = new ArrayList<>();
+        expectedTweets.add(tweetTO);
         Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
 
         ResponseEntity response = tweetsController.getTweets(AUTHOR, 0, 10);

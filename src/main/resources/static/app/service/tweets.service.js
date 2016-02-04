@@ -23,7 +23,6 @@
             return $http.get("/tweets?page=" + page + "&size=" + size)
                 .then(function (response) {
                     return response.data;
-                    //console.log(response.data);
                 });
         }
 

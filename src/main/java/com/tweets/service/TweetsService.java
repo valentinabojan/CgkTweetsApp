@@ -1,5 +1,6 @@
 package com.tweets.service;
 
+import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
@@ -14,6 +15,7 @@ import javax.validation.Validator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,14 +30,30 @@ public class TweetsService {
     public Tweet createNewTweet(Tweet tweet, String author) {
         validateTweet(tweet);
 
+        tweet.setComments(new ArrayList<>());
+        tweet.setUsersWhoDisliked(new ArrayList<>());
+        tweet.setUsersWhoLiked(new ArrayList<>());
         tweet.setDate(LocalDateTime.now());
         tweet.setAuthor(author);
 
         return repository.insert(tweet);
     }
 
-    public List<Tweet> findTweets(PageParams pageParams) {
-        return repository.findAllByOrderByDateDesc(new PageRequest(pageParams.getPage(), pageParams.getSize()));
+    public List<TweetTO> findTweets(PageParams pageParams) {
+        List<Tweet> tweets = repository.findAllByOrderByDateDesc(new PageRequest(pageParams.getPage(), pageParams.getSize()));
+        TweetTO tweetTO;
+        List<TweetTO> tweetTOList = new ArrayList<>();
+        for(Tweet tweet : tweets) {
+            Integer likesCount = tweet.getUsersWhoLiked().size();
+            Integer dislikesCount = tweet.getUsersWhoDisliked().size();
+            Integer commentsCount = tweet.getComments().size();
+
+            tweetTO = new TweetTO(tweet, likesCount, dislikesCount, commentsCount);
+            tweetTOList.add(tweetTO);
+        }
+
+        return tweetTOList;
+
     }
 
     private void validateTweet(Tweet tweet) {
