@@ -27,7 +27,7 @@ public class TweetsService {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-    public Tweet createNewTweet(Tweet tweet) {
+    public TweetTO createNewTweet(Tweet tweet) {
         validateTweet(tweet);
 
         tweet.setComments(new ArrayList<>());

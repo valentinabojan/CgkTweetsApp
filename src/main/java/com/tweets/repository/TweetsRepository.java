@@ -19,10 +19,10 @@ public class TweetsRepository {
     @Autowired
     private MongoOperations mongoOperations;
 
-    public Tweet insert(Tweet tweet) {
+    public TweetTO insert(Tweet tweet) {
         mongoOperations.insert(tweet);
 
-        return tweet;
+        return new TweetTO(tweet);
     }
 
     public List<TweetTO> findAllByOrderByDateDesc(PageParams pageParams){

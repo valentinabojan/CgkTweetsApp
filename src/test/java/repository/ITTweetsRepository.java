@@ -33,7 +33,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenANewTweet_createTweet_createsNewTweet() {
-        Tweet newTweet = tweetsRepository.insert(tweet);
+        TweetTO newTweet = tweetsRepository.insert(tweet);
 
         assertThat(newTweet.getId()).isNotNull();
         assertThat(newTweet.getTitle()).isEqualTo(tweet.getTitle());

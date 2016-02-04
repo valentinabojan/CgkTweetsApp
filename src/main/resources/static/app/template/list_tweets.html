@@ -6,9 +6,13 @@
     <div class="panel-body">
         <p style="white-space: pre-line" id="body">{{tweet.body}}</p>
         <div>
-            {{tweet.usersWhoLikedCount ? tweet.usersWhoLikedCount + " people like this." : ""}}
-            {{tweet.usersWhoDislikedCount ? tweet.usersWhoDislikedCount + " people dislike this." : ""}}
-            {{tweet.commentsCount ? tweet.commentsCount + " people commented on this." : ""}}
+            <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-up"></i> {{tweet.usersWhoLikedCount}}</span>
+            <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-down"></i> {{tweet.usersWhoDislikedCount}}</span>
+            Comments <span class="badge">{{tweet.commentsCount}}</span>
+
+            <!--{{tweet.usersWhoLikedCount ? tweet.usersWhoLikedCount + " people like this." : ""}}-->
+            <!--{{tweet.usersWhoDislikedCount ? tweet.usersWhoDislikedCount + " people dislike this." : ""}}-->
+            <!--{{tweet.commentsCount ? tweet.commentsCount + " people commented on this." : ""}}-->
         </div>
     </div>
 </div>

@@ -37,9 +37,9 @@ public class UTTweetsService {
     @Test
     public void givenAValidTweet_createTweet_returnsTheNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
+        Mockito.when(mockRepository.insert(tweet)).thenReturn(new TweetTO(tweet));
 
-        Tweet newTweet = service.createNewTweet(tweet);
+        TweetTO newTweet = service.createNewTweet(tweet);
 
         assertThat(newTweet.getTitle()).isEqualTo(tweet.getTitle());
         assertThat(newTweet.getBody()).isEqualTo(tweet.getBody());
@@ -48,9 +48,9 @@ public class UTTweetsService {
     @Test
     public void givenAValidTweet_createTweet_setsDateForNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
+        Mockito.when(mockRepository.insert(tweet)).thenReturn(new TweetTO(tweet));
 
-        Tweet newTweet = service.createNewTweet(tweet);
+        TweetTO newTweet = service.createNewTweet(tweet);
 
         assertThat(newTweet.getDate()).isNotNull();
     }
@@ -58,10 +58,10 @@ public class UTTweetsService {
     @Test
     public void givenAValidTweet_createTweet_setsAuthorForNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
+        Mockito.when(mockRepository.insert(tweet)).thenReturn(new TweetTO(tweet));
         Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
 
-        Tweet newTweet = service.createNewTweet(tweet);
+        TweetTO newTweet = service.createNewTweet(tweet);
 
         assertThat(newTweet.getAuthor()).isNotEmpty();
     }

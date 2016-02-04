@@ -9,6 +9,7 @@ public class TweetsFixture {
 
     public static String TWEET_TITLE = "Title";
     public static String TWEET_BODY = "Body";
+    public static String AUTHOR = "Somebody";
 
     public static Tweet createTweetWithTitleAndBody() {
         return Tweet.TweetBuilder.tweet()
@@ -18,6 +19,7 @@ public class TweetsFixture {
                 .withUsersWhoLiked(new ArrayList<>())
                 .withUsersWhoDisliked(new ArrayList<>())
                 .withDate(LocalDateTime.now())
+                .withAuthor(AUTHOR)
                 .build();
     }
 
@@ -28,6 +30,7 @@ public class TweetsFixture {
                 .withUsersWhoLiked(new ArrayList<>())
                 .withUsersWhoDisliked(new ArrayList<>())
                 .withDate(LocalDateTime.now())
+                .withAuthor(AUTHOR)
                 .build();
     }
 
@@ -38,6 +41,7 @@ public class TweetsFixture {
                 .withUsersWhoLiked(new ArrayList<>())
                 .withUsersWhoDisliked(new ArrayList<>())
                 .withDate(LocalDateTime.now())
+                .withAuthor(AUTHOR)
                 .build();
     }
 }
