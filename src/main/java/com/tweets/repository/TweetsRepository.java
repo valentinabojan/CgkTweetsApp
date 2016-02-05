@@ -4,11 +4,14 @@ import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.valueobject.PageParams;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,7 +30,22 @@ public class TweetsRepository {
         return new TweetTO(tweet);
     }
 
-    public List<TweetTO> findTweets(PageParams pageParams){
+    public Tweet insertComment(Tweet tweet, Comment comment) {
+        Tweet t = mongoOperations.findOne(new Query(Criteria.where("id").is(tweet.getId())), Tweet.class);
+
+        //Save – It should rename to saveOrUpdate(), it performs insert() if “_id” is NOT exist or update() if “_id” is existed”
+        //Insert – Only insert, if “_id” is existed, an error is generated
+        if(t != null) {
+            comment.setId((new ObjectId()).toString());
+            t.getComments().add(comment);
+            mongoOperations.save(t);
+        }
+        return t;
+    }
+    
+    
+
+    public List<TweetTO> findAllByOrderByDateDesc(PageParams pageParams){
         AggregationOperation sortByDate = sort(Sort.Direction.DESC, "date");
         AggregationOperation project = project("title", "body", "author", "date")
                                             .and("comments").size().as("commentsCount")
@@ -52,4 +70,6 @@ public class TweetsRepository {
 
         return tweet.getComments();
     }
+
+    
 }

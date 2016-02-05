@@ -1,5 +1,6 @@
 package fixture;
 
+import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 
 import java.time.LocalDateTime;
@@ -42,6 +43,21 @@ public class TweetsFixture {
                 .withUsersWhoDisliked(new ArrayList<>())
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
+                .build();
+    }
+
+    public static Comment createCommentWithoutBody() {
+        return Comment.CommentBuilder.comment()
+                .withDate(LocalDateTime.now())
+                .withAuthor(AUTHOR)
+                .build();
+    }
+
+    public static Comment createCommentWithBody() {
+        return Comment.CommentBuilder.comment()
+                .withDate(LocalDateTime.now())
+                .withAuthor(AUTHOR)
+                .withBody(TWEET_BODY)
                 .build();
     }
 }

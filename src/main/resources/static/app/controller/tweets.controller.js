@@ -58,7 +58,7 @@
                     if(data.status == 400)
                         createNotification(data.data, "danger");
                     else
-                        createNotification("Something wrong happened when you tried to add a new book!", "danger");
+                        createNotification("Something wrong happened when you tried to add a new tweet!", "danger");
                 });
         }
 

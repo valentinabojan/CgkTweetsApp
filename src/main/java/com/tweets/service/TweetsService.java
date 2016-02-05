@@ -2,10 +2,12 @@ package com.tweets.service;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
+import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -40,7 +42,21 @@ public class TweetsService {
     }
 
     public List<TweetTO> findTweets(PageParams pageParams) {
-        return repository.findTweets(pageParams);
+        return repository.findAllByOrderByDateDesc(pageParams);
+    }
+
+    public Tweet createNewComment(Tweet tweet, Comment comment) {
+        validateComment(comment);
+
+        comment.setDate(LocalDateTime.now());
+
+        return repository.insertComment(tweet, comment);
+    }
+
+    private void validateComment(Comment comment) {
+        Set<ConstraintViolation<Comment>> tweetConstraintViolations = validator.validate(comment);
+        if (!tweetConstraintViolations.isEmpty())
+            throw new ValidationException(tweetConstraintViolations.iterator().next().getMessage());
     }
 
     private void validateTweet(Tweet tweet) {

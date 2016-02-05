@@ -27,10 +27,12 @@ public class ITTweetsRepository {
 
     private Tweet tweet;
     private TweetTO newTweet;
+    private Comment comment;
 
     @Before
     public void setUp() {
         tweet = TweetsFixture.createTweetWithTitleAndBody();
+        comment = TweetsFixture.createCommentWithBody();
 
         newTweet = tweetsRepository.insert(tweet);
     }
@@ -43,11 +45,12 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweet_findByDateOrderByDateDesc_findTweet() {
-        List<TweetTO> foundTweet = tweetsRepository.findTweets(new PageParams(0, 10));
+        List<TweetTO> foundTweet = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
 
         assertThat(foundTweet.get(0).getId()).isNotNull();
         assertThat(foundTweet.get(0).getTitle()).isEqualTo(tweet.getTitle());
     }
+    //TODO test the order of posts - desc by date
 
     @Test
     public void givenATweetId_findComments_findTheComments() {
@@ -76,5 +79,13 @@ public class ITTweetsRepository {
         List<Comment> foundComments = tweetsRepository.findCommentsByTweet("1", new PageParams(0, 1));
 
         assertThat(foundComments).hasSize(1);
+    }
+
+    @Test
+    public void givenANewComment_createComment_createsNewComment() {
+        Tweet newTweet = tweetsRepository.insertComment(tweet, TweetsFixture.createCommentWithBody());
+
+        assertThat(newTweet.getComments().get(0)).isNotNull();
+        assertThat(newTweet.getComments().get(0).getBody()).isEqualTo(comment.getBody());
     }
 }
