@@ -3,6 +3,7 @@ package repository;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.configuration.AppConfig;
 import com.tweets.repository.TweetsRepository;
+import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
@@ -25,26 +26,55 @@ public class ITTweetsRepository {
     private TweetsRepository tweetsRepository;
 
     private Tweet tweet;
+    private TweetTO newTweet;
 
     @Before
     public void setUp() {
         tweet = TweetsFixture.createTweetWithTitleAndBody();
+
+        newTweet = tweetsRepository.insert(tweet);
     }
 
     @Test
     public void givenANewTweet_createTweet_createsNewTweet() {
-        TweetTO newTweet = tweetsRepository.insert(tweet);
-
         assertThat(newTweet.getId()).isNotNull();
         assertThat(newTweet.getTitle()).isEqualTo(tweet.getTitle());
     }
 
     @Test
     public void givenATweet_findByDateOrderByDateDesc_findTweet() {
-        List<TweetTO> foundTweet = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
+        List<TweetTO> foundTweet = tweetsRepository.findTweets(new PageParams(0, 10));
 
         assertThat(foundTweet.get(0).getId()).isNotNull();
         assertThat(foundTweet.get(0).getTitle()).isEqualTo(tweet.getTitle());
     }
 
+    @Test
+    public void givenATweetId_findComments_findTheComments() {
+        // TODO replace "1" with newTweet id, after posting 2 comments for it; it would be nice to post the comments in setup method
+
+        List<Comment> foundComments = tweetsRepository.findCommentsByTweet("1", new PageParams(0, 10));
+
+        assertThat(foundComments).hasSize(2);
+    }
+
+    @Test
+    public void givenATweetId_findComments_findTheCommentsSortedInDescendingOrderByDate() {
+        // TODO replace "1" with newTweet id, after posting 2 comments for it; it would be nice to post the comments in setup method
+
+        List<Comment> foundComments = tweetsRepository.findCommentsByTweet("1", new PageParams(0, 10));
+
+        Comment firstComment = foundComments.get(0);
+        Comment secondComment = foundComments.get(1);
+        assertThat(firstComment.getDate()).isAfter(secondComment.getDate());
+    }
+
+    @Test
+    public void givenATweetId_findComments_findOnlyOnePageOfComments() {
+        // TODO replace "1" with newTweet id, after posting 2 comments for it; it would be nice to post the comments in setup method
+
+        List<Comment> foundComments = tweetsRepository.findCommentsByTweet("1", new PageParams(0, 1));
+
+        assertThat(foundComments).hasSize(1);
+    }
 }

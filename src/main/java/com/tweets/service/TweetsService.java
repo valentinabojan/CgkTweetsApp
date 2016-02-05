@@ -40,7 +40,7 @@ public class TweetsService {
     }
 
     public List<TweetTO> findTweets(PageParams pageParams) {
-        return repository.findAllByOrderByDateDesc(pageParams);
+        return repository.findTweets(pageParams);
     }
 
     private void validateTweet(Tweet tweet) {

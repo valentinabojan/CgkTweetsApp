@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class Comment {
 
-    private Integer id;
+    private String id;
 
     private String author;
 
@@ -18,11 +18,11 @@ public class Comment {
     public Comment() {
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

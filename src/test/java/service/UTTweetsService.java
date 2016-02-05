@@ -85,7 +85,7 @@ public class UTTweetsService {
         List<TweetTO> tweets = new ArrayList<>();
         TweetTO tweet = new TweetTO(TweetsFixture.createTweetWithTitleAndBody());
         tweets.add(tweet);
-        Mockito.when(mockRepository.findAllByOrderByDateDesc(new PageParams(0, 10))).thenReturn(tweets);
+        Mockito.when(mockRepository.findTweets(new PageParams(0, 10))).thenReturn(tweets);
 
         service.findTweets(new PageParams(0, 10));
 
