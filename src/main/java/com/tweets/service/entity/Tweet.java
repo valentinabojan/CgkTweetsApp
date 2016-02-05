@@ -1,16 +1,11 @@
 package com.tweets.service.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,7 +23,7 @@ public class Tweet {
     @NotEmpty(message = "Body is missing.")
     private String body;
     private String author;
-    private List<String> comments;
+    private List<Comment> comments;
     private List<String> usersWhoLiked;
     private List<String> usersWhoDisliked;
 
@@ -57,7 +52,7 @@ public class Tweet {
         return author;
     }
 
-    public List<String> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
@@ -85,7 +80,7 @@ public class Tweet {
         this.author = author;
     }
 
-    public void setComments(List<String> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
@@ -132,7 +127,7 @@ public class Tweet {
             return this;
         }
 
-        public TweetBuilder withComments(List<String> comments) {
+        public TweetBuilder withComments(List<Comment> comments) {
             tweet.comments = comments;
             return this;
         }
