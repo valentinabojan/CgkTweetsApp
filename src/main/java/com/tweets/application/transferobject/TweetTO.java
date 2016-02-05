@@ -102,4 +102,39 @@ public class TweetTO {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TweetTO tweetTO = (TweetTO) o;
+
+        if (author != null ? !author.equals(tweetTO.author) : tweetTO.author != null) return false;
+        if (body != null ? !body.equals(tweetTO.body) : tweetTO.body != null) return false;
+        if (commentsCount != null ? !commentsCount.equals(tweetTO.commentsCount) : tweetTO.commentsCount != null)
+            return false;
+        if (date != null ? !date.equals(tweetTO.date) : tweetTO.date != null) return false;
+        if (id != null ? !id.equals(tweetTO.id) : tweetTO.id != null) return false;
+        if (title != null ? !title.equals(tweetTO.title) : tweetTO.title != null) return false;
+        if (usersWhoDislikedCount != null ? !usersWhoDislikedCount.equals(tweetTO.usersWhoDislikedCount) : tweetTO.usersWhoDislikedCount != null)
+            return false;
+        if (usersWhoLikedCount != null ? !usersWhoLikedCount.equals(tweetTO.usersWhoLikedCount) : tweetTO.usersWhoLikedCount != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (body != null ? body.hashCode() : 0);
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (usersWhoLikedCount != null ? usersWhoLikedCount.hashCode() : 0);
+        result = 31 * result + (usersWhoDislikedCount != null ? usersWhoDislikedCount.hashCode() : 0);
+        result = 31 * result + (commentsCount != null ? commentsCount.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        return result;
+    }
 }
