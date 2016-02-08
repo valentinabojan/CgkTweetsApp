@@ -45,12 +45,13 @@ public class TweetsService {
         return repository.findAllByOrderByDateDesc(pageParams);
     }
 
-    public Tweet createNewComment(Tweet tweet, Comment comment) {
+    public Tweet createNewComment(String tweetId, Comment comment) {
         validateComment(comment);
 
         comment.setDate(LocalDateTime.now());
+        //comment.setAuthor(userService.getPrincipalName());
 
-        return repository.insertComment(tweet, comment);
+        return repository.insertComment(tweetId, comment);
     }
 
     public List<Comment> findTweetComments(String tweetId, PageParams pageParams) {

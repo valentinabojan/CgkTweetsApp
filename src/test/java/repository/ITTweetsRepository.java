@@ -39,8 +39,8 @@ public class ITTweetsRepository {
         comment1 = TweetsFixture.createCommentWithBody();
         comment2 = TweetsFixture.createCommentWithBody();
         comment2.setDate(LocalDateTime.now().plus(10, ChronoUnit.MILLIS));
-        newTweet = tweetsRepository.insertComment(newTweet, comment1);
-        newTweet = tweetsRepository.insertComment(newTweet, comment2);
+        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment1);
+        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment2);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenANewComment_createComment_createsNewComment() {
-        Tweet newTweet = tweetsRepository.insertComment(tweet, TweetsFixture.createCommentWithBody());
+        Tweet newTweet = tweetsRepository.insertComment(tweet.getId(), TweetsFixture.createCommentWithBody());
 
         assertThat(newTweet.getComments().get(0)).isNotNull();
         assertThat(newTweet.getComments().get(0).getBody()).isEqualTo(comment2.getBody());

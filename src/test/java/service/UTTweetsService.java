@@ -82,6 +82,26 @@ public class UTTweetsService {
         service.createNewTweet(tweet);
     }
 
+    @Test(expected = ValidationException.class)
+    public void givenATweetAndACommentWithoutBody_createComment_throwsValidationException() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Comment comment = TweetsFixture.createCommentWithoutBody();
+
+        service.createNewComment(tweet.getId(), comment);
+    }
+
+    @Test
+    public void givenATweetAndACommentWithBody_createComment_createsTheComment() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Comment comment = TweetsFixture.createCommentWithBody();
+        tweet.setId("2");
+        Mockito.when(mockRepository.insertComment(tweet.getId(), comment)).thenReturn(tweet);
+
+        service.createNewComment(tweet.getId(), comment);
+
+        assertThat(tweet.getComments().get(0).getBody()).isEqualTo(comment.getBody());
+    }
+
     @Test
     public void givenATweet_findAllByOrderByDateDesc_returnTweet() {
         List<TweetTO> tweets = new ArrayList<>();

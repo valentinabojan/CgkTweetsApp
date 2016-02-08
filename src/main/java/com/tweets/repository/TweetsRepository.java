@@ -30,8 +30,8 @@ public class TweetsRepository {
         return tweet;
     }
 
-    public Tweet insertComment(Tweet tweet, Comment comment) {
-        Tweet t = mongoOperations.findOne(new Query(Criteria.where("id").is(tweet.getId())), Tweet.class);
+    public Tweet insertComment(String tweetId, Comment comment) {
+        Tweet t = mongoOperations.findOne(new Query(Criteria.where("id").is(tweetId)), Tweet.class);
 
         //Save – It should rename to saveOrUpdate(), it performs insert() if “_id” is NOT exist or update() if “_id” is existed”
         //Insert – Only insert, if “_id” is existed, an error is generated
