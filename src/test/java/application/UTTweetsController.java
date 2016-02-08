@@ -42,23 +42,13 @@ public class UTTweetsController {
     }
 
     @Test
-    public void givenATweet_createTweet_returns200OK() {
+    public void givenATweet_createTweet_returns201OK() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
         Mockito.when(mockTweetsService.createNewTweet(tweet)).thenReturn(new TweetTO(tweet));
 
         ResponseEntity response = tweetsController.postNewTweet(tweet);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    }
-
-    @Test
-    public void givenATweet_createTweet_returnsTheNewTweet() {
-        Tweet tweet = TweetsFixture.createTweetWithoutTitle();
-        Mockito.when(mockTweetsService.createNewTweet(tweet)).thenReturn(new TweetTO(tweet));
-
-        ResponseEntity response = tweetsController.postNewTweet(tweet);
-
-        assertThat(response.getBody()).isEqualTo(new TweetTO(tweet));
     }
 
     @Test

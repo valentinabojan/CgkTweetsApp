@@ -27,9 +27,9 @@ public class TweetsController {
     @RequestMapping(method = POST)
     public ResponseEntity<TweetTO> postNewTweet(@RequestBody Tweet tweet) {
         try {
-            TweetTO newTweet = tweetsService.createNewTweet(tweet);
+            tweetsService.createNewTweet(tweet);
 
-            return new ResponseEntity(newTweet, HttpStatus.CREATED);
+            return new ResponseEntity(HttpStatus.CREATED);
         } catch (ValidationException e) {
             return new ResponseEntity(new StringTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ITTweetsController {
 
     private static String PATH = "http://localhost:9000";
-    private Tweet newTweet;
+    private HttpStatus postStatus;
     private RestTemplate restTemplate;
 
     @Before
@@ -30,12 +31,12 @@ public class ITTweetsController {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
         restTemplate = new RestTemplate();
 
-        newTweet = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getBody();
+        postStatus = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getStatusCode();
     }
 
     @Test
     public void givenATweet_POST_createsANewTweet() {
-        assertThat(newTweet.getId()).isNotNull();
+        assertThat(postStatus).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
