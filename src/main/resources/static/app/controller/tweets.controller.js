@@ -11,7 +11,9 @@
 
         vm.postTweet = postTweet;
         vm.pagingFunction = pagingFunction;
+        vm.pagingComments = pagingComments;
         vm.getDate = getDate;
+        vm.collapseComments = collapseComments;
 
         activate();
 
@@ -20,6 +22,31 @@
             vm.tweets = [];
             vm.page = 0;
             getTweets();
+        }
+
+        function collapseComments(tweet) {
+            tweet.commentsCollapsed = !tweet.commentsCollapsed;
+
+            if (tweet.page == 0)
+                getTweetComments(tweet);
+        }
+
+        function pagingComments(tweet) {
+            if (tweet.noComments)
+                return;
+
+            tweet.page++;
+            getTweetComments(tweet);
+        }
+
+        function getTweetComments(tweet) {
+            tweetsService
+                .getTweetComments(tweet.id, tweet.page, vm.pageSize)
+                .then(function(data){
+                    tweet.comments.push.apply(tweet.comments, data);
+                }, function(){
+                    tweet.noComments = true;
+                });
         }
 
         function getDate(dateArray){
@@ -36,8 +63,12 @@
             tweetsService
                 .getTweets(vm.page, vm.pageSize)
                 .then(function(data){
+                    data.forEach(function(tweet) {
+                        tweet.commentsCollapsed = true;
+                        tweet.page = 0;
+                        tweet.comments = [];
+                    });
                     vm.tweets.push.apply(vm.tweets, data);
-                    if(vm.page==0)console.log(data);
                 }, function(){
                     vm.noTweets = true;
                 });

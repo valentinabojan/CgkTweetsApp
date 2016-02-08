@@ -5,8 +5,13 @@
   "body": "Representatives from the planet Mars announced today that the planet would adopt MongoDB as a planetary standard. Head Martian Flipblip said that MongoDB was the perfect tool to store the diversity of life that exists on Mars.",
   "usersWhoLiked":["andrew"],
   "usersWhoDisliked":[],
-  "comments": [{"author": "andrew", "body": "first comment", "date":  ISODate("2013-03-11T01:54:53.692Z")}, {"author": "andrew 222", "body": "second comment", "date":  ISODate("2015-03-11T01:54:53.692Z")}],
-  "date": ISODate("2013-03-11T01:54:53.692Z")
+  "comments": [{"author": "andrew", "body": "first comment", "date":  ISODate("2013-03-11T01:54:53.692Z")},
+                {"author": "andrew 222", "body": "second comment", "date":  ISODate("2015-03-11T01:54:53.692Z")},
+                {"author": "andrew 3", "body": "3rd comment", "date":  ISODate("2015-03-12T01:54:53.692Z")},
+                {"author": "andrew 4", "body": "4th comment", "date":  ISODate("2015-03-13T01:54:53.692Z")},
+                {"author": "andrew 5", "body": "5th comment", "date":  ISODate("2015-03-14T01:54:53.692Z")},
+                {"author": "andrew 6", "body": "6th comment", "date":  ISODate("2015-03-15T01:54:53.692Z")}],
+  "date": ISODate("2016-01-31T01:54:53.692Z")
 }
 
 {

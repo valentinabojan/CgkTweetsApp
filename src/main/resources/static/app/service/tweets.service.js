@@ -6,7 +6,8 @@
     function tweetsService($http) {
         var service = {
             createTweet: createTweet,
-            getTweets: getTweets
+            getTweets: getTweets,
+            getTweetComments: getTweetComments
         };
 
         return service;
@@ -19,8 +20,14 @@
         }
 
         function getTweets(page, size) {
-            console.log("service");
             return $http.get("/tweets?page=" + page + "&size=" + size)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function getTweetComments(tweetId, page, size) {
+            return $http.get("/tweets/" + tweetId + "/comments?page=" + page + "&size=" + size)
                 .then(function (response) {
                     return response.data;
                 });

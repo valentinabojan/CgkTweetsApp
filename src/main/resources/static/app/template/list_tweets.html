@@ -8,11 +8,22 @@
         <div>
             <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-up"></i> {{tweet.usersWhoLikedCount}}</span>
             <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-down"></i> {{tweet.usersWhoDislikedCount}}</span>
-            Comments <span class="badge">{{tweet.commentsCount}}</span>
+            <a class="blackAnch" ng-click="vm.collapseComments(tweet)" style="cursor: pointer;">
+                <span>Comments</span>
+                <span class="badge">{{tweet.commentsCount}}</span>
+            </a>
 
-            <!--{{tweet.usersWhoLikedCount ? tweet.usersWhoLikedCount + " people like this." : ""}}-->
-            <!--{{tweet.usersWhoDislikedCount ? tweet.usersWhoDislikedCount + " people dislike this." : ""}}-->
-            <!--{{tweet.commentsCount ? tweet.commentsCount + " people commented on this." : ""}}-->
+            <div>
+                <div uib-collapse="tweet.commentsCollapsed" style="margin-top: 1em">
+                    <blockquote style="font-size: 14px" ng-repeat="comment in tweet.comments">
+                        <p>{{comment.body}}</p>
+                        <footer style="font-size: 14px">{{comment.author}} on <i>{{vm.getDate(comment.date)}}</i></footer>
+                    </blockquote>
+                    <a class="blackAnch" ng-click="vm.pagingComments(tweet)" style="cursor: pointer;">
+                        <span>{{!tweet.noComments ? "Load more comments..." : "No more comments"}}</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -25,3 +25,13 @@
 .grayColor {
     color: lightgrey;
 }
+
+.blackAnch {
+    color: #333;
+    text-decoration: none;
+}
+
+.blackAnch:hover, .blackAnch:focus {
+    color: #333;
+    text-decoration: none;
+}

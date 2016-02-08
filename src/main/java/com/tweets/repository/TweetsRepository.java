@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -66,9 +67,12 @@ public class TweetsRepository {
         AggregationOperation limit = limit(pageParams.getSize());
         AggregationOperation group = group().push("comments").as("comments");
 
-        Tweet tweet = mongoOperations.aggregate(newAggregation(match, project, unwind, sortByDate, skip, limit, group), Tweet.class, Tweet.class).getMappedResults().get(0);
+        List<Tweet> tweets = mongoOperations.aggregate(newAggregation(match, project, unwind, sortByDate, skip, limit, group), Tweet.class, Tweet.class).getMappedResults();
 
-        return tweet.getComments();
+        if (tweets.isEmpty())
+            return new ArrayList<>();
+        else
+            return tweets.get(0).getComments();
     }
 
     
