@@ -6,9 +6,7 @@
     function ListBookDetailsCtrl(tweetsService) {
         var vm = this;
 
-        vm.tweets = [];
         vm.noTweets = false;
-        vm.page = 0;
         vm.pageSize = 5;
 
         vm.postTweet = postTweet;
@@ -18,6 +16,9 @@
         activate();
 
         function activate() {
+            vm.tweet = {};
+            vm.tweets = [];
+            vm.page = 0;
             getTweets();
         }
 
@@ -46,14 +47,11 @@
             if(addTweetForm.$invalid)
                 return;
 
-            console.log(vm.tweet);
-
             tweetsService
                 .createTweet(vm.tweet)
                 .then(function(data){
-                    vm.tweet = {};
+                    activate();
                     addTweetForm.$setPristine();
-                    vm.tweets.unshift(data);
                 }, function(data){
                     if(data.status == 400)
                         createNotification(data.data, "danger");
