@@ -38,7 +38,7 @@ public class TweetsService {
         tweet.setDate(LocalDateTime.now());
         tweet.setAuthor(userService.getPrincipalName());
 
-        return repository.insert(tweet);
+        return new TweetTO(repository.insert(tweet));
     }
 
     public List<TweetTO> findTweets(PageParams pageParams) {

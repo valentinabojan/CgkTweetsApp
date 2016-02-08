@@ -24,10 +24,10 @@ public class TweetsRepository {
     @Autowired
     private MongoOperations mongoOperations;
 
-    public TweetTO insert(Tweet tweet) {
+    public Tweet insert(Tweet tweet) {
         mongoOperations.insert(tweet);
 
-        return new TweetTO(tweet);
+        return tweet;
     }
 
     public Tweet insertComment(Tweet tweet, Comment comment) {

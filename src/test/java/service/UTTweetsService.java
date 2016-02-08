@@ -39,7 +39,7 @@ public class UTTweetsService {
     @Test
     public void givenAValidTweet_createTweet_returnsTheNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Mockito.when(mockRepository.insert(tweet)).thenReturn(new TweetTO(tweet));
+        Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
 
         TweetTO newTweet = service.createNewTweet(tweet);
 
@@ -50,7 +50,7 @@ public class UTTweetsService {
     @Test
     public void givenAValidTweet_createTweet_setsDateForNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Mockito.when(mockRepository.insert(tweet)).thenReturn(new TweetTO(tweet));
+        Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
 
         TweetTO newTweet = service.createNewTweet(tweet);
 
@@ -60,7 +60,7 @@ public class UTTweetsService {
     @Test
     public void givenAValidTweet_createTweet_setsAuthorForNewTweet() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Mockito.when(mockRepository.insert(tweet)).thenReturn(new TweetTO(tweet));
+        Mockito.when(mockRepository.insert(tweet)).thenReturn(tweet);
         Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
 
         TweetTO newTweet = service.createNewTweet(tweet);

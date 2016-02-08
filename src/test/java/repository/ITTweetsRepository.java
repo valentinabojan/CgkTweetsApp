@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,17 +28,19 @@ public class ITTweetsRepository {
     @Autowired
     private TweetsRepository tweetsRepository;
 
-    private Tweet tweet;
-    private TweetTO newTweet;
-    private Comment comment;
+    private Tweet tweet, newTweet;
+    private Comment comment1, comment2;
 
     @Before
     public void setUp() {
         tweet = TweetsFixture.createTweetWithTitleAndBody();
-        TweetsFixture.createTweetWithTitleAndBody();
-        comment = TweetsFixture.createCommentWithBody();
-
         newTweet = tweetsRepository.insert(tweet);
+
+        comment1 = TweetsFixture.createCommentWithBody();
+        comment2 = TweetsFixture.createCommentWithBody();
+        comment2.setDate(LocalDateTime.now().plus(10, ChronoUnit.MILLIS));
+        newTweet = tweetsRepository.insertComment(newTweet, comment1);
+        newTweet = tweetsRepository.insertComment(newTweet, comment2);
     }
 
     @Test
@@ -48,13 +53,15 @@ public class ITTweetsRepository {
     public void givenATweetList_findTweets_findTheTweets() {
         List<TweetTO> foundTweets = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
 
-        assertThat(foundTweets.size()).isGreaterThanOrEqualTo(2);
+        assertThat(foundTweets.size()).isGreaterThanOrEqualTo(1);
         assertThat(foundTweets.get(0).getId()).isNotNull();
         assertThat(foundTweets.get(0).getTitle()).isEqualTo(tweet.getTitle());
     }
 
     @Test
     public void givenATweetList_findTweets_findTheTweetsSortedInDescendingOrderByDate() {
+        tweetsRepository.insert(TweetsFixture.createTweetWithTitleAndBody());
+
         List<TweetTO> foundTweets = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
 
         TweetTO firstTweet = foundTweets.get(0);
@@ -71,18 +78,14 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweetId_findComments_findTheComments() {
-        // TODO replace "1" with newTweet id, after posting 2 comments for it; it would be nice to post the comments in setup method
-
-        List<Comment> foundComments = tweetsRepository.findCommentsByTweet("1", new PageParams(0, 10));
+        List<Comment> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 10));
 
         assertThat(foundComments).hasSize(2);
     }
 
     @Test
     public void givenATweetId_findComments_findTheCommentsSortedInDescendingOrderByDate() {
-        // TODO replace "1" with newTweet id, after posting 2 comments for it; it would be nice to post the comments in setup method
-
-        List<Comment> foundComments = tweetsRepository.findCommentsByTweet("1", new PageParams(0, 10));
+        List<Comment> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 10));
 
         Comment firstComment = foundComments.get(0);
         Comment secondComment = foundComments.get(1);
@@ -91,9 +94,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweetId_findComments_findOnlyOnePageOfComments() {
-        // TODO replace "1" with newTweet id, after posting 2 comments for it; it would be nice to post the comments in setup method
-
-        List<Comment> foundComments = tweetsRepository.findCommentsByTweet("1", new PageParams(0, 1));
+        List<Comment> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 1));
 
         assertThat(foundComments).hasSize(1);
     }
@@ -103,6 +104,6 @@ public class ITTweetsRepository {
         Tweet newTweet = tweetsRepository.insertComment(tweet, TweetsFixture.createCommentWithBody());
 
         assertThat(newTweet.getComments().get(0)).isNotNull();
-        assertThat(newTweet.getComments().get(0).getBody()).isEqualTo(comment.getBody());
+        assertThat(newTweet.getComments().get(0).getBody()).isEqualTo(comment2.getBody());
     }
 }
