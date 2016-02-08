@@ -1,6 +1,7 @@
 package application;
 
 import com.tweets.configuration.AppConfig;
+import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 import fixture.TweetsFixture;
 import org.junit.Before;
@@ -21,19 +22,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ITTweetsController {
 
     private static String PATH = "http://localhost:9000";
-    private Tweet tweet;
+    private Tweet newTweet;
     private RestTemplate restTemplate;
 
     @Before
     public void setUpTests() {
-        tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
         restTemplate = new RestTemplate();
+
+        newTweet = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getBody();
     }
 
     @Test
     public void givenATweet_POST_createsANewTweet() {
-        Tweet newTweet = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getBody();
-
         assertThat(newTweet.getId()).isNotNull();
     }
 
@@ -43,5 +44,19 @@ public class ITTweetsController {
         Tweet[] tweets = responseEntity.getBody();
 
         assertThat(tweets[0].getTitle()).isNotNull();
+    }
+
+    @Test
+    public void givenATweetId_GET_getsTheListOfTweetComments() {
+        // TODO add two comments and then remove the comments below
+
+//        ResponseEntity<Comment[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets/" + newTweet.getComments() + "/comments?page=0&size=5", Comment[].class);
+        ResponseEntity<Comment[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets/" + 1 + "/comments?page=0&size=5", Comment[].class);
+
+        Comment[] comments = responseEntity.getBody();
+
+//        assertThat(comments[0]).isEqualTo(comment1);
+//        assertThat(comments[1]).isEqualTo(comment2);
+        assertThat(comments).hasSize(2);
     }
 }

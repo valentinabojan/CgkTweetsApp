@@ -3,6 +3,7 @@ package com.tweets.application.controller;
 import com.tweets.application.transferobject.StringTO;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.TweetsService;
+import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
@@ -41,5 +42,15 @@ public class TweetsController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(listOfTweets, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/{tweetId}/comments", method = GET)
+    public ResponseEntity getTweetComments(@PathVariable("tweetId") String tweetId,
+                                           @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        List<Comment> listOfComments = tweetsService.findTweetComments(tweetId, new PageParams(page, size));
+        if (listOfComments.isEmpty())
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(listOfComments, HttpStatus.OK);
     }
 }

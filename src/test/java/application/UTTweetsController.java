@@ -3,6 +3,7 @@ package application;
 import com.tweets.application.controller.TweetsController;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.TweetsService;
+import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
@@ -57,18 +58,70 @@ public class UTTweetsController {
 
         ResponseEntity response = tweetsController.postNewTweet(tweet);
 
-        assertThat((TweetTO)response.getBody()).isEqualTo(new TweetTO(tweet));
+        assertThat(response.getBody()).isEqualTo(new TweetTO(tweet));
     }
 
     @Test
-    public void givenATweet_findTweet_returns200OK() {
-        TweetTO tweetTO = new TweetTO(TweetsFixture.createTweetWithoutTitle());
+    public void givenNoTweets_getTweets_returns404NOTFOUND() {
         List<TweetTO> expectedTweets = new ArrayList<>();
-        expectedTweets.add(tweetTO);
+        Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
+
+        ResponseEntity response = tweetsController.getTweets(0, 10);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void givenATweet_getTweets_returns200OK() {
+        List<TweetTO> expectedTweets = new ArrayList<>();
+        expectedTweets.add(new TweetTO(TweetsFixture.createTweetWithoutTitle()));
         Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
 
         ResponseEntity response = tweetsController.getTweets(0, 10);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void givenATweet_getTweets_returnsTheCorrectEntity() {
+        List<TweetTO> expectedTweets = new ArrayList<>();
+        expectedTweets.add(new TweetTO(TweetsFixture.createTweetWithoutTitle()));
+        Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
+
+        ResponseEntity response = tweetsController.getTweets(0, 10);
+
+        assertThat(response.getBody()).isEqualTo(expectedTweets);
+    }
+
+    @Test
+    public void givenNoComments_getTweetComments_returns404NOTFOUND() {
+        List<Comment> expectedComments = new ArrayList<>();
+        Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);
+
+        ResponseEntity response = tweetsController.getTweetComments("1", 0, 10);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void givenAComment_findTweetComments_returns200OK() {
+        List<Comment> expectedComments = new ArrayList<>();
+        expectedComments.add(TweetsFixture.createCommentWithBody());
+        Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);
+
+        ResponseEntity response = tweetsController.getTweetComments("1", 0, 10);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void givenATweet_findTweets_returnsTheCorrectEntity() {
+        List<Comment> expectedComments = new ArrayList<>();
+        expectedComments.add(TweetsFixture.createCommentWithBody());
+        Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);
+
+        ResponseEntity response = tweetsController.getTweetComments("1", 0, 10);
+
+        assertThat(response.getBody()).isEqualTo(expectedComments);
     }
 }
