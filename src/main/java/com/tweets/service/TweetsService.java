@@ -53,6 +53,10 @@ public class TweetsService {
         return repository.insertComment(tweet, comment);
     }
 
+    public List<Comment> findTweetComments(String tweetId, PageParams pageParams) {
+        return repository.findCommentsByTweet(tweetId, pageParams);
+    }
+
     private void validateComment(Comment comment) {
         Set<ConstraintViolation<Comment>> tweetConstraintViolations = validator.validate(comment);
         if (!tweetConstraintViolations.isEmpty())

@@ -32,6 +32,7 @@ public class ITTweetsRepository {
     @Before
     public void setUp() {
         tweet = TweetsFixture.createTweetWithTitleAndBody();
+        TweetsFixture.createTweetWithTitleAndBody();
         comment = TweetsFixture.createCommentWithBody();
 
         newTweet = tweetsRepository.insert(tweet);
@@ -44,13 +45,29 @@ public class ITTweetsRepository {
     }
 
     @Test
-    public void givenATweet_findByDateOrderByDateDesc_findTweet() {
-        List<TweetTO> foundTweet = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
+    public void givenATweetList_findTweets_findTheTweets() {
+        List<TweetTO> foundTweets = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
 
-        assertThat(foundTweet.get(0).getId()).isNotNull();
-        assertThat(foundTweet.get(0).getTitle()).isEqualTo(tweet.getTitle());
+        assertThat(foundTweets.size()).isGreaterThanOrEqualTo(2);
+        assertThat(foundTweets.get(0).getId()).isNotNull();
+        assertThat(foundTweets.get(0).getTitle()).isEqualTo(tweet.getTitle());
     }
-    //TODO test the order of posts - desc by date
+
+    @Test
+    public void givenATweetList_findTweets_findTheTweetsSortedInDescendingOrderByDate() {
+        List<TweetTO> foundTweets = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
+
+        TweetTO firstTweet = foundTweets.get(0);
+        TweetTO secondTweet = foundTweets.get(1);
+        assertThat(firstTweet.getDate()).isAfter(secondTweet.getDate());
+    }
+
+    @Test
+    public void givenATweetList_findTweets_findOnlyOnePageOfTweets() {
+        List<TweetTO> foundTweets = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 1));
+
+        assertThat(foundTweets).hasSize(1);
+    }
 
     @Test
     public void givenATweetId_findComments_findTheComments() {

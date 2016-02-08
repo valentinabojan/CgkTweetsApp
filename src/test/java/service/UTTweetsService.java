@@ -4,6 +4,7 @@ import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
 import com.tweets.service.TweetsService;
 import com.tweets.service.UserSecurityDetailsService;
+import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
@@ -14,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,10 +89,21 @@ public class UTTweetsService {
         tweets.add(tweet);
         Mockito.when(mockRepository.findAllByOrderByDateDesc(new PageParams(0, 10))).thenReturn(tweets);
 
-        service.findTweets(new PageParams(0, 10));
+        List<TweetTO> foundTweets = service.findTweets(new PageParams(0, 10));
 
-        assertThat(tweets.get(0).getTitle()).isEqualTo(tweet.getTitle());
-        assertThat(tweets.get(0).getBody()).isEqualTo(tweet.getBody());
+        assertThat(foundTweets.get(0).getTitle()).isEqualTo(tweet.getTitle());
+        assertThat(foundTweets.get(0).getBody()).isEqualTo(tweet.getBody());
+    }
+
+    @Test
+    public void givenATweetId_findAllTweetComments_returnTheComments() {
+        List<Comment> comments = new ArrayList<>();
+        comments.add(TweetsFixture.createCommentWithBody());
+        Mockito.when(mockRepository.findCommentsByTweet("1", new PageParams(0, 10))).thenReturn(comments);
+
+        List<Comment> foundComments = service.findTweetComments("1", new PageParams(0, 10));
+
+        assertThat(foundComments.get(0).getBody()).isEqualTo(comments.get(0).getBody());
     }
 
 }
