@@ -52,6 +52,36 @@ public class UTTweetsController {
     }
 
     @Test
+    public void givenATweetAndAComment_createComment_returns201OK() {
+        Tweet tweet = TweetsFixture.createTweetWithoutTitle();
+        Comment comment = TweetsFixture.createCommentWithBody();
+        tweet.setId("2");
+        List<Comment> comments = new ArrayList<>();
+        comments.add(comment);
+        tweet.setComments(comments);
+        Mockito.when(mockTweetsService.createNewComment(tweet.getId(), comment)).thenReturn(tweet);
+
+        ResponseEntity response = tweetsController.postNewComment(tweet.getId(), comment);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @Test
+    public void givenAnInvalidComment_createComment_returns400BADREQUEST() {
+        Tweet tweet = TweetsFixture.createTweetWithoutTitle();
+        Comment invalidComment = TweetsFixture.createCommentWithoutBody();
+        tweet.setId("2");
+        List<Comment> comments = new ArrayList<>();
+        comments.add(invalidComment);
+        tweet.setComments(comments);
+        Mockito.when(mockTweetsService.createNewComment(tweet.getId(), invalidComment)).thenThrow(ValidationException.class);
+
+        ResponseEntity response = tweetsController.postNewComment(tweet.getId(), invalidComment);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
     public void givenNoTweets_getTweets_returns404NOTFOUND() {
         List<TweetTO> expectedTweets = new ArrayList<>();
         Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
@@ -62,7 +92,7 @@ public class UTTweetsController {
     }
 
     @Test
-    public void givenATweet_getTweets_returns200OK() {
+    public void givenATweet_getTweets_returns201OK() {
         List<TweetTO> expectedTweets = new ArrayList<>();
         expectedTweets.add(new TweetTO(TweetsFixture.createTweetWithoutTitle()));
         Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
@@ -94,7 +124,7 @@ public class UTTweetsController {
     }
 
     @Test
-    public void givenAComment_findTweetComments_returns200OK() {
+    public void givenAComment_findTweetComments_returns201OK() {
         List<Comment> expectedComments = new ArrayList<>();
         expectedComments.add(TweetsFixture.createCommentWithBody());
         Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);

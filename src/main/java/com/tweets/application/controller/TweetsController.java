@@ -35,6 +35,18 @@ public class TweetsController {
         }
     }
 
+    @RequestMapping(path = "/{tweetId}/comments", method = POST)
+    public ResponseEntity<Comment> postNewComment(@PathVariable("tweetId") String tweetId,
+                                                  @RequestBody Comment comment) {
+        try {
+            tweetsService.createNewComment(tweetId, comment);
+
+            return new ResponseEntity(HttpStatus.CREATED);
+        } catch (ValidationException e) {
+            return new ResponseEntity(new StringTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(method = GET)
     public ResponseEntity getTweets(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         List<TweetTO> listOfTweets = tweetsService.findTweets(new PageParams(page, size));

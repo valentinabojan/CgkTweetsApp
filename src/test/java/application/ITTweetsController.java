@@ -24,19 +24,27 @@ public class ITTweetsController {
 
     private static String PATH = "http://localhost:9000";
     private HttpStatus postStatus;
+    private HttpStatus postCommentStatus;
     private RestTemplate restTemplate;
 
     @Before
     public void setUpTests() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Comment comment = TweetsFixture.createCommentWithBody();
         restTemplate = new RestTemplate();
 
         postStatus = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getStatusCode();
+        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/"+1+"/comments", new HttpEntity(comment), Comment.class).getStatusCode();
     }
 
     @Test
     public void givenATweet_POST_createsANewTweet() {
         assertThat(postStatus).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @Test
+    public void givenAComment_POST_createsANewComment() {
+        assertThat(postCommentStatus).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
