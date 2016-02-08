@@ -95,11 +95,14 @@ public class UTTweetsService {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
         Comment comment = TweetsFixture.createCommentWithBody();
         tweet.setId("2");
+        List<Comment> comments = new ArrayList<>();
+        comments.add(TweetsFixture.createCommentWithBody());
+        tweet.setComments(comments);
         Mockito.when(mockRepository.insertComment(tweet.getId(), comment)).thenReturn(tweet);
 
-        service.createNewComment(tweet.getId(), comment);
+        Tweet tweet3 = service.createNewComment(tweet.getId(), comment);
 
-        assertThat(tweet.getComments().get(0).getBody()).isEqualTo(comment.getBody());
+        assertThat(tweet3.getComments().get(0).getBody()).isEqualTo(comment.getBody());
     }
 
     @Test
