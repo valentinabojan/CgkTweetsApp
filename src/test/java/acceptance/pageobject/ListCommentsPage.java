@@ -1,5 +1,6 @@
 package acceptance.pageobject;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,7 +18,15 @@ public class ListCommentsPage {
     @FindBy(how = How.ID, using = "commentsList")
     List<WebElement> commentsList;
 
+    @FindBy(how = How.ID, using = "commentBody")
+    WebElement commentBody;
+
     public List<WebElement> getListOfComments() {
         return commentsList;
     }
+
+    public String getFirstCommentBody(){
+        return commentsList.get(0).findElement(By.id("commentBody")).getText();
+    }
+
 }

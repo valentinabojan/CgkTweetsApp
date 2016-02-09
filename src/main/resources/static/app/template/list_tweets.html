@@ -15,12 +15,11 @@
                 <div class="panel-body">
                 <form ng-submit="vm.postComment(tweet,addCommentForm)" style="text-align: right" name="addCommentForm" novalidate>
                     <div class="form-group">
-                        <textarea class="form-control" rows="3" name="body" id="bodyComment" style="max-width: 100%" placeholder="Comment" ng-model="tweet.comment.body" required></textarea>
+                        <textarea class="form-control" rows="3" name="bodyComment" id="bodyComment" style="max-width: 100%" placeholder="Comment" ng-model="tweet.comment.body" required></textarea>
                         <ng-messages for="addCommentForm.bodyComment.$error" style="color:maroon" role="alert" ng-if='addCommentForm.bodyComment.$invalid && addCommentForm.$submitted'>
                             <ng-message when="required" id="bodyCommentRequiredMsg">You did not enter a body for your comment</ng-message>
                         </ng-messages>
                     </div>
-                    {{vm.comment.body}}
 
                     <button class="btn btn-default" type="submit" id="submitComment">
                         <i class="glyphicon glyphicon-send" style="margin-right: 1em"></i>

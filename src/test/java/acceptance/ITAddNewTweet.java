@@ -3,7 +3,6 @@ package acceptance;
 import acceptance.pageobject.AddNewTweetPage;
 import acceptance.pageobject.ListTweetPage;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
