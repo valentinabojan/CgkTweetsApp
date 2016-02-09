@@ -1,6 +1,7 @@
 package acceptance;
 
 import acceptance.pageobject.AddNewTweetPage;
+import acceptance.pageobject.ListCommentsPage;
 import acceptance.pageobject.ListTweetPage;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -9,14 +10,11 @@ import org.openqa.selenium.WebDriver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-public class ITListTweets extends BaseAcceptance {
+public class ITListComments extends BaseAcceptance {
     private static WebDriver driver = getDriver();
     private static ListTweetPage listTweetPage;
+    private static ListCommentsPage listCommentsPage;
     private static AddNewTweetPage addNewTweetPage;
-
-    private static String TITLE = "Default title";
-    private static String BODY = "Default body";
 
     @BeforeClass
     public static void setup() {
@@ -25,11 +23,10 @@ public class ITListTweets extends BaseAcceptance {
         login();
 
         listTweetPage = new ListTweetPage(driver);
+        listCommentsPage = new ListCommentsPage(driver);
         addNewTweetPage = new AddNewTweetPage(driver, getWait());
 
-        addNewTweetPage.enterTextIntoTitleField(TITLE);
-        addNewTweetPage.enterTextIntoBodyField(BODY);
-        addNewTweetPage.clickOnSubmitButton();
+        // TODO Add a new tweet and comments to the new tweet
     }
 
     @AfterClass
@@ -38,7 +35,9 @@ public class ITListTweets extends BaseAcceptance {
     }
 
     @Test
-    public void tweetsAreListed() throws InterruptedException {
-        assertThat(listTweetPage.getListOfTweets()).isNotEmpty();
+    public void commentsAreListed() throws InterruptedException {
+        listTweetPage.clickOnShowComments();
+
+        assertThat(listCommentsPage.getListOfComments()).isNotEmpty();
     }
 }

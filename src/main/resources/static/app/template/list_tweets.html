@@ -8,7 +8,7 @@
             <div>
                 <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-up"></i> {{tweet.usersWhoLikedCount}}</span>
                 <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-down"></i> {{tweet.usersWhoDislikedCount}}</span>
-                <a class="blackAnch" ng-click="vm.collapseComments(tweet)" style="cursor: pointer;">
+                <a class="blackAnch" ng-click="vm.collapseComments(tweet)" style="cursor: pointer;" id="showCommentsLink">
                     <span>Comments</span>
                     <span class="badge" id="commentsNumber">{{tweet.commentsCount}}</span>
                 </a>
@@ -37,7 +37,7 @@
                             <p id="commentBody">{{comment.body}}</p>
                             <footer style="font-size: 14px">{{comment.author}} on <i>{{vm.getDate(comment.date)}}</i></footer>
                         </blockquote>
-                        <a class="blackAnch" ng-click="vm.pagingComments(tweet)" style="cursor: pointer;" id="showCommentsLink">
+                        <a class="blackAnch" ng-click="vm.pagingComments(tweet)" style="cursor: pointer;">
                             <span>{{!tweet.noComments ? "Load more comments..." : "No more comments"}}</span>
                         </a>
                     </div>

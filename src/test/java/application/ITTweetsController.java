@@ -26,15 +26,20 @@ public class ITTweetsController {
     private HttpStatus postStatus;
     private HttpStatus postCommentStatus;
     private RestTemplate restTemplate;
+    private Tweet mostRecentTweet;
+    private Comment comment;
 
     @Before
     public void setUpTests() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Comment comment = TweetsFixture.createCommentWithBody();
+        comment = TweetsFixture.createCommentWithBody();
         restTemplate = new RestTemplate();
 
         postStatus = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getStatusCode();
-        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + 1 + "/comments", new HttpEntity(comment), Comment.class).getStatusCode();
+
+        ResponseEntity<Tweet[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", Tweet[].class);
+        mostRecentTweet = responseEntity.getBody()[0];
+        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments", new HttpEntity(comment), Comment.class).getStatusCode();
     }
 
     @Test
@@ -57,15 +62,9 @@ public class ITTweetsController {
 
     @Test
     public void givenATweetId_GET_getsTheListOfTweetComments() {
-        // TODO add two comments and then remove the comments below
-
-//        ResponseEntity<Comment[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets/" + newTweet.getComments() + "/comments?page=0&size=5", Comment[].class);
-        ResponseEntity<Comment[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets/" + 1 + "/comments?page=0&size=5", Comment[].class);
-
+        ResponseEntity<Comment[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments?page=0&size=5", Comment[].class);
         Comment[] comments = responseEntity.getBody();
 
-//        assertThat(comments[0]).isEqualTo(comment1);
-//        assertThat(comments[1]).isEqualTo(comment2);
-        assertThat(comments.length).isGreaterThanOrEqualTo(2);
+        assertThat(comments[0].getBody()).isEqualTo(comment.getBody());
     }
 }

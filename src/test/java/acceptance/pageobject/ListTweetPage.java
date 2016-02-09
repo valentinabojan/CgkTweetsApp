@@ -18,22 +18,22 @@ public class ListTweetPage {
     @FindBy(how = How.ID, using = "listTweets")
     List<WebElement> listAllTweets;
 
-    @FindBy(how = How.ID, using = "commentsNumber")
-    WebElement commentsNumber;
-
-    @FindBy(how = How.ID, using = "showCommentsLink")
-    WebElement showCommentsLink;
-
     public List<WebElement> getListOfTweets() {
         return listAllTweets;
     }
 
-    public Integer getCommentsNumber() {
-        return Integer.parseInt(commentsNumber.getText());
-    }
-
     public void clickOnShowComments() {
-        showCommentsLink.click();
+        for (WebElement element : getListOfTweets()) {
+            WebElement commentsNumberElement = element.findElement(By.id("commentsNumber"));
+            Integer commentsNumber = Integer.parseInt(commentsNumberElement.getText());
+
+            if (commentsNumber > 0) {
+                WebElement showCommentsLink = element.findElement(By.id("showCommentsLink"));
+
+                showCommentsLink.click();
+                break;
+            }
+        }
     }
 
     public String getFirstTweetTitle() {
