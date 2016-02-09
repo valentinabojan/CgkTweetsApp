@@ -1,0 +1,24 @@
+<div class="well">
+    <form ng-submit="vm.postTweet(addTweetForm)" style="text-align: right" name="addTweetForm" novalidate>
+        <div class="form-group">
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" ng-model="vm.tweet.title" required>
+            <ng-messages for="addTweetForm.title.$error" style="color:maroon" role="alert" ng-if='addTweetForm.title.$invalid && addTweetForm.$submitted'>
+                <ng-message when="required" id="titleRequiredMsg">You did not enter a title for your tweet</ng-message>
+            </ng-messages>
+        </div>
+
+        <div class="form-group">
+            <textarea class="form-control" rows="3" name="body" id="body" style="max-width: 100%" placeholder="Tweet" ng-model="vm.tweet.body" required></textarea>
+            <ng-messages for="addTweetForm.body.$error" style="color:maroon" role="alert" ng-if='addTweetForm.body.$invalid && addTweetForm.$submitted'>
+                <ng-message when="required" id="bodyRequiredMsg">You did not enter a body for your tweet</ng-message>
+            </ng-messages>
+        </div>
+
+        <button class="btn btn-default" type="submit" id="submitTweet">
+            <i class="glyphicon glyphicon-send" style="margin-right: 1em"></i>
+            Post
+        </button>
+
+    </form>
+
+</div>

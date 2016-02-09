@@ -34,7 +34,7 @@ public class ITTweetsController {
         restTemplate = new RestTemplate();
 
         postStatus = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getStatusCode();
-        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/"+1+"/comments", new HttpEntity(comment), Comment.class).getStatusCode();
+        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + 1 + "/comments", new HttpEntity(comment), Comment.class).getStatusCode();
     }
 
     @Test

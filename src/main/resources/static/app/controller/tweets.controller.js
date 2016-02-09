@@ -14,11 +14,13 @@
         vm.pagingComments = pagingComments;
         vm.getDate = getDate;
         vm.collapseComments = collapseComments;
+        vm.postComment = postComment;
 
         activate();
 
         function activate() {
             vm.tweet = {};
+            vm.comment = {};
             vm.tweets = [];
             vm.page = 0;
             getTweets();
@@ -46,6 +48,25 @@
                     tweet.comments.push.apply(tweet.comments, data);
                 }, function(){
                     tweet.noComments = true;
+                });
+        }
+
+        function postComment(tweet, addCommentForm) {
+            if(addCommentForm.$invalid)
+                return;
+
+            tweetsService
+                .createComment(tweet.id, tweet.comment)
+                .then(function(data){
+                    addCommentForm.$setPristine();
+                    tweet.page = 0;
+                    tweet.comments = [];
+                    getTweetComments(tweet);
+                }, function(data){
+                    if(data.status == 400)
+                        createNotification(data.data, "danger");
+                    else
+                        createNotification("Something wrong happened when you tried to add a new comment!", "danger");
                 });
         }
 
