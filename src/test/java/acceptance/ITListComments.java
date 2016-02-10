@@ -1,5 +1,6 @@
 package acceptance;
 
+import acceptance.pageobject.AddNewCommentPage;
 import acceptance.pageobject.AddNewTweetPage;
 import acceptance.pageobject.ListCommentsPage;
 import acceptance.pageobject.ListTweetPage;
@@ -15,6 +16,10 @@ public class ITListComments extends BaseAcceptance {
     private static ListTweetPage listTweetPage;
     private static ListCommentsPage listCommentsPage;
     private static AddNewTweetPage addNewTweetPage;
+    private static AddNewCommentPage addNewCommentPage;
+
+    private static String TITLE = "Default title";
+    private static String BODY = "Default body";
 
     @BeforeClass
     public static void setup() {
@@ -25,8 +30,15 @@ public class ITListComments extends BaseAcceptance {
         listTweetPage = new ListTweetPage(driver);
         listCommentsPage = new ListCommentsPage(driver);
         addNewTweetPage = new AddNewTweetPage(driver, getWait());
+        addNewCommentPage = new AddNewCommentPage(driver, getWait());
 
-        // TODO Add a new tweet and comments to the new tweet
+        addNewTweetPage.enterTextIntoTitleField(TITLE);
+        addNewTweetPage.enterTextIntoBodyField(BODY);
+        addNewTweetPage.clickOnSubmitButton();
+
+        addNewCommentPage.enterTextIntoBodyField(BODY);
+        listTweetPage.clickOnShowComments();
+        addNewCommentPage.clickOnSubmitButton();
     }
 
     @AfterClass

@@ -18,9 +18,6 @@ public class ListCommentsPage {
     @FindBy(how = How.ID, using = "commentsList")
     List<WebElement> commentsList;
 
-    @FindBy(how = How.ID, using = "commentBody")
-    WebElement commentBody;
-
     public List<WebElement> getListOfComments() {
         return commentsList;
     }

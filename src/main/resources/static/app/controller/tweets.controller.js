@@ -59,9 +59,10 @@
                 .createComment(tweet.id, tweet.comment)
                 .then(function(data){
                     addCommentForm.$setPristine();
-                    tweet.page = 0;
+                    tweet.comment = {};
                     tweet.comments = [];
                     getTweetComments(tweet);
+                    tweet.page = 1;
                 }, function(data){
                     if(data.status == 400)
                         createNotification(data.data, "danger");
