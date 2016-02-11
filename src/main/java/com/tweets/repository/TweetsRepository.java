@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -83,5 +84,7 @@ public class TweetsRepository {
             return tweets.get(0).getComments();
     }
 
-    
+    public Boolean isTweetLiked(String tweetId, String username) {
+        return mongoOperations.findOne(new Query(Criteria.where("_id").is(tweetId).and("usersWhoLiked").in(username)), Tweet.class) != null;
+    }
 }

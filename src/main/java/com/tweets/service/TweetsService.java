@@ -42,7 +42,11 @@ public class TweetsService {
     }
 
     public List<TweetTO> findTweets(PageParams pageParams) {
-        return repository.findAllByOrderByDateDesc(pageParams);
+        List<TweetTO> tweets = repository.findAllByOrderByDateDesc(pageParams);
+
+        tweets.stream().forEach(tweet -> tweet.setLiked(repository.isTweetLiked(tweet.getId(), userService.getPrincipalName())));
+
+        return tweets;
     }
 
     public Tweet createNewComment(String tweetId, Comment comment) {

@@ -22,6 +22,8 @@ public class TweetTO {
 
     private Integer commentsCount;
 
+    private Boolean liked;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;
 
@@ -101,6 +103,14 @@ public class TweetTO {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public Boolean getLiked() {
+        return liked;
+    }
+
+    public void setLiked(Boolean liked) {
+        this.liked = liked;
     }
 
     @Override

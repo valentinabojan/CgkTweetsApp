@@ -6,7 +6,10 @@
         <div class="panel-body">
             <p style="white-space: pre-line" id="body">{{tweet.body}}</p>
             <div>
-                <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-up"></i> {{tweet.usersWhoLikedCount}}</span>
+                <span style="margin-right: 2em">
+                    <i class="glyphicon glyphicon-thumbs-up" ng-click="vm.likeTweet(tweet)" ng-class="{darkRedColor: tweet.liked}" style="cursor: pointer;"></i>
+                    {{tweet.usersWhoLikedCount}}
+                </span>
                 <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-down"></i> {{tweet.usersWhoDislikedCount}}</span>
                 <a class="blackAnch" ng-click="vm.collapseComments(tweet)" style="cursor: pointer;" id="showCommentsLink">
                     <span>Comments</span>

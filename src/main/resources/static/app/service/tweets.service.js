@@ -8,7 +8,8 @@
             createTweet: createTweet,
             getTweets: getTweets,
             createComment: createComment,
-            getTweetComments: getTweetComments
+            getTweetComments: getTweetComments,
+            likeTweet: likeTweet
         };
 
         return service;
@@ -36,6 +37,13 @@
 
         function getTweetComments(tweetId, page, size) {
             return $http.get("/tweets/" + tweetId + "/comments?page=" + page + "&size=" + size)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function likeTweet(tweetId) {
+            return $http.put("/tweets/" + tweetId + "/like")
                 .then(function (response) {
                     return response.data;
                 });

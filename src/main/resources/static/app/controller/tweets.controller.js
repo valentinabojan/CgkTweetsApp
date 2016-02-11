@@ -16,6 +16,7 @@
         vm.getDate = getDate;
         vm.collapseComments = collapseComments;
         vm.postComment = postComment;
+        vm.likeTweet = likeTweet;
 
         activate();
 
@@ -119,6 +120,21 @@
                 .then(function(data){
                     activate();
                     addTweetForm.$setPristine();
+                }, function(data){
+                    if(data.status == 400)
+                        createNotification(data.data, "danger");
+                    else
+                        createNotification("Something wrong happened when you tried to add a new tweet!", "danger");
+                });
+        }
+
+        function likeTweet(tweet) {
+            tweetsService
+                .likeTweet(tweet.id)
+                .then(function(data){
+                    tweet.usersWhoDislikedCount = data.usersWhoDislikedCount;
+                    tweet.usersWhoLikedCount = data.usersWhoLikedCount;
+                    tweet.liked = true;
                 }, function(data){
                     if(data.status == 400)
                         createNotification(data.data, "danger");
