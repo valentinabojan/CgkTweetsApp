@@ -75,4 +75,13 @@ public class TweetsController {
 
         return new ResponseEntity<>(likedTweet, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/{tweetId}/dislike", method = PUT)
+    public ResponseEntity dislikeTweet(@PathVariable("tweetId") String tweetId) {
+        TweetTO dislikedTweet = tweetsService.dislikeTweet(tweetId);
+        if (dislikedTweet == null)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(dislikedTweet, HttpStatus.OK);
+    }
 }

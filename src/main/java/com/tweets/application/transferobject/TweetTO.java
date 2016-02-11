@@ -24,6 +24,8 @@ public class TweetTO {
 
     private Boolean liked;
 
+    private Boolean disliked;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;
 
@@ -111,6 +113,14 @@ public class TweetTO {
 
     public void setLiked(Boolean liked) {
         this.liked = liked;
+    }
+
+    public Boolean getDisliked() {
+        return disliked;
+    }
+
+    public void setDisliked(Boolean disliked) {
+        this.disliked = disliked;
     }
 
     @Override

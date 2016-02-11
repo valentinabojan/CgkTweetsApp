@@ -87,4 +87,8 @@ public class TweetsRepository {
     public Boolean isTweetLiked(String tweetId, String username) {
         return mongoOperations.findOne(new Query(Criteria.where("_id").is(tweetId).and("usersWhoLiked").in(username)), Tweet.class) != null;
     }
+
+    public Boolean isTweetDisliked(String tweetId, String username) {
+        return mongoOperations.findOne(new Query(Criteria.where("_id").is(tweetId).and("usersWhoDisliked").in(username)), Tweet.class) != null;
+    }
 }

@@ -44,7 +44,10 @@ public class TweetsService {
     public List<TweetTO> findTweets(PageParams pageParams) {
         List<TweetTO> tweets = repository.findAllByOrderByDateDesc(pageParams);
 
-        tweets.stream().forEach(tweet -> tweet.setLiked(repository.isTweetLiked(tweet.getId(), userService.getPrincipalName())));
+        tweets.stream().forEach(tweet -> {
+            tweet.setLiked(repository.isTweetLiked(tweet.getId(), userService.getPrincipalName()));
+            tweet.setDisliked(repository.isTweetDisliked(tweet.getId(), userService.getPrincipalName()));
+        });
 
         return tweets;
     }
@@ -77,6 +80,27 @@ public class TweetsService {
         likedTweet.setLiked(true);
 
         return likedTweet;
+    }
+
+    public TweetTO dislikeTweet(String tweetId) {
+        Tweet tweet = repository.findTweetById(tweetId);
+        if (tweet == null)
+            return null;
+
+        String username = userService.getPrincipalName();
+
+        if (tweet.getUsersWhoDisliked().contains(username))
+            return new TweetTO(tweet);
+
+        if (tweet.getUsersWhoLiked().contains(username))
+            tweet.getUsersWhoLiked().remove(username);
+
+        tweet.getUsersWhoDisliked().add(username);
+
+        TweetTO dislikedTweet = new TweetTO(repository.updateTweet(tweet));
+        dislikedTweet.setDisliked(true);
+
+        return dislikedTweet;
     }
 
     public List<Comment> findTweetComments(String tweetId, PageParams pageParams) {

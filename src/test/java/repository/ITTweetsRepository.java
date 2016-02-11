@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +48,13 @@ public class ITTweetsRepository {
     public void givenANewTweet_createTweet_createsNewTweet() {
         assertThat(newTweet.getId()).isNotNull();
         assertThat(newTweet.getTitle()).isEqualTo(tweet.getTitle());
+    }
+
+    @Test
+    public void givenATweet_updateTweet_updatesTheTweet() {
+        newTweet.getUsersWhoLiked().add("john");
+        Tweet updatedTweet = tweetsRepository.updateTweet(newTweet);
+        assertThat(updatedTweet.getUsersWhoLiked()).contains("john");
     }
 
     @Test
@@ -106,4 +114,6 @@ public class ITTweetsRepository {
         assertThat(newTweet.getComments().get(0)).isNotNull();
         assertThat(newTweet.getComments().get(0).getBody()).isEqualTo(comment2.getBody());
     }
+
+
 }

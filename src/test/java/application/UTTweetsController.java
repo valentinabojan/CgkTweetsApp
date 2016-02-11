@@ -173,4 +173,33 @@ public class UTTweetsController {
 
         assertThat(response.getBody()).isEqualTo(tweet);
     }
+
+    @Test
+    public void givenABadTweetId_dislikeTheTweet_returns404NOTFOUND() {
+        Mockito.when(mockTweetsService.dislikeTweet("1")).thenReturn(null);
+
+        ResponseEntity response = tweetsController.dislikeTweet("1");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void givenATweetId_dislikeTheTweet_returns200OK() {
+        TweetTO tweet = new TweetTO(TweetsFixture.createTweetWithTitleAndBody());
+        Mockito.when(mockTweetsService.dislikeTweet("1")).thenReturn(tweet);
+
+        ResponseEntity response = tweetsController.dislikeTweet("1");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void givenATweetId_dislikeTheTweet_returnsTheCorrectEntity() {
+        TweetTO tweet = new TweetTO(TweetsFixture.createTweetWithTitleAndBody());
+        Mockito.when(mockTweetsService.dislikeTweet("1")).thenReturn(tweet);
+
+        ResponseEntity response = tweetsController.dislikeTweet("1");
+
+        assertThat(response.getBody()).isEqualTo(tweet);
+    }
 }

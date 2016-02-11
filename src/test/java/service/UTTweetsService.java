@@ -166,4 +166,42 @@ public class UTTweetsService {
 
         assertThat(likedTweet.getUsersWhoLikedCount()).isEqualTo(1);
     }
+
+    @Test
+    public void givenATweetAlreadyDisliked_dislikeTheTweet_theTweetDoesNotChange() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        tweet.getUsersWhoDisliked().add(AUTHOR);
+        Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
+        Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
+
+        TweetTO likedTweet = service.dislikeTweet("1");
+
+        assertThat(likedTweet).isEqualTo(new TweetTO(tweet));
+    }
+
+
+    @Test
+    public void givenATweetAlreadyLiked_disLikeTheTweet_theUserWhoDislikedIsRemovedFromLikes() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        tweet.getUsersWhoLiked().add(AUTHOR);
+        Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
+        Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
+        Mockito.when(mockRepository.updateTweet(tweet)).thenReturn(tweet);
+
+        TweetTO dislikedTweet = service.dislikeTweet("1");
+
+        assertThat(dislikedTweet.getUsersWhoLikedCount()).isEqualTo(0);
+    }
+
+    @Test
+    public void givenATweet_dislikeTheTweet_theListWithUsersWhoDislikedIsUpdated() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
+        Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
+        Mockito.when(mockRepository.updateTweet(tweet)).thenReturn(tweet);
+
+        TweetTO dislikedTweet = service.dislikeTweet("1");
+
+        assertThat(dislikedTweet.getUsersWhoDislikedCount()).isEqualTo(1);
+    }
 }

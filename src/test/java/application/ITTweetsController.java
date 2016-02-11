@@ -78,4 +78,12 @@ public class ITTweetsController {
 
         assertThat(likedTweet.getUsersWhoLikedCount()).isEqualTo(mostRecentTweet.getUsersWhoLikedCount() + 1);
     }
+
+    @Test
+    public void givenATweetId_dislikeTweet_updateTheTweet() {
+        ResponseEntity<TweetTO> responseEntity = restTemplate.exchange(PATH + "/tweets/" + mostRecentTweet.getId() + "/dislike", PUT, null, TweetTO.class);
+        TweetTO likedTweet = responseEntity.getBody();
+
+        assertThat(likedTweet.getUsersWhoDislikedCount()).isEqualTo(mostRecentTweet.getUsersWhoDislikedCount() + 1);
+    }
 }

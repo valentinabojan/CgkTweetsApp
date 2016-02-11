@@ -9,7 +9,8 @@
             getTweets: getTweets,
             createComment: createComment,
             getTweetComments: getTweetComments,
-            likeTweet: likeTweet
+            likeTweet: likeTweet,
+            dislikeTweet: dislikeTweet
         };
 
         return service;
@@ -23,6 +24,13 @@
 
         function getTweets(page, size) {
             return $http.get("/tweets?page=" + page + "&size=" + size)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function dislikeTweet(tweetId) {
+            return $http.put("/tweets/" + tweetId + "/dislike")
                 .then(function (response) {
                     return response.data;
                 });

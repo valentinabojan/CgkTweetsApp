@@ -16,6 +16,7 @@
         vm.getDate = getDate;
         vm.collapseComments = collapseComments;
         vm.postComment = postComment;
+        vm.dislikeTweet = dislikeTweet;
         vm.likeTweet = likeTweet;
 
         activate();
@@ -99,6 +100,7 @@
             tweetsService
                 .getTweets(vm.page, vm.pageSize)
                 .then(function(data){
+                    console.log(data);
                     data.forEach(function(tweet) {
                         tweet.commentsCollapsed = true;
                         tweet.page = 0;
@@ -134,13 +136,19 @@
                 .then(function(data){
                     tweet.usersWhoDislikedCount = data.usersWhoDislikedCount;
                     tweet.usersWhoLikedCount = data.usersWhoLikedCount;
-                    tweet.liked = true;
-                }, function(data){
-                    if(data.status == 400)
-                        createNotification(data.data, "danger");
-                    else
-                        createNotification("Something wrong happened when you tried to add a new tweet!", "danger");
+                    tweet.liked = data.liked;
+                    tweet.disliked = data.disliked;
                 });
+        }
+
+        function dislikeTweet(tweet) {
+            tweetsService.dislikeTweet(tweet.id)
+                .then(function(data) {
+                    tweet.usersWhoDislikedCount = data.usersWhoDislikedCount;
+                    tweet.usersWhoLikedCount = data.usersWhoLikedCount;
+                    tweet.liked = data.liked;
+                    tweet.disliked = data.disliked;
+            })
         }
 
         function createNotification(message, type) {
