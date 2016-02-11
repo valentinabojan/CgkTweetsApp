@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @RestController
 @RequestMapping("/tweets")
@@ -64,5 +65,14 @@ public class TweetsController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(listOfComments, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/{tweetId}/like", method = PUT)
+    public ResponseEntity likeTweet(@PathVariable("tweetId") String tweetId) {
+        Tweet likedTweet = tweetsService.likeTweet(tweetId);
+        if (likedTweet == null)
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(new TweetTO(likedTweet), HttpStatus.OK);
     }
 }

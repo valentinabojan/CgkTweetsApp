@@ -42,7 +42,7 @@ public class UTTweetsController {
     }
 
     @Test
-    public void givenATweet_createTweet_returns201OK() {
+    public void givenATweet_createTweet_returns201CREATED() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
         Mockito.when(mockTweetsService.createNewTweet(tweet)).thenReturn(new TweetTO(tweet));
 
@@ -52,7 +52,7 @@ public class UTTweetsController {
     }
 
     @Test
-    public void givenATweetAndAComment_createComment_returns201OK() {
+    public void givenATweetAndAComment_createComment_returns201CREATED() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
         Comment comment = TweetsFixture.createCommentWithBody();
         tweet.setId("2");
@@ -92,7 +92,7 @@ public class UTTweetsController {
     }
 
     @Test
-    public void givenATweet_getTweets_returns201OK() {
+    public void givenATweet_getTweets_returns200OK() {
         List<TweetTO> expectedTweets = new ArrayList<>();
         expectedTweets.add(new TweetTO(TweetsFixture.createTweetWithoutTitle()));
         Mockito.when(mockTweetsService.findTweets(new PageParams(0, 10))).thenReturn(expectedTweets);
@@ -124,7 +124,7 @@ public class UTTweetsController {
     }
 
     @Test
-    public void givenAComment_findTweetComments_returns201OK() {
+    public void givenAComment_findTweetComments_returns200OK() {
         List<Comment> expectedComments = new ArrayList<>();
         expectedComments.add(TweetsFixture.createCommentWithBody());
         Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);
@@ -143,5 +143,34 @@ public class UTTweetsController {
         ResponseEntity response = tweetsController.getTweetComments("1", 0, 10);
 
         assertThat(response.getBody()).isEqualTo(expectedComments);
+    }
+
+    @Test
+    public void givenABadTweetId_likeTheTweet_returns404NOTFOUND() {
+        Mockito.when(mockTweetsService.likeTweet("1")).thenReturn(null);
+
+        ResponseEntity response = tweetsController.likeTweet("1");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void givenATweetId_likeTheTweet_returns200OK() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Mockito.when(mockTweetsService.likeTweet("1")).thenReturn(tweet);
+
+        ResponseEntity response = tweetsController.likeTweet("1");
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void givenATweetId_likeTheTweet_returnsTheCorrectEntity() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Mockito.when(mockTweetsService.likeTweet("1")).thenReturn(tweet);
+
+        ResponseEntity response = tweetsController.likeTweet("1");
+
+        assertThat(response.getBody()).isEqualTo(new TweetTO(tweet));
     }
 }

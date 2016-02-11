@@ -56,6 +56,9 @@ public class TweetsService {
 
     public Tweet likeTweet(String tweetId) {
         Tweet tweet = repository.findTweetById(tweetId);
+        if (tweet == null)
+            return null;
+
         String username = userService.getPrincipalName();
 
         if (tweet.getUsersWhoLiked().contains(username))
