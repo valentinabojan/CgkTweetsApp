@@ -68,8 +68,11 @@ public class TweetsService {
 
         String username = userService.getPrincipalName();
 
-        if (tweet.getUsersWhoLiked().contains(username))
-            return new TweetTO(tweet);
+        if (tweet.getUsersWhoLiked().contains(username)){
+            TweetTO likedTweet = new TweetTO(tweet);
+            likedTweet.setLiked(true);
+            return likedTweet;
+        }
 
         if (tweet.getUsersWhoDisliked().contains(username))
             tweet.getUsersWhoDisliked().remove(username);
@@ -89,8 +92,11 @@ public class TweetsService {
 
         String username = userService.getPrincipalName();
 
-        if (tweet.getUsersWhoDisliked().contains(username))
-            return new TweetTO(tweet);
+        if (tweet.getUsersWhoDisliked().contains(username)){
+            TweetTO likedTweet = new TweetTO(tweet);
+            likedTweet.setDisliked(true);
+            return likedTweet;
+        }
 
         if (tweet.getUsersWhoLiked().contains(username))
             tweet.getUsersWhoLiked().remove(username);

@@ -10,7 +10,7 @@
                     <i class="glyphicon glyphicon-thumbs-up" ng-click="vm.likeTweet(tweet)" ng-class="{blueColor: tweet.liked}" style="cursor: pointer;"></i>
                     {{tweet.usersWhoLikedCount}}
                 </span>
-                <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-down" ng-class="{darkRedColor: tweet.disliked}" ng-click="vm.dislikeTweet(tweet)"></i> {{tweet.usersWhoDislikedCount}}</span>
+                <span style="margin-right: 2em"> <i class="glyphicon glyphicon-thumbs-down" ng-class="{darkRedColor: tweet.disliked}" ng-click="vm.dislikeTweet(tweet)" style="cursor: pointer;"></i> {{tweet.usersWhoDislikedCount}}</span>
                 <a class="blackAnch" ng-click="vm.collapseComments(tweet)" style="cursor: pointer;" id="showCommentsLink">
                     <span>Comments</span>
                     <span class="badge" id="commentsNumber">{{tweet.commentsCount}}</span>
