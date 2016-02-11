@@ -156,7 +156,7 @@ public class UTTweetsController {
 
     @Test
     public void givenATweetId_likeTheTweet_returns200OK() {
-        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        TweetTO tweet = new TweetTO(TweetsFixture.createTweetWithTitleAndBody());
         Mockito.when(mockTweetsService.likeTweet("1")).thenReturn(tweet);
 
         ResponseEntity response = tweetsController.likeTweet("1");
@@ -166,11 +166,11 @@ public class UTTweetsController {
 
     @Test
     public void givenATweetId_likeTheTweet_returnsTheCorrectEntity() {
-        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        TweetTO tweet = new TweetTO(TweetsFixture.createTweetWithTitleAndBody());
         Mockito.when(mockTweetsService.likeTweet("1")).thenReturn(tweet);
 
         ResponseEntity response = tweetsController.likeTweet("1");
 
-        assertThat(response.getBody()).isEqualTo(new TweetTO(tweet));
+        assertThat(response.getBody()).isEqualTo(tweet);
     }
 }

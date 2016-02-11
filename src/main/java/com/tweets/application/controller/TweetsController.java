@@ -69,10 +69,10 @@ public class TweetsController {
 
     @RequestMapping(path = "/{tweetId}/like", method = PUT)
     public ResponseEntity likeTweet(@PathVariable("tweetId") String tweetId) {
-        Tweet likedTweet = tweetsService.likeTweet(tweetId);
+        TweetTO likedTweet = tweetsService.likeTweet(tweetId);
         if (likedTweet == null)
             return new ResponseEntity(HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(new TweetTO(likedTweet), HttpStatus.OK);
+        return new ResponseEntity<>(likedTweet, HttpStatus.OK);
     }
 }

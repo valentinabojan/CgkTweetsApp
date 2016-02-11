@@ -137,9 +137,9 @@ public class UTTweetsService {
         Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
         Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
 
-        Tweet likedTweet = service.likeTweet("1");
+        TweetTO likedTweet = service.likeTweet("1");
 
-        assertThat(likedTweet).isEqualTo(tweet);
+        assertThat(likedTweet).isEqualTo(new TweetTO(tweet));
     }
 
     @Test
@@ -150,9 +150,9 @@ public class UTTweetsService {
         Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
         Mockito.when(mockRepository.updateTweet(tweet)).thenReturn(tweet);
 
-        Tweet likedTweet = service.likeTweet("1");
+        TweetTO likedTweet = service.likeTweet("1");
 
-        assertThat(likedTweet.getUsersWhoDisliked()).isEmpty();
+        assertThat(likedTweet.getUsersWhoDislikedCount()).isEqualTo(0);
     }
 
     @Test
@@ -162,8 +162,8 @@ public class UTTweetsService {
         Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
         Mockito.when(mockRepository.updateTweet(tweet)).thenReturn(tweet);
 
-        Tweet likedTweet = service.likeTweet("1");
+        TweetTO likedTweet = service.likeTweet("1");
 
-        assertThat(likedTweet.getUsersWhoLiked()).isEqualTo(Arrays.asList(AUTHOR));
+        assertThat(likedTweet.getUsersWhoLikedCount()).isEqualTo(1);
     }
 }

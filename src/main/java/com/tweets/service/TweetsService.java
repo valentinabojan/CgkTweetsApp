@@ -58,7 +58,7 @@ public class TweetsService {
         return repository.insertComment(tweetId, comment);
     }
 
-    public Tweet likeTweet(String tweetId) {
+    public TweetTO likeTweet(String tweetId) {
         Tweet tweet = repository.findTweetById(tweetId);
         if (tweet == null)
             return null;
@@ -66,14 +66,17 @@ public class TweetsService {
         String username = userService.getPrincipalName();
 
         if (tweet.getUsersWhoLiked().contains(username))
-            return tweet;
+            return new TweetTO(tweet);
 
         if (tweet.getUsersWhoDisliked().contains(username))
             tweet.getUsersWhoDisliked().remove(username);
 
         tweet.getUsersWhoLiked().add(username);
 
-        return repository.updateTweet(tweet);
+        TweetTO likedTweet = new TweetTO(repository.updateTweet(tweet));
+        likedTweet.setLiked(true);
+
+        return likedTweet;
     }
 
     public List<Comment> findTweetComments(String tweetId, PageParams pageParams) {
