@@ -8,6 +8,7 @@
 
         vm.noTweets = false;
         vm.pageSize = 5;
+        var firstCollapsed = true;
 
         vm.postTweet = postTweet;
         vm.pagingFunction = pagingFunction;
@@ -29,8 +30,11 @@
         function collapseComments(tweet) {
             tweet.commentsCollapsed = !tweet.commentsCollapsed;
 
-            if (tweet.page == 0)
-                getTweetComments(tweet);
+            if (!tweet.commentsCollapsed)
+                if (tweet.page == 0 && tweet.expandedForFirstTime) {
+                    getTweetComments(tweet);
+                    tweet.expandedForFirstTime = false;
+                }
         }
 
         function pagingComments(tweet) {
@@ -42,6 +46,8 @@
         }
 
         function getTweetComments(tweet) {
+
+            console.log(tweet.page);
             tweetsService
                 .getTweetComments(tweet.id, tweet.page, vm.pageSize)
                 .then(function(data){
@@ -61,8 +67,15 @@
                     addCommentForm.$setPristine();
                     tweet.comment = {};
                     tweet.comments = [];
-                    getTweetComments(tweet);
-                    tweet.page = 1;
+                    tweet.page = 0;
+                    tweet.commentsCount++;
+                    tweet.noComments = false;
+                    tweet.expandedForFirstTime = true;
+
+                    if (!tweet.commentsCollapsed) {
+                        getTweetComments(tweet);
+                        tweet.expandedForFirstTime = false;
+                    }
                 }, function(data){
                     if(data.status == 400)
                         createNotification(data.data, "danger");
@@ -89,6 +102,7 @@
                         tweet.commentsCollapsed = true;
                         tweet.page = 0;
                         tweet.comments = [];
+                        tweet.expandedForFirstTime = true;
                     });
                     vm.tweets.push.apply(vm.tweets, data);
                 }, function(){

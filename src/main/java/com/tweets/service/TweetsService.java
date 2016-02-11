@@ -48,6 +48,7 @@ public class TweetsService {
     public Tweet createNewComment(String tweetId, Comment comment) {
         validateComment(comment);
 
+        comment.setAuthor(userService.getPrincipalName());
         comment.setDate(LocalDateTime.now());
 
         return repository.insertComment(tweetId, comment);
