@@ -43,6 +43,12 @@ public class TweetsRepository {
         }
         return t;
     }
+
+    public Tweet updateTweet(Tweet tweet) {
+        mongoOperations.save(tweet);
+
+        return tweet;
+    }
     
     
 
