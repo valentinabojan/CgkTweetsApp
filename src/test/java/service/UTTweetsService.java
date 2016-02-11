@@ -18,6 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -129,4 +130,40 @@ public class UTTweetsService {
         assertThat(foundComments.get(0).getBody()).isEqualTo(comments.get(0).getBody());
     }
 
+    @Test
+    public void givenATweetAlreadyLiked_likeTheTweet_theTweetDoesNotChange() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        tweet.getUsersWhoLiked().add(AUTHOR);
+        Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
+        Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
+
+        Tweet likedTweet = service.likeTweet("1");
+
+        assertThat(likedTweet).isEqualTo(tweet);
+    }
+
+    @Test
+    public void givenATweetAlreadyDisliked_likeTheTweet_theUserWhoLikedIsRemovedFromDislikes() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        tweet.getUsersWhoDisliked().add(AUTHOR);
+        Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
+        Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
+        Mockito.when(mockRepository.updateTweet(tweet)).thenReturn(tweet);
+
+        Tweet likedTweet = service.likeTweet("1");
+
+        assertThat(likedTweet.getUsersWhoDisliked()).isEmpty();
+    }
+
+    @Test
+    public void givenATweet_likeTheTweet_theListWithUsersWhoLikedIsUpdated() {
+        Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
+        Mockito.when(mockUserService.getPrincipalName()).thenReturn(AUTHOR);
+        Mockito.when(mockRepository.findTweetById("1")).thenReturn(tweet);
+        Mockito.when(mockRepository.updateTweet(tweet)).thenReturn(tweet);
+
+        Tweet likedTweet = service.likeTweet("1");
+
+        assertThat(likedTweet.getUsersWhoLiked()).isEqualTo(Arrays.asList(AUTHOR));
+    }
 }

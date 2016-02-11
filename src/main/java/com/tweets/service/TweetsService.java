@@ -54,6 +54,21 @@ public class TweetsService {
         return repository.insertComment(tweetId, comment);
     }
 
+    public Tweet likeTweet(String tweetId) {
+        Tweet tweet = repository.findTweetById(tweetId);
+        String username = userService.getPrincipalName();
+
+        if (tweet.getUsersWhoLiked().contains(username))
+            return tweet;
+
+        if (tweet.getUsersWhoDisliked().contains(username))
+            tweet.getUsersWhoDisliked().remove(username);
+
+        tweet.getUsersWhoLiked().add(username);
+
+        return repository.updateTweet(tweet);
+    }
+
     public List<Comment> findTweetComments(String tweetId, PageParams pageParams) {
         return repository.findCommentsByTweet(tweetId, pageParams);
     }

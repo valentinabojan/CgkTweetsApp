@@ -49,8 +49,10 @@ public class TweetsRepository {
 
         return tweet;
     }
-    
-    
+
+    public Tweet findTweetById(String tweetId) {
+        return mongoOperations.findOne(new Query(Criteria.where("id").is(tweetId)), Tweet.class);
+    }
 
     public List<TweetTO> findAllByOrderByDateDesc(PageParams pageParams){
         AggregationOperation sortByDate = sort(Sort.Direction.DESC, "date");
