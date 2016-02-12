@@ -41,4 +41,24 @@ public class ITListTweets extends BaseAcceptance {
     public void tweetsAreListed() throws InterruptedException {
         assertThat(listTweetPage.getListOfTweets()).isNotEmpty();
     }
+
+    @Test
+    public void whenLikeATweet_increaseNumberOfLikes() throws InterruptedException {
+        Integer initialLikesNumber = listTweetPage.getFirstTweetLikesNumber();
+
+        listTweetPage.clickOnFirstTweetLikeButton();
+
+        Integer likesNumber = listTweetPage.getFirstTweetLikesNumber();
+        assertThat(likesNumber).isEqualTo(initialLikesNumber + 1);
+    }
+
+    @Test
+    public void whenDislikeATweet_increaseNumberOfDislikes() throws InterruptedException {
+        Integer initialDislikesNumber = listTweetPage.getFirstTweetDislikesNumber();
+
+        listTweetPage.clickOnFirstTweetDislikeButton();
+
+        Integer dislikesNumber = listTweetPage.getFirstTweetDislikesNumber();
+        assertThat(dislikesNumber).isEqualTo(initialDislikesNumber + 1);
+    }
 }

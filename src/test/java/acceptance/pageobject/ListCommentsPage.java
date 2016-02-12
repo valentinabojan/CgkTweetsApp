@@ -25,5 +25,4 @@ public class ListCommentsPage {
     public String getFirstCommentBody(){
         return commentsList.get(0).findElement(By.id("commentBody")).getText();
     }
-
 }

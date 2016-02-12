@@ -18,6 +18,22 @@ public class ListTweetPage {
     @FindBy(how = How.ID, using = "listTweets")
     List<WebElement> listAllTweets;
 
+    public Integer getFirstTweetLikesNumber() {
+        return Integer.parseInt(listAllTweets.get(0).findElement(By.id("likesNumber")).getText());
+    }
+
+    public Integer getFirstTweetDislikesNumber() {
+        return Integer.parseInt(listAllTweets.get(0).findElement(By.id("dislikesNumber")).getText());
+    }
+
+    public void clickOnFirstTweetLikeButton() {
+        listAllTweets.get(0).findElement(By.id("likeButton")).click();
+    }
+
+    public void clickOnFirstTweetDislikeButton() {
+        listAllTweets.get(0).findElement(By.id("dislikeButton")).click();
+    }
+
     public List<WebElement> getListOfTweets() {
         return listAllTweets;
     }
