@@ -2,12 +2,12 @@ package com.tweets.service;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
-import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
+import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.entity.mongo.TweetMongo;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -52,7 +52,7 @@ public class TweetsService {
         return tweets;
     }
 
-    public Tweet createNewComment(String tweetId, Comment comment) {
+    public Tweet createNewComment(String tweetId, CommentMongo comment) {
         validateComment(comment);
 
         comment.setAuthor(userService.getPrincipalName());
@@ -109,12 +109,12 @@ public class TweetsService {
         return dislikedTweet;
     }
 
-    public List<Comment> findTweetComments(String tweetId, PageParams pageParams) {
+    public List<CommentMongo> findTweetComments(String tweetId, PageParams pageParams) {
         return repository.findCommentsByTweet(tweetId, pageParams);
     }
 
-    private void validateComment(Comment comment) {
-        Set<ConstraintViolation<Comment>> tweetConstraintViolations = validator.validate(comment);
+    private void validateComment(CommentMongo comment) {
+        Set<ConstraintViolation<CommentMongo>> tweetConstraintViolations = validator.validate(comment);
         if (!tweetConstraintViolations.isEmpty())
             throw new ValidationException(tweetConstraintViolations.iterator().next().getMessage());
     }

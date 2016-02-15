@@ -3,8 +3,9 @@ package application;
 import com.tweets.application.controller.TweetsController;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.TweetsService;
-import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
+import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.entity.mongo.TweetMongo;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
@@ -54,9 +55,9 @@ public class UTTweetsController {
     @Test
     public void givenATweetAndAComment_createComment_returns201CREATED() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
-        Comment comment = TweetsFixture.createCommentWithBody();
+        CommentMongo comment = TweetsFixture.createCommentWithBody();
         tweet.setId("2");
-        List<Comment> comments = new ArrayList<>();
+        List<CommentMongo> comments = new ArrayList<>();
         comments.add(comment);
         tweet.setComments(comments);
         Mockito.when(mockTweetsService.createNewComment(tweet.getId(), comment)).thenReturn(tweet);
@@ -69,9 +70,9 @@ public class UTTweetsController {
     @Test
     public void givenAnInvalidComment_createComment_returns400BADREQUEST() {
         Tweet tweet = TweetsFixture.createTweetWithoutTitle();
-        Comment invalidComment = TweetsFixture.createCommentWithoutBody();
+        CommentMongo invalidComment = TweetsFixture.createCommentWithoutBody();
         tweet.setId("2");
-        List<Comment> comments = new ArrayList<>();
+        List<CommentMongo> comments = new ArrayList<>();
         comments.add(invalidComment);
         tweet.setComments(comments);
         Mockito.when(mockTweetsService.createNewComment(tweet.getId(), invalidComment)).thenThrow(ValidationException.class);
@@ -115,7 +116,7 @@ public class UTTweetsController {
 
     @Test
     public void givenNoComments_getTweetComments_returns404NOTFOUND() {
-        List<Comment> expectedComments = new ArrayList<>();
+        List<CommentMongo> expectedComments = new ArrayList<>();
         Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);
 
         ResponseEntity response = tweetsController.getTweetComments("1", 0, 10);
@@ -125,7 +126,7 @@ public class UTTweetsController {
 
     @Test
     public void givenAComment_findTweetComments_returns200OK() {
-        List<Comment> expectedComments = new ArrayList<>();
+        List<CommentMongo> expectedComments = new ArrayList<>();
         expectedComments.add(TweetsFixture.createCommentWithBody());
         Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);
 
@@ -136,7 +137,7 @@ public class UTTweetsController {
 
     @Test
     public void givenATweet_findTweets_returnsTheCorrectEntity() {
-        List<Comment> expectedComments = new ArrayList<>();
+        List<CommentMongo> expectedComments = new ArrayList<>();
         expectedComments.add(TweetsFixture.createCommentWithBody());
         Mockito.when(mockTweetsService.findTweetComments("1", new PageParams(0, 10))).thenReturn(expectedComments);
 

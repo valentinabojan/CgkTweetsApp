@@ -1,0 +1,9 @@
+create TABLE tweet(
+    id varchar PRIMARY KEY,
+    title varchar,
+    body varchar,
+    author varchar,
+    users_who_liked list<varchar>,
+    users_who_disliked list<varchar>,
+    date timestamp
+);

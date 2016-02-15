@@ -1,6 +1,6 @@
 package com.tweets.service.valueobject;
 
-import com.tweets.service.entity.User;
+import com.tweets.service.entity.mongo.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

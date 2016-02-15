@@ -1,4 +1,4 @@
-package com.tweets.service.entity;
+package com.tweets.service.entity.mongo;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Document(collection = "tweet")
-public class Comment {
+public class CommentMongo {
 
     @Id
     @Field(value = "_id")
@@ -25,7 +25,7 @@ public class Comment {
     @NotEmpty(message = "Body is missing.")
     private String body;
 
-    public Comment() {
+    public CommentMongo() {
     }
 
     public String getId() {
@@ -62,11 +62,11 @@ public class Comment {
 
     public static class CommentBuilder
     {
-        private Comment comment;
+        private CommentMongo comment;
 
         private CommentBuilder()
         {
-            comment = new Comment();
+            comment = new CommentMongo();
         }
 
         public CommentBuilder withId(String id)
@@ -98,7 +98,7 @@ public class Comment {
             return new CommentBuilder();
         }
 
-        public Comment build()
+        public CommentMongo build()
         {
             return comment;
         }
@@ -109,7 +109,7 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Comment comment = (Comment) o;
+        CommentMongo comment = (CommentMongo) o;
 
         if (author != null ? !author.equals(comment.author) : comment.author != null) return false;
         if (body != null ? !body.equals(comment.body) : comment.body != null) return false;

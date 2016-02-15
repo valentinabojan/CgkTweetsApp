@@ -1,11 +1,12 @@
 package service;
 
 import com.tweets.application.transferobject.TweetTO;
-import com.tweets.repository.TweetsRepository;
+import com.tweets.repository.mongo.TweetsRepositoryMongo;
 import com.tweets.service.TweetsService;
 import com.tweets.service.UserSecurityDetailsService;
-import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
+import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.entity.mongo.TweetMongo;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
@@ -15,10 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +29,7 @@ public class UTTweetsService {
     private TweetsService service;
 
     @Mock
-    private TweetsRepository mockRepository;
+    private TweetsRepositoryMongo mockRepository;
 
     @Mock
     private UserSecurityDetailsService mockUserService;
@@ -86,7 +85,7 @@ public class UTTweetsService {
     @Test(expected = ValidationException.class)
     public void givenATweetAndACommentWithoutBody_createComment_throwsValidationException() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Comment comment = TweetsFixture.createCommentWithoutBody();
+        CommentMongo comment = TweetsFixture.createCommentWithoutBody();
 
         service.createNewComment(tweet.getId(), comment);
     }
@@ -94,9 +93,9 @@ public class UTTweetsService {
     @Test
     public void givenATweetAndACommentWithBody_createComment_createsTheComment() {
         Tweet tweet = TweetsFixture.createTweetWithTitleAndBody();
-        Comment comment = TweetsFixture.createCommentWithBody();
+        CommentMongo comment = TweetsFixture.createCommentWithBody();
         tweet.setId("2");
-        List<Comment> comments = new ArrayList<>();
+        List<CommentMongo> comments = new ArrayList<>();
         comments.add(comment);
         tweet.setComments(comments);
         Mockito.when(mockRepository.insertComment(tweet.getId(), comment)).thenReturn(tweet);
@@ -121,11 +120,11 @@ public class UTTweetsService {
 
     @Test
     public void givenATweetId_findAllTweetComments_returnTheComments() {
-        List<Comment> comments = new ArrayList<>();
+        List<CommentMongo> comments = new ArrayList<>();
         comments.add(TweetsFixture.createCommentWithBody());
         Mockito.when(mockRepository.findCommentsByTweet("1", new PageParams(0, 10))).thenReturn(comments);
 
-        List<Comment> foundComments = service.findTweetComments("1", new PageParams(0, 10));
+        List<CommentMongo> foundComments = service.findTweetComments("1", new PageParams(0, 10));
 
         assertThat(foundComments.get(0).getBody()).isEqualTo(comments.get(0).getBody());
     }

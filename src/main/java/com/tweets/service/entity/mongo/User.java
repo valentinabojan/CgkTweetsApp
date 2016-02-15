@@ -1,4 +1,4 @@
-package com.tweets.service.entity;
+package com.tweets.service.entity.mongo;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;

@@ -8,7 +8,6 @@
 
         vm.noTweets = false;
         vm.pageSize = 5;
-        var firstCollapsed = true;
 
         vm.postTweet = postTweet;
         vm.pagingFunction = pagingFunction;

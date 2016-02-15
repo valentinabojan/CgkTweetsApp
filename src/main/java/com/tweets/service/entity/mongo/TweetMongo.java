@@ -1,32 +1,39 @@
-package com.tweets.service.entity;
+package com.tweets.service.entity.mongo;
 
-import com.tweets.service.entity.cassandra.TweetCassandra;
-import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.entity.mongo.TweetMongo;
+import com.tweets.service.entity.Tweet;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Tweet {
+@Document(collection = "tweet")
+public class TweetMongo {
 
+    @Id
+    @Field(value = "_id")
     private String id;
 
-    @NotNull
-    @NotEmpty(message = "Title is missing.")
     private String title;
-
-    @NotNull
-    @NotEmpty(message = "Body is missing.")
     private String body;
     private String author;
     private List<CommentMongo> comments;
     private List<String> usersWhoLiked;
     private List<String> usersWhoDisliked;
+
+    //@JsonDeserialize(using = LocalDateDeserializer.class)
+    //@JsonSerialize(using = LocalDateSerializer.class)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;
 
-    public Tweet(TweetMongo tweet) {
+    public TweetMongo() {
+    }
+
+    public TweetMongo(Tweet tweet) {
         this.id = tweet.getId();
         this.title = tweet.getTitle();
         this.body = tweet.getBody();
@@ -37,19 +44,6 @@ public class Tweet {
         this.date = tweet.getDate();
     }
 
-    public Tweet(TweetCassandra tweet) {
-        this.id = tweet.getId();
-        this.title = tweet.getTitle();
-        this.body = tweet.getBody();
-        this.author = tweet.getAuthor();
-//        this.comments = tweet.getComments();
-        this.usersWhoDisliked = tweet.getUsersWhoDisliked();
-        this.usersWhoLiked = tweet.getUsersWhoLiked();
-//        this.date = tweet.getDate();
-    }
-
-    public Tweet() {
-    }
 
     public String getId() {
         return id;
@@ -116,10 +110,10 @@ public class Tweet {
     }
 
     public static class TweetBuilder {
-        private Tweet tweet;
+        private TweetMongo tweet;
 
         private TweetBuilder() {
-            tweet = new Tweet();
+            tweet = new TweetMongo();
         }
 
         public TweetBuilder withId(String id) {
@@ -166,7 +160,7 @@ public class Tweet {
             return new TweetBuilder();
         }
 
-        public Tweet build() {
+        public TweetMongo build() {
             return tweet;
         }
     }

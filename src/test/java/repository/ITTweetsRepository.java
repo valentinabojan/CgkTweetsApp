@@ -3,34 +3,36 @@ package repository;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.configuration.AppConfig;
 import com.tweets.repository.TweetsRepository;
-import com.tweets.service.entity.Comment;
+import com.tweets.repository.cassandra.TweetsRepositoryCassandra;
 import com.tweets.service.entity.Tweet;
+import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
+@ActiveProfiles("cassandra")
 public class ITTweetsRepository {
 
     @Autowired
     private TweetsRepository tweetsRepository;
 
     private Tweet tweet, newTweet;
-    private Comment comment1, comment2;
+    private CommentMongo comment1, comment2;
 
     @Before
     public void setUp() {
@@ -40,8 +42,8 @@ public class ITTweetsRepository {
         comment1 = TweetsFixture.createCommentWithBody();
         comment2 = TweetsFixture.createCommentWithBody();
         comment2.setDate(LocalDateTime.now().plus(10, ChronoUnit.MILLIS));
-        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment1);
-        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment2);
+//        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment1);
+//        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment2);
     }
 
     @Test
@@ -86,33 +88,33 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweetId_findComments_findTheComments() {
-        List<Comment> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 10));
+        List<CommentMongo> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 10));
 
         assertThat(foundComments).hasSize(2);
     }
 
     @Test
     public void givenATweetId_findComments_findTheCommentsSortedInDescendingOrderByDate() {
-        List<Comment> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 10));
+        List<CommentMongo> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 10));
 
-        Comment firstComment = foundComments.get(0);
-        Comment secondComment = foundComments.get(1);
+        CommentMongo firstComment = foundComments.get(0);
+        CommentMongo secondComment = foundComments.get(1);
         assertThat(firstComment.getDate()).isAfter(secondComment.getDate());
     }
 
     @Test
     public void givenATweetId_findComments_findOnlyOnePageOfComments() {
-        List<Comment> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 1));
+        List<CommentMongo> foundComments = tweetsRepository.findCommentsByTweet(newTweet.getId(), new PageParams(0, 1));
 
         assertThat(foundComments).hasSize(1);
     }
 
     @Test
     public void givenANewComment_createComment_createsNewComment() {
-        Tweet newTweet = tweetsRepository.insertComment(tweet.getId(), TweetsFixture.createCommentWithBody());
+        Tweet newTweetWithComments = tweetsRepository.insertComment(newTweet.getId(), TweetsFixture.createCommentWithBody());
 
-        assertThat(newTweet.getComments().get(0)).isNotNull();
-        assertThat(newTweet.getComments().get(0).getBody()).isEqualTo(comment2.getBody());
+        assertThat(newTweetWithComments.getComments().get(0)).isNotNull();
+        assertThat(newTweetWithComments.getComments().get(0).getBody()).isEqualTo(comment2.getBody());
     }
 
 

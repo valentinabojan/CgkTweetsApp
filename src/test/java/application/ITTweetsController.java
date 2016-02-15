@@ -2,8 +2,9 @@ package application;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.configuration.AppConfig;
-import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
+import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.entity.mongo.TweetMongo;
 import fixture.TweetsFixture;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +12,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +24,7 @@ import static org.springframework.http.HttpMethod.PUT;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppConfig.class)
 @WebIntegrationTest(value = "server.port=9000")
+@ActiveProfiles("cassandra")
 public class ITTweetsController {
 
     private static String PATH = "http://localhost:9000";
@@ -30,7 +32,7 @@ public class ITTweetsController {
     private HttpStatus postCommentStatus;
     private RestTemplate restTemplate;
     private TweetTO mostRecentTweet;
-    private Comment comment;
+    private CommentMongo comment;
 
     @Before
     public void setUpTests() {
@@ -38,11 +40,11 @@ public class ITTweetsController {
         comment = TweetsFixture.createCommentWithBody();
         restTemplate = new RestTemplate();
 
-        postStatus = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), Tweet.class).getStatusCode();
+        postStatus = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), TweetMongo.class).getStatusCode();
 
-        ResponseEntity<TweetTO[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", TweetTO[].class);
-        mostRecentTweet = responseEntity.getBody()[0];
-        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments", new HttpEntity(comment), Comment.class).getStatusCode();
+//        ResponseEntity<TweetTO[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", TweetTO[].class);
+//        mostRecentTweet = responseEntity.getBody()[0];
+//        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments", new HttpEntity(comment), CommentMongo.class).getStatusCode();
     }
 
     @Test
@@ -57,16 +59,16 @@ public class ITTweetsController {
 
     @Test
     public void givenATweet_GET_getsTheListOfTweets() {
-        ResponseEntity<Tweet[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", Tweet[].class);
-        Tweet[] tweets = responseEntity.getBody();
+        ResponseEntity<TweetMongo[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", TweetMongo[].class);
+        TweetMongo[] tweets = responseEntity.getBody();
 
         assertThat(tweets[0].getTitle()).isNotNull();
     }
 
     @Test
     public void givenATweetId_GET_getsTheListOfTweetComments() {
-        ResponseEntity<Comment[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments?page=0&size=5", Comment[].class);
-        Comment[] comments = responseEntity.getBody();
+        ResponseEntity<CommentMongo[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments?page=0&size=5", CommentMongo[].class);
+        CommentMongo[] comments = responseEntity.getBody();
 
         assertThat(comments[0].getBody()).isEqualTo(comment.getBody());
     }

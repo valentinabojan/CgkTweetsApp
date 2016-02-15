@@ -1,7 +1,9 @@
 package fixture;
 
-import com.tweets.service.entity.Comment;
 import com.tweets.service.entity.Tweet;
+import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.entity.mongo.TweetMongo;
+import com.tweets.service.entity.cassandra.TweetCassandra;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,15 +48,15 @@ public class TweetsFixture {
                 .build();
     }
 
-    public static Comment createCommentWithoutBody() {
-        return Comment.CommentBuilder.comment()
+    public static CommentMongo createCommentWithoutBody() {
+        return CommentMongo.CommentBuilder.comment()
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
                 .build();
     }
 
-    public static Comment createCommentWithBody() {
-        return Comment.CommentBuilder.comment()
+    public static CommentMongo createCommentWithBody() {
+        return CommentMongo.CommentBuilder.comment()
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
                 .withBody(TWEET_BODY)
