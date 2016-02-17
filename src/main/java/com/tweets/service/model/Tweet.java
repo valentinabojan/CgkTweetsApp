@@ -1,17 +1,12 @@
 package com.tweets.service.model;
 
-import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.entity.mongo.TweetMongo;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Tweet {
 
@@ -29,28 +24,6 @@ public class Tweet {
     private List<String> usersWhoLiked;
     private List<String> usersWhoDisliked;
     private LocalDateTime date;
-
-    public Tweet(TweetMongo tweet) {
-        this.id = tweet.getId();
-        this.title = tweet.getTitle();
-        this.body = tweet.getBody();
-        this.author = tweet.getAuthor();
-        this.comments = tweet.getComments();
-        this.usersWhoDisliked = tweet.getUsersWhoDisliked();
-        this.usersWhoLiked = tweet.getUsersWhoLiked();
-        this.date = tweet.getDate();
-    }
-
-    public Tweet(TweetCassandra tweet) {
-        this.id = tweet.getId();
-        this.title = tweet.getTitle();
-        this.body = tweet.getBody();
-        this.author = tweet.getAuthor();
-//        this.comments = tweet.getComments();
-        this.usersWhoDisliked = tweet.getUsersWhoDisliked().stream().collect(Collectors.toList());
-        this.usersWhoLiked = tweet.getUsersWhoLiked().stream().collect(Collectors.toList());;
-        this.date = LocalDateTime.ofInstant(Instant.ofEpochMilli(tweet.getPk().getDate().getTime()), ZoneId.systemDefault());
-    }
 
     public Tweet() {
         usersWhoDisliked = new ArrayList<>();

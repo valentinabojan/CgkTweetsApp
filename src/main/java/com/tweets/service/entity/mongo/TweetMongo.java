@@ -1,6 +1,5 @@
 package com.tweets.service.entity.mongo;
 
-import com.tweets.service.model.Tweet;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -23,25 +22,11 @@ public class TweetMongo {
     private List<String> usersWhoLiked;
     private List<String> usersWhoDisliked;
 
-    //@JsonDeserialize(using = LocalDateDeserializer.class)
-    //@JsonSerialize(using = LocalDateSerializer.class)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;
 
     public TweetMongo() {
     }
-
-    public TweetMongo(Tweet tweet) {
-        this.id = tweet.getId();
-        this.title = tweet.getTitle();
-        this.body = tweet.getBody();
-        this.author = tweet.getAuthor();
-        this.comments = tweet.getComments();
-        this.usersWhoDisliked = tweet.getUsersWhoDisliked();
-        this.usersWhoLiked = tweet.getUsersWhoLiked();
-        this.date = tweet.getDate();
-    }
-
 
     public String getId() {
         return id;
@@ -105,61 +90,5 @@ public class TweetMongo {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
-    }
-
-    public static class TweetBuilder {
-        private TweetMongo tweet;
-
-        private TweetBuilder() {
-            tweet = new TweetMongo();
-        }
-
-        public TweetBuilder withId(String id) {
-            tweet.id = id;
-            return this;
-        }
-
-        public TweetBuilder withTitle(String title) {
-            tweet.title = title;
-            return this;
-        }
-
-        public TweetBuilder withBody(String body) {
-            tweet.body = body;
-            return this;
-        }
-
-        public TweetBuilder withAuthor(String author) {
-            tweet.author = author;
-            return this;
-        }
-
-        public TweetBuilder withComments(List<CommentMongo> comments) {
-            tweet.comments = comments;
-            return this;
-        }
-
-        public TweetBuilder withUsersWhoLiked(List<String> usersWhoLiked) {
-            tweet.usersWhoLiked = usersWhoLiked;
-            return this;
-        }
-
-        public TweetBuilder withUsersWhoDisliked(List<String> usersWhoDisliked) {
-            tweet.usersWhoDisliked = usersWhoDisliked;
-            return this;
-        }
-
-        public TweetBuilder withDate(LocalDateTime date) {
-            tweet.date = date;
-            return this;
-        }
-
-        public static TweetBuilder tweet() {
-            return new TweetBuilder();
-        }
-
-        public TweetMongo build() {
-            return tweet;
-        }
     }
 }

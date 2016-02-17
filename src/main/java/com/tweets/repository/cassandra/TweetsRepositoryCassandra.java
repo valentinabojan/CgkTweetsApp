@@ -7,6 +7,7 @@ import com.tweets.repository.TweetsRepository;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.model.TweetConverter;
 import com.tweets.service.valueobject.PageParams;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +30,7 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
 
     public Tweet insert(Tweet tweet) {
         tweet.setId(new ObjectId().toString());
-        cassandraOperations.insert(new TweetCassandra(tweet));
+        cassandraOperations.insert(TweetConverter.fromTweetModelToTweetCassandra(tweet));
 
         return tweet;
     }
@@ -42,9 +42,9 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
 
     @Override
     public Tweet updateTweet(Tweet tweet) {
-        TweetCassandra tweetCassandra = new TweetCassandra(tweet);
+        TweetCassandra tweetCassandra = cassandraOperations.update(TweetConverter.fromTweetModelToTweetCassandra(tweet));
 
-        return new Tweet(cassandraOperations.update(tweetCassandra));
+        return TweetConverter.fromTweetCassandraToTweetModel(tweetCassandra);
     }
 
     @Override
@@ -74,10 +74,13 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
 
     @Override
     public List<TweetTO> findAllByOrderByDateDesc(PageParams pageParams) {
+        Integer maximumEndIndexForTweetsInterval = pageParams.getSize() * (pageParams.getPage() + 1);
+        Integer maximumStartIndexForTweetsInterval = pageParams.getPage() * pageParams.getSize();
+
         Select select = QueryBuilder.select("id", "title", "body", "author", "date", "users_who_liked", "users_who_disliked").from("tweets", "tweet");
         select.where(QueryBuilder.eq("temp_key", 1));
         select.orderBy(QueryBuilder.desc("date"));
-        select.limit(pageParams.getSize() * (pageParams.getPage() + 1));
+        select.limit(maximumEndIndexForTweetsInterval);
 
         List<TweetTO> tweets = cassandraOperations.query(select, (row, rowNum) -> {
             return TweetTO.TweetTOBuilder.tweetTO()
@@ -91,7 +94,7 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
                     .build();
         });
 
-        return tweets.subList(Math.min(tweets.size(), pageParams.getPage() * pageParams.getSize()), Math.min(tweets.size(), (pageParams.getPage() + 1) * pageParams.getSize()));
+        return tweets.subList(Math.min(tweets.size(), maximumStartIndexForTweetsInterval), Math.min(tweets.size(), maximumEndIndexForTweetsInterval));
     }
 
     @Override

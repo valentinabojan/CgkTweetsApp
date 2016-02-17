@@ -1,12 +1,9 @@
 package com.tweets.service.entity.cassandra;
 
-import com.tweets.service.model.Tweet;
 import org.springframework.data.cassandra.mapping.Column;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 @Table(value = "tweet")
@@ -30,23 +27,6 @@ public class TweetCassandra {
 
     @PrimaryKey
     private TweetKey pk;
-
-    public TweetCassandra() {
-        this.pk.setTempKey(1);
-    }
-
-    public TweetCassandra(Tweet tweet) {
-        this.setPk(new TweetKey());
-        this.pk.setTempKey(1);
-        this.id = tweet.getId();
-        this.title = tweet.getTitle();
-        this.body = tweet.getBody();
-        this.author = tweet.getAuthor();
-//        this.comments = tweet.getComments();
-        this.usersWhoDisliked = tweet.getUsersWhoDisliked();
-        this.usersWhoLiked = tweet.getUsersWhoLiked();
-        this.pk.setDate(Date.from(tweet.getDate().atZone(ZoneId.systemDefault()).toInstant()));
-    }
 
     public String getId() {
         return id;
@@ -110,67 +90,5 @@ public class TweetCassandra {
 
     public void setPk(TweetKey pk) {
         this.pk = pk;
-    }
-
-    public static class TweetCassandraBuilder
-    {
-        private TweetCassandra tweetCassandra;
-
-        private TweetCassandraBuilder()
-        {
-            tweetCassandra = new TweetCassandra();
-        }
-
-        public TweetCassandraBuilder withId(String id)
-        {
-            tweetCassandra.id = id;
-            return this;
-        }
-
-        public TweetCassandraBuilder withTitle(String title)
-        {
-            tweetCassandra.title = title;
-            return this;
-        }
-
-        public TweetCassandraBuilder withBody(String body)
-        {
-            tweetCassandra.body = body;
-            return this;
-        }
-
-        public TweetCassandraBuilder withAuthor(String author)
-        {
-            tweetCassandra.author = author;
-            return this;
-        }
-
-//        public TweetCassandraBuilder withComments(List<String> comments)
-//        {
-//            tweetCassandra.comments = comments;
-//            return this;
-//        }
-
-        public TweetCassandraBuilder withUsersWhoLiked(List<String> usersWhoLiked)
-        {
-            tweetCassandra.usersWhoLiked = usersWhoLiked;
-            return this;
-        }
-
-        public TweetCassandraBuilder withUsersWhoDisliked(List<String> usersWhoDisliked)
-        {
-            tweetCassandra.usersWhoDisliked = usersWhoDisliked;
-            return this;
-        }
-
-        public static TweetCassandraBuilder tweetCassandra()
-        {
-            return new TweetCassandraBuilder();
-        }
-
-        public TweetCassandra build()
-        {
-            return tweetCassandra;
-        }
     }
 }

@@ -5,6 +5,7 @@ import com.tweets.repository.TweetsRepository;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.entity.mongo.TweetMongo;
+import com.tweets.service.model.TweetConverter;
 import com.tweets.service.valueobject.PageParams;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,11 @@ public class TweetsRepositoryMongo implements TweetsRepository{
     private MongoOperations mongoOperations;
 
     public Tweet insert(Tweet tweet) {
-        TweetMongo tweetMongo = new TweetMongo(tweet);
+        TweetMongo tweetMongo = TweetConverter.fromTweetModelToTweetMongo(tweet);
 
         mongoOperations.insert(tweetMongo);
 
-        return new Tweet(tweetMongo);
+        return TweetConverter.fromTweetMongoToTweetModel(tweetMongo);
     }
 
     public Tweet insertComment(String tweetId, CommentMongo comment) {
@@ -46,21 +47,21 @@ public class TweetsRepositoryMongo implements TweetsRepository{
             t.getComments().add(comment);
             mongoOperations.save(t);
         }
-        return new Tweet(t);
+        return TweetConverter.fromTweetMongoToTweetModel(t);
     }
 
     public Tweet updateTweet(Tweet tweet) {
-        TweetMongo tweetMongo = new TweetMongo(tweet);
+        TweetMongo tweetMongo = TweetConverter.fromTweetModelToTweetMongo(tweet);
 
         mongoOperations.save(tweet);
 
-        return new Tweet(tweetMongo);
+        return TweetConverter.fromTweetMongoToTweetModel(tweetMongo);
     }
 
     public Tweet findTweetById(String tweetId) {
         TweetMongo tweetMongo = mongoOperations.findOne(new Query(Criteria.where("id").is(tweetId)), TweetMongo.class);
 
-        return new Tweet(tweetMongo);
+        return TweetConverter.fromTweetMongoToTweetModel(tweetMongo);
     }
 
     public List<TweetTO> findAllByOrderByDateDesc(PageParams pageParams){
