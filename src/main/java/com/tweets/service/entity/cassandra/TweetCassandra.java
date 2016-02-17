@@ -12,7 +12,6 @@ import java.util.List;
 @Table(value = "tweet")
 public class TweetCassandra {
 
-    @PrimaryKey
     private String id;
 
     private String title;
@@ -29,13 +28,16 @@ public class TweetCassandra {
     @Column(value = "users_who_disliked")
     private List<String> usersWhoDisliked;
 
-    private Date date;
-
+    @PrimaryKey
+    private TweetKey pk;
 
     public TweetCassandra() {
+        this.pk.setTempKey(1);
     }
 
     public TweetCassandra(Tweet tweet) {
+        this.setPk(new TweetKey());
+        this.pk.setTempKey(1);
         this.id = tweet.getId();
         this.title = tweet.getTitle();
         this.body = tweet.getBody();
@@ -43,7 +45,7 @@ public class TweetCassandra {
 //        this.comments = tweet.getComments();
         this.usersWhoDisliked = tweet.getUsersWhoDisliked();
         this.usersWhoLiked = tweet.getUsersWhoLiked();
-        this.date = Date.from(tweet.getDate().atZone(ZoneId.systemDefault()).toInstant());
+        this.pk.setDate(Date.from(tweet.getDate().atZone(ZoneId.systemDefault()).toInstant()));
     }
 
     public String getId() {
@@ -102,12 +104,12 @@ public class TweetCassandra {
         this.usersWhoDisliked = usersWhoDisliked;
     }
 
-    public Date getDate() {
-        return date;
+    public TweetKey getPk() {
+        return pk;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setPk(TweetKey pk) {
+        this.pk = pk;
     }
 
     public static class TweetCassandraBuilder

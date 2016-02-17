@@ -1,10 +1,13 @@
 package com.tweets.repository.cassandra;
 
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.querybuilder.Select;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
 import com.tweets.service.entity.Tweet;
 import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.entity.mongo.CommentMongo;
+import com.tweets.service.entity.mongo.TweetMongo;
 import com.tweets.service.valueobject.PageParams;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Profile(value = "cassandra")
@@ -35,17 +42,58 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
 
     @Override
     public Tweet updateTweet(Tweet tweet) {
-        return null;
+        TweetCassandra tweetCassandra = new TweetCassandra(tweet);
+
+        return new Tweet(cassandraOperations.update(tweetCassandra));
     }
 
     @Override
     public Tweet findTweetById(String tweetId) {
-        return null;
+        Select select = QueryBuilder.select().all().from("tweets", "tweet");
+        select.where(QueryBuilder.eq("id", tweetId));
+        select.limit(1);
+
+        List<Tweet> tweets = cassandraOperations.query(select, (row, rowNum) -> {
+            return Tweet.TweetBuilder.tweet()
+                    .withId(row.getString("id"))
+                    .withTitle(row.getString("title"))
+                    .withBody(row.getString("body"))
+                    .withAuthor(row.getString("author"))
+                    .withDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(row.getDate("date").getTime()), ZoneId.systemDefault()))
+                    .withUsersWhoLiked(row.getList("users_who_liked", String.class))
+                    .withUsersWhoDisliked(row.getList("users_who_disliked", String.class))
+                    .build();
+        });
+
+        Tweet tweet = tweets.get(0);
+        if (tweet.getUsersWhoLiked().isEmpty())
+            tweet.setUsersWhoLiked(new ArrayList<>());
+        if (tweet.getUsersWhoDisliked().isEmpty())
+            tweet.setUsersWhoDisliked(new ArrayList<>());
+
+        return tweet;
     }
 
     @Override
     public List<TweetTO> findAllByOrderByDateDesc(PageParams pageParams) {
-        return null;
+        Select select = QueryBuilder.select("id", "title", "body", "author", "date", "users_who_liked", "users_who_disliked").from("tweets", "tweet");
+        select.where(QueryBuilder.eq("temp_key", 1));
+        select.orderBy(QueryBuilder.desc("date"));
+        select.limit(pageParams.getSize() * (pageParams.getPage() + 1));
+
+        List<TweetTO> tweets = cassandraOperations.query(select, (row, rowNum) -> {
+            return TweetTO.TweetTOBuilder.tweetTO()
+                    .withId(row.getString("id"))
+                    .withTitle(row.getString("title"))
+                    .withBody(row.getString("body"))
+                    .withAuthor(row.getString("author"))
+                    .withDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(row.getDate("date").getTime()), ZoneId.systemDefault()))
+                    .withUsersWhoLikedCount(row.getList("users_who_liked", String.class).size())
+                    .withUsersWhoDislikedCount(row.getList("users_who_disliked", String.class).size())
+                    .build();
+        });
+
+        return tweets.subList(Math.min(tweets.size(), pageParams.getPage() * pageParams.getSize()), Math.min(tweets.size(), (pageParams.getPage() + 1) * pageParams.getSize()));
     }
 
     @Override
@@ -55,11 +103,15 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
 
     @Override
     public Boolean isTweetLiked(String tweetId, String username) {
-        return null;
+        Tweet tweet = findTweetById(tweetId);
+
+        return tweet.getUsersWhoLiked().contains(username);
     }
 
     @Override
     public Boolean isTweetDisliked(String tweetId, String username) {
-        return null;
+        Tweet tweet = findTweetById(tweetId);
+
+        return tweet.getUsersWhoDisliked().contains(username);
     }
 }

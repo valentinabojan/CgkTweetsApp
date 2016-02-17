@@ -1,9 +1,13 @@
 create TABLE tweet(
-    id varchar PRIMARY KEY,
+    id varchar,
     title varchar,
     body varchar,
     author varchar,
     users_who_liked list<varchar>,
     users_who_disliked list<varchar>,
-    date timestamp
+    date timestamp,
+    temp_key int,
+    PRIMARY KEY(temp_key, date)
 );
+
+create INDEX idx ON tweet (id);

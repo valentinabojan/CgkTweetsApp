@@ -42,8 +42,8 @@ public class ITTweetsController {
 
         postStatus = restTemplate.postForEntity(PATH + "/tweets", new HttpEntity(tweet), TweetMongo.class).getStatusCode();
 
-//        ResponseEntity<TweetTO[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", TweetTO[].class);
-//        mostRecentTweet = responseEntity.getBody()[0];
+        ResponseEntity<TweetTO[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", TweetTO[].class);
+        mostRecentTweet = responseEntity.getBody()[0];
 //        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments", new HttpEntity(comment), CommentMongo.class).getStatusCode();
     }
 
@@ -73,19 +73,18 @@ public class ITTweetsController {
         assertThat(comments[0].getBody()).isEqualTo(comment.getBody());
     }
 
-    @Test
-    public void givenATweetId_likeTweet_updateTheTweet() {
-        ResponseEntity<TweetTO> responseEntity = restTemplate.exchange(PATH + "/tweets/" + mostRecentTweet.getId() + "/like", PUT, null, TweetTO.class);
-        TweetTO likedTweet = responseEntity.getBody();
-
-        assertThat(likedTweet.getUsersWhoLikedCount()).isEqualTo(mostRecentTweet.getUsersWhoLikedCount() + 1);
-    }
-
-    @Test
-    public void givenATweetId_dislikeTweet_updateTheTweet() {
-        ResponseEntity<TweetTO> responseEntity = restTemplate.exchange(PATH + "/tweets/" + mostRecentTweet.getId() + "/dislike", PUT, null, TweetTO.class);
-        TweetTO likedTweet = responseEntity.getBody();
-
-        assertThat(likedTweet.getUsersWhoDislikedCount()).isEqualTo(mostRecentTweet.getUsersWhoDislikedCount() + 1);
-    }
+//    public void givenATweetId_likeTweet_updateTheTweet() {
+//        ResponseEntity<TweetTO> responseEntity = restTemplate.exchange(PATH + "/tweets/" + mostRecentTweet.getId() + "/like", PUT, null, TweetTO.class);
+//        TweetTO likedTweet = responseEntity.getBody();
+//
+//        assertThat(likedTweet.getUsersWhoLikedCount()).isEqualTo(mostRecentTweet.getUsersWhoLikedCount() + 1);
+//    }
+//
+//    @Test
+//    public void givenATweetId_dislikeTweet_updateTheTweet() {
+//        ResponseEntity<TweetTO> responseEntity = restTemplate.exchange(PATH + "/tweets/" + mostRecentTweet.getId() + "/dislike", PUT, null, TweetTO.class);
+//        TweetTO likedTweet = responseEntity.getBody();
+//
+//        assertThat(likedTweet.getUsersWhoDislikedCount()).isEqualTo(mostRecentTweet.getUsersWhoDislikedCount() + 1);
+//    }
 }

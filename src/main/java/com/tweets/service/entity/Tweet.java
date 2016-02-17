@@ -6,7 +6,10 @@ import com.tweets.service.entity.mongo.TweetMongo;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tweet {
@@ -45,10 +48,12 @@ public class Tweet {
 //        this.comments = tweet.getComments();
         this.usersWhoDisliked = tweet.getUsersWhoDisliked();
         this.usersWhoLiked = tweet.getUsersWhoLiked();
-//        this.date = tweet.getDate();
+        this.date = LocalDateTime.ofInstant(Instant.ofEpochMilli(tweet.getPk().getDate().getTime()), ZoneId.systemDefault());
     }
 
     public Tweet() {
+        usersWhoDisliked = new ArrayList<>();
+        usersWhoLiked = new ArrayList<>();
     }
 
     public String getId() {

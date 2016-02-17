@@ -47,7 +47,7 @@ public class TweetTO {
         this.usersWhoLikedCount = tweet.getUsersWhoLiked().size();
         this.usersWhoDislikedCount = tweet.getUsersWhoDisliked().size();
         this.date = tweet.getDate();
-        this.commentsCount = tweet.getComments().size();
+//        this.commentsCount = tweet.getComments().size();
 
     }
 
@@ -156,5 +156,71 @@ public class TweetTO {
         result = 31 * result + (commentsCount != null ? commentsCount.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         return result;
+    }
+
+    public static class TweetTOBuilder {
+        private TweetTO tweetTO;
+
+        private TweetTOBuilder() {
+            tweetTO = new TweetTO();
+        }
+
+        public TweetTOBuilder withId(String id) {
+            tweetTO.id = id;
+            return this;
+        }
+
+        public TweetTOBuilder withTitle(String title) {
+            tweetTO.title = title;
+            return this;
+        }
+
+        public TweetTOBuilder withBody(String body) {
+            tweetTO.body = body;
+            return this;
+        }
+
+        public TweetTOBuilder withAuthor(String author) {
+            tweetTO.author = author;
+            return this;
+        }
+
+        public TweetTOBuilder withUsersWhoLikedCount(Integer usersWhoLikedCount) {
+            tweetTO.usersWhoLikedCount = usersWhoLikedCount;
+            return this;
+        }
+
+        public TweetTOBuilder withUsersWhoDislikedCount(Integer usersWhoDislikedCount) {
+            tweetTO.usersWhoDislikedCount = usersWhoDislikedCount;
+            return this;
+        }
+
+        public TweetTOBuilder withCommentsCount(Integer commentsCount) {
+            tweetTO.commentsCount = commentsCount;
+            return this;
+        }
+
+        public TweetTOBuilder withLiked(Boolean liked) {
+            tweetTO.liked = liked;
+            return this;
+        }
+
+        public TweetTOBuilder withDisliked(Boolean disliked) {
+            tweetTO.disliked = disliked;
+            return this;
+        }
+
+        public TweetTOBuilder withDate(LocalDateTime date) {
+            tweetTO.date = date;
+            return this;
+        }
+
+        public static TweetTOBuilder tweetTO() {
+            return new TweetTOBuilder();
+        }
+
+        public TweetTO build() {
+            return tweetTO;
+        }
     }
 }

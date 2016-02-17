@@ -9,6 +9,7 @@ import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
+import org.apache.xpath.operations.Bool;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,5 +120,43 @@ public class ITTweetsRepository {
         assertThat(newTweetWithComments.getComments().get(0).getBody()).isEqualTo(comment2.getBody());
     }
 
+    @Test
+    public void givenATweetAndAUsernameWhoLikedTheTweet_isTweetLikedByUser_returnsTrue() {
+        newTweet.setUsersWhoLiked(Arrays.asList("John Doe"));
+        Tweet likedTweet = tweetsRepository.updateTweet(newTweet);
 
+        Boolean isTweetLiked = tweetsRepository.isTweetLiked(likedTweet.getId(), "John Doe");
+
+        assertThat(isTweetLiked).isTrue();
+    }
+
+    @Test
+    public void givenATweetAndAUsernameWhoDidNotLikedTheTweet_isTweetLikedByUser_returnsFalse() {
+        newTweet.setUsersWhoLiked(Arrays.asList());
+        Tweet likedTweet = tweetsRepository.updateTweet(newTweet);
+
+        Boolean isTweetLiked = tweetsRepository.isTweetLiked(likedTweet.getId(), "John Doe");
+
+        assertThat(isTweetLiked).isFalse();
+    }
+
+    @Test
+    public void givenATweetAndAUsernameWhoDislikedTheTweet_isTweetDislikedByUser_returnsTrue() {
+        newTweet.setUsersWhoDisliked(Arrays.asList("John Doe"));
+        Tweet dislikedTweet = tweetsRepository.updateTweet(newTweet);
+
+        Boolean isTweetDisliked = tweetsRepository.isTweetDisliked(dislikedTweet.getId(), "John Doe");
+
+        assertThat(isTweetDisliked).isTrue();
+    }
+
+    @Test
+    public void givenATweetAndAUsernameWhoDidNotDislikedTheTweet_isTweetDislikedByUser_returnsFalse() {
+        newTweet.setUsersWhoDisliked(Arrays.asList());
+        Tweet dislikedTweet = tweetsRepository.updateTweet(newTweet);
+
+        Boolean isTweetDisliked = tweetsRepository.isTweetDisliked(dislikedTweet.getId(), "John Doe");
+
+        assertThat(isTweetDisliked).isFalse();
+    }
 }

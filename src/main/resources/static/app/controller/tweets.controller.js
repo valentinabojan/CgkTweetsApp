@@ -21,6 +21,7 @@
         activate();
 
         function activate() {
+            vm.noTweets = false;
             vm.tweet = {};
             vm.comment = {};
             vm.tweets = [];
