@@ -1,4 +1,4 @@
-package com.tweets.service.entity;
+package com.tweets.service.model;
 
 import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.entity.mongo.CommentMongo;
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Tweet {
 
@@ -46,8 +47,8 @@ public class Tweet {
         this.body = tweet.getBody();
         this.author = tweet.getAuthor();
 //        this.comments = tweet.getComments();
-        this.usersWhoDisliked = tweet.getUsersWhoDisliked();
-        this.usersWhoLiked = tweet.getUsersWhoLiked();
+        this.usersWhoDisliked = tweet.getUsersWhoDisliked().stream().collect(Collectors.toList());
+        this.usersWhoLiked = tweet.getUsersWhoLiked().stream().collect(Collectors.toList());;
         this.date = LocalDateTime.ofInstant(Instant.ofEpochMilli(tweet.getPk().getDate().getTime()), ZoneId.systemDefault());
     }
 

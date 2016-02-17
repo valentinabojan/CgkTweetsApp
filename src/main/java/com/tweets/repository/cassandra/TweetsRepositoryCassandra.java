@@ -4,10 +4,9 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
-import com.tweets.service.entity.Tweet;
+import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.entity.mongo.TweetMongo;
 import com.tweets.service.valueobject.PageParams;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Profile(value = "cassandra")
 @Repository
@@ -66,10 +66,8 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
         });
 
         Tweet tweet = tweets.get(0);
-        if (tweet.getUsersWhoLiked().isEmpty())
-            tweet.setUsersWhoLiked(new ArrayList<>());
-        if (tweet.getUsersWhoDisliked().isEmpty())
-            tweet.setUsersWhoDisliked(new ArrayList<>());
+        tweet.setUsersWhoLiked(tweet.getUsersWhoLiked().stream().collect(Collectors.toList()));
+        tweet.setUsersWhoDisliked(tweet.getUsersWhoDisliked().stream().collect(Collectors.toList()));
 
         return tweet;
     }

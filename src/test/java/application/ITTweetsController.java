@@ -2,7 +2,7 @@ package application;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.configuration.AppConfig;
-import com.tweets.service.entity.Tweet;
+import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.entity.mongo.TweetMongo;
 import fixture.TweetsFixture;
@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpMethod.PUT;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppConfig.class)

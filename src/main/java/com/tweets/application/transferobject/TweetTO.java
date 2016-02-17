@@ -1,7 +1,6 @@
 package com.tweets.application.transferobject;
 
-import com.tweets.service.entity.Tweet;
-import com.tweets.service.entity.mongo.TweetMongo;
+import com.tweets.service.model.Tweet;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;

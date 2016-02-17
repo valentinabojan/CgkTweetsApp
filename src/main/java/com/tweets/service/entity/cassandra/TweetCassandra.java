@@ -1,6 +1,6 @@
 package com.tweets.service.entity.cassandra;
 
-import com.tweets.service.entity.Tweet;
+import com.tweets.service.model.Tweet;
 import org.springframework.data.cassandra.mapping.Column;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;

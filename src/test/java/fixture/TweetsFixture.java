@@ -1,9 +1,7 @@
 package fixture;
 
-import com.tweets.service.entity.Tweet;
+import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.entity.mongo.TweetMongo;
-import com.tweets.service.entity.cassandra.TweetCassandra;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

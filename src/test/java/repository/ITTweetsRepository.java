@@ -3,13 +3,10 @@ package repository;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.configuration.AppConfig;
 import com.tweets.repository.TweetsRepository;
-import com.tweets.repository.cassandra.TweetsRepositoryCassandra;
-import com.tweets.service.entity.Tweet;
+import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
-import org.apache.xpath.operations.Bool;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

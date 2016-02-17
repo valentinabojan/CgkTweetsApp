@@ -20,10 +20,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-security:1.3.2.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:4.0.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:4.0.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:4.0.3.RELEASE" level="project" />
+    <orderEntry type="library" name="tweets node_modules" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:1.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:1.3.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:1.3.2.RELEASE" level="project" />
@@ -54,6 +51,17 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.13" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.13" level="project" />
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.11.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-cassandra:1.3.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-cql:1.3.2.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-dse:2.1.9" level="project" />
+    <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-core:2.1.9" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.0.27.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.codahale.metrics:metrics-core:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:4.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-test:4.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.assertj:assertj-core:3.2.0" level="project" />
@@ -67,7 +75,6 @@
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.1_3" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.seleniumhq.selenium:selenium-api:2.48.2" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:18.0" level="project" />
     <orderEntry type="library" name="Maven: org.seleniumhq.selenium:selenium-edge-driver:2.48.2" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-exec:1.3" level="project" />
@@ -112,6 +119,5 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:4.0.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:4.0.3.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.ws.rs:javax.ws.rs-api:2.0.1" level="project" />
-    <orderEntry type="library" name="tweets node_modules" level="project" />
   </component>
 </module>

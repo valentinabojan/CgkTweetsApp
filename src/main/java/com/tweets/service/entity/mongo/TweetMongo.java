@@ -1,13 +1,11 @@
 package com.tweets.service.entity.mongo;
 
-import com.tweets.service.entity.Tweet;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.tweets.service.model.Tweet;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
