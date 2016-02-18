@@ -11,3 +11,12 @@ create TABLE tweet(
 );
 
 create INDEX idx ON tweet (id);
+
+create TABLE comment (
+    id varchar,
+    post_id varchar,
+    body varchar,
+    author varchar,
+    date timestamp,
+    PRIMARY KEY(post_id, date)
+);

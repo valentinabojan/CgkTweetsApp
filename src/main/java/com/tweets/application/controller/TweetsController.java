@@ -3,6 +3,7 @@ package com.tweets.application.controller;
 import com.tweets.application.transferobject.StringTO;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.TweetsService;
+import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.exception.ValidationException;
@@ -10,6 +11,7 @@ import com.tweets.service.valueobject.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,8 +39,8 @@ public class TweetsController {
     }
 
     @RequestMapping(path = "/{tweetId}/comments", method = POST)
-    public ResponseEntity<CommentMongo> postNewComment(@PathVariable("tweetId") String tweetId,
-                                                  @RequestBody CommentMongo comment) {
+    public ResponseEntity<Comment> postNewComment(@PathVariable("tweetId") String tweetId,
+                                                  @RequestBody Comment comment) {
         try {
             tweetsService.createNewComment(tweetId, comment);
 
@@ -60,7 +62,7 @@ public class TweetsController {
     @RequestMapping(path = "/{tweetId}/comments", method = GET)
     public ResponseEntity getTweetComments(@PathVariable("tweetId") String tweetId,
                                            @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        List<CommentMongo> listOfComments = tweetsService.findTweetComments(tweetId, new PageParams(page, size));
+        List<Comment> listOfComments = tweetsService.findTweetComments(tweetId, new PageParams(page, size));
         if (listOfComments.isEmpty())
             return new ResponseEntity(HttpStatus.NOT_FOUND);
 

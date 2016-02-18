@@ -2,6 +2,7 @@ package application;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.configuration.AppConfig;
+import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.entity.mongo.TweetMongo;
@@ -31,7 +32,7 @@ public class ITTweetsController {
     private HttpStatus postCommentStatus;
     private RestTemplate restTemplate;
     private TweetTO mostRecentTweet;
-    private CommentMongo comment;
+    private Comment comment;
 
     @Before
     public void setUpTests() {
@@ -43,7 +44,7 @@ public class ITTweetsController {
 
         ResponseEntity<TweetTO[]> responseEntity = restTemplate.getForEntity(PATH + "/tweets?page=0&size=5", TweetTO[].class);
         mostRecentTweet = responseEntity.getBody()[0];
-//        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments", new HttpEntity(comment), CommentMongo.class).getStatusCode();
+        postCommentStatus = restTemplate.postForEntity(PATH + "/tweets/" + mostRecentTweet.getId() + "/comments", new HttpEntity(comment), CommentMongo.class).getStatusCode();
     }
 
     @Test

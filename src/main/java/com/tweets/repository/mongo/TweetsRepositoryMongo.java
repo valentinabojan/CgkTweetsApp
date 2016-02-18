@@ -2,6 +2,7 @@ package com.tweets.repository.mongo;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
+import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.entity.mongo.TweetMongo;
@@ -37,17 +38,17 @@ public class TweetsRepositoryMongo implements TweetsRepository{
         return TweetConverter.fromTweetMongoToTweetModel(tweetMongo);
     }
 
-    public Tweet insertComment(String tweetId, CommentMongo comment) {
+    public Comment insertComment(String tweetId, Comment comment) {
         TweetMongo t = mongoOperations.findOne(new Query(Criteria.where("id").is(tweetId)), TweetMongo.class);
 
         //Save – It should rename to saveOrUpdate(), it performs insert() if “_id” is NOT exist or update() if “_id” is existed”
         //Insert – Only insert, if “_id” is existed, an error is generated
         if(t != null) {
             comment.setId((new ObjectId()).toString());
-            t.getComments().add(comment);
+            t.getComments().add(TweetConverter.fromCommentModelToCommentMongo(comment));
             mongoOperations.save(t);
         }
-        return TweetConverter.fromTweetMongoToTweetModel(t);
+        return comment;
     }
 
     public Tweet updateTweet(Tweet tweet) {
@@ -76,7 +77,7 @@ public class TweetsRepositoryMongo implements TweetsRepository{
         return mongoOperations.aggregate(newAggregation(sortByDate, project, skip, limit), TweetMongo.class, TweetTO.class).getMappedResults();
     }
 
-    public List<CommentMongo> findCommentsByTweet(String tweetId, PageParams pageParams){
+    public List<Comment> findCommentsByTweet(String tweetId, PageParams pageParams){
         AggregationOperation match = match(Criteria.where("_id").is(tweetId));
         AggregationOperation project = project().andInclude("comments").andExclude("_id");
         AggregationOperation unwind = unwind("comments");
@@ -90,7 +91,7 @@ public class TweetsRepositoryMongo implements TweetsRepository{
         if (tweets.isEmpty())
             return new ArrayList<>();
         else
-            return tweets.get(0).getComments();
+            return TweetConverter.fromTweetMongoToTweetModel(tweets.get(0)).getComments();
     }
 
     public Boolean isTweetLiked(String tweetId, String username) {

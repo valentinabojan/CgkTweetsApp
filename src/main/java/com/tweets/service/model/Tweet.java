@@ -20,7 +20,7 @@ public class Tweet {
     @NotEmpty(message = "Body is missing.")
     private String body;
     private String author;
-    private List<CommentMongo> comments;
+    private List<Comment> comments;
     private List<String> usersWhoLiked;
     private List<String> usersWhoDisliked;
     private LocalDateTime date;
@@ -46,7 +46,7 @@ public class Tweet {
         return author;
     }
 
-    public List<CommentMongo> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
@@ -74,7 +74,7 @@ public class Tweet {
         this.author = author;
     }
 
-    public void setComments(List<CommentMongo> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
@@ -121,7 +121,7 @@ public class Tweet {
             return this;
         }
 
-        public TweetBuilder withComments(List<CommentMongo> comments) {
+        public TweetBuilder withComments(List<Comment> comments) {
             tweet.comments = comments;
             return this;
         }

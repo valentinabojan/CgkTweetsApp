@@ -2,6 +2,7 @@ package com.tweets.service;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
+import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.exception.ValidationException;
@@ -51,7 +52,7 @@ public class TweetsService {
         return tweets;
     }
 
-    public Tweet createNewComment(String tweetId, CommentMongo comment) {
+    public Comment createNewComment(String tweetId, Comment comment) {
         validateComment(comment);
 
         comment.setAuthor(userService.getPrincipalName());
@@ -108,12 +109,12 @@ public class TweetsService {
         return dislikedTweet;
     }
 
-    public List<CommentMongo> findTweetComments(String tweetId, PageParams pageParams) {
+    public List<Comment> findTweetComments(String tweetId, PageParams pageParams) {
         return repository.findCommentsByTweet(tweetId, pageParams);
     }
 
-    private void validateComment(CommentMongo comment) {
-        Set<ConstraintViolation<CommentMongo>> tweetConstraintViolations = validator.validate(comment);
+    private void validateComment(Comment comment) {
+        Set<ConstraintViolation<Comment>> tweetConstraintViolations = validator.validate(comment);
         if (!tweetConstraintViolations.isEmpty())
             throw new ValidationException(tweetConstraintViolations.iterator().next().getMessage());
     }

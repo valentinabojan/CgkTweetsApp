@@ -1,5 +1,6 @@
 package fixture;
 
+import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 
@@ -46,15 +47,15 @@ public class TweetsFixture {
                 .build();
     }
 
-    public static CommentMongo createCommentWithoutBody() {
-        return CommentMongo.CommentBuilder.comment()
+    public static Comment createCommentWithoutBody() {
+        return Comment.CommentBuilder.comment()
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
                 .build();
     }
 
-    public static CommentMongo createCommentWithBody() {
-        return CommentMongo.CommentBuilder.comment()
+    public static Comment createCommentWithBody() {
+        return Comment.CommentBuilder.comment()
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
                 .withBody(TWEET_BODY)

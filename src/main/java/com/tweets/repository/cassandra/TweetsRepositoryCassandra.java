@@ -4,6 +4,8 @@ import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
+import com.tweets.service.entity.cassandra.CommentCassandra;
+import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.entity.mongo.CommentMongo;
@@ -36,8 +38,14 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
     }
 
     @Override
-    public Tweet insertComment(String tweetId, CommentMongo comment) {
-        return null;
+    public Comment insertComment(String tweetId, Comment comment) {
+        CommentCassandra commentCassandra = TweetConverter.fromCommentModelToCommentCassandra(comment);
+        commentCassandra.getPk().setTweetId(tweetId);
+        commentCassandra.setId(new ObjectId().toString());
+
+        cassandraOperations.insert(commentCassandra);
+
+        return TweetConverter.fromCommentCassandraToCommentModel(commentCassandra);
     }
 
     @Override
@@ -98,7 +106,7 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
     }
 
     @Override
-    public List<CommentMongo> findCommentsByTweet(String tweetId, PageParams pageParams) {
+    public List<Comment> findCommentsByTweet(String tweetId, PageParams pageParams) {
         return null;
     }
 
