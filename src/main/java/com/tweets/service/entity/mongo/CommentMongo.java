@@ -59,48 +59,4 @@ public class CommentMongo {
     public void setBody(String body) {
         this.body = body;
     }
-
-//    public static class CommentBuilder
-//    {
-//        private CommentMongo comment;
-//
-//        private CommentBuilder()
-//        {
-//            comment = new CommentMongo();
-//        }
-//
-//        public CommentBuilder withId(String id)
-//        {
-//            comment.id = id;
-//            return this;
-//        }
-//
-//        public CommentBuilder withAuthor(String author)
-//        {
-//            comment.author = author;
-//            return this;
-//        }
-//
-//        public CommentBuilder withDate(LocalDateTime date)
-//        {
-//            comment.date = date;
-//            return this;
-//        }
-//
-//        public CommentBuilder withBody(String body)
-//        {
-//            comment.body = body;
-//            return this;
-//        }
-//
-//        public static CommentBuilder comment()
-//        {
-//            return new CommentBuilder();
-//        }
-//
-//        public CommentMongo build()
-//        {
-//            return comment;
-//        }
-//    }
 }

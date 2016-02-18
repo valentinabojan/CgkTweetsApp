@@ -3,6 +3,7 @@ package com.tweets.repository.mongo;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
 import com.tweets.service.model.Comment;
+import com.tweets.service.model.CommentConverter;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.entity.mongo.TweetMongo;
@@ -45,7 +46,7 @@ public class TweetsRepositoryMongo implements TweetsRepository{
         //Insert – Only insert, if “_id” is existed, an error is generated
         if(t != null) {
             comment.setId((new ObjectId()).toString());
-            t.getComments().add(TweetConverter.fromCommentModelToCommentMongo(comment));
+            t.getComments().add(CommentConverter.fromCommentModelToCommentMongo(comment));
             mongoOperations.save(t);
         }
         return comment;

@@ -1,6 +1,5 @@
 package com.tweets.service.model;
 
-import com.tweets.service.entity.mongo.CommentMongo;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
