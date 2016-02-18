@@ -19,8 +19,8 @@ public class TweetConverter {
         tweetModel.setTitle(tweetCassandra.getTitle());
         tweetModel.setBody(tweetCassandra.getBody());
         tweetModel.setAuthor(tweetCassandra.getAuthor());
-        tweetModel.setUsersWhoDisliked(tweetCassandra.getUsersWhoDisliked().stream().collect(Collectors.toList()));
-        tweetModel.setUsersWhoLiked(tweetCassandra.getUsersWhoLiked().stream().collect(Collectors.toList()));
+        tweetModel.setUsersWhoDisliked(tweetCassandra.getUsersWhoDisliked().stream().collect(Collectors.toSet()));
+        tweetModel.setUsersWhoLiked(tweetCassandra.getUsersWhoLiked().stream().collect(Collectors.toSet()));
         tweetModel.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(tweetCassandra.getPk().getDate().getTime()), ZoneId.systemDefault()));
 
         return tweetModel;

@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Document(collection = "tweet")
 public class TweetMongo {
@@ -19,8 +20,8 @@ public class TweetMongo {
     private String body;
     private String author;
     private List<CommentMongo> comments;
-    private List<String> usersWhoLiked;
-    private List<String> usersWhoDisliked;
+    private Set<String> usersWhoLiked;
+    private Set<String> usersWhoDisliked;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;
@@ -48,11 +49,11 @@ public class TweetMongo {
         return comments;
     }
 
-    public List<String> getUsersWhoLiked() {
+    public Set<String> getUsersWhoLiked() {
         return usersWhoLiked;
     }
 
-    public List<String> getUsersWhoDisliked() {
+    public Set<String> getUsersWhoDisliked() {
         return usersWhoDisliked;
     }
 
@@ -76,11 +77,11 @@ public class TweetMongo {
         this.comments = comments;
     }
 
-    public void setUsersWhoLiked(List<String> usersWhoLiked) {
+    public void setUsersWhoLiked(Set<String> usersWhoLiked) {
         this.usersWhoLiked = usersWhoLiked;
     }
 
-    public void setUsersWhoDisliked(List<String> usersWhoDisliked) {
+    public void setUsersWhoDisliked(Set<String> usersWhoDisliked) {
         this.usersWhoDisliked = usersWhoDisliked;
     }
 

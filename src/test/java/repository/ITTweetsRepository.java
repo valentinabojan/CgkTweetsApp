@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,8 +43,8 @@ public class ITTweetsRepository {
         comment1 = TweetsFixture.createCommentWithBody();
         comment2 = TweetsFixture.createCommentWithBody();
         comment2.setDate(LocalDateTime.now().plus(10, ChronoUnit.MILLIS));
-//        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment1);
-//        newTweet = tweetsRepository.insertComment(newTweet.getId(), comment2);
+        tweetsRepository.insertComment(newTweet.getId(), comment1);
+        tweetsRepository.insertComment(newTweet.getId(), comment2);
     }
 
     @Test
@@ -119,7 +120,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweetAndAUsernameWhoLikedTheTweet_isTweetLikedByUser_returnsTrue() {
-        newTweet.setUsersWhoLiked(Arrays.asList("John Doe"));
+        newTweet.setUsersWhoLiked(new HashSet<>(Arrays.asList("John Doe")));
         Tweet likedTweet = tweetsRepository.updateTweet(newTweet);
 
         Boolean isTweetLiked = tweetsRepository.isTweetLiked(likedTweet.getId(), "John Doe");
@@ -129,7 +130,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweetAndAUsernameWhoDidNotLikedTheTweet_isTweetLikedByUser_returnsFalse() {
-        newTweet.setUsersWhoLiked(Arrays.asList());
+        newTweet.setUsersWhoLiked(new HashSet<>(Arrays.asList()));
         Tweet likedTweet = tweetsRepository.updateTweet(newTweet);
 
         Boolean isTweetLiked = tweetsRepository.isTweetLiked(likedTweet.getId(), "John Doe");
@@ -139,7 +140,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweetAndAUsernameWhoDislikedTheTweet_isTweetDislikedByUser_returnsTrue() {
-        newTweet.setUsersWhoDisliked(Arrays.asList("John Doe"));
+        newTweet.setUsersWhoDisliked(new HashSet<>(Arrays.asList("John Doe")));
         Tweet dislikedTweet = tweetsRepository.updateTweet(newTweet);
 
         Boolean isTweetDisliked = tweetsRepository.isTweetDisliked(dislikedTweet.getId(), "John Doe");
@@ -149,7 +150,7 @@ public class ITTweetsRepository {
 
     @Test
     public void givenATweetAndAUsernameWhoDidNotDislikedTheTweet_isTweetDislikedByUser_returnsFalse() {
-        newTweet.setUsersWhoDisliked(Arrays.asList());
+        newTweet.setUsersWhoDisliked(new HashSet<>(Arrays.asList()));
         Tweet dislikedTweet = tweetsRepository.updateTweet(newTweet);
 
         Boolean isTweetDisliked = tweetsRepository.isTweetDisliked(dislikedTweet.getId(), "John Doe");

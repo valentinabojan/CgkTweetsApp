@@ -1,0 +1,1 @@
+/opt/dsc-cassandra-2.2.5/bin/cassandra

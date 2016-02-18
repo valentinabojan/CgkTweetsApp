@@ -69,14 +69,14 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
                     .withBody(row.getString("body"))
                     .withAuthor(row.getString("author"))
                     .withDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(row.getDate("date").getTime()), ZoneId.systemDefault()))
-                    .withUsersWhoLiked(row.getList("users_who_liked", String.class))
-                    .withUsersWhoDisliked(row.getList("users_who_disliked", String.class))
+                    .withUsersWhoLiked(row.getSet("users_who_liked", String.class))
+                    .withUsersWhoDisliked(row.getSet("users_who_disliked", String.class))
                     .build();
         });
 
         Tweet tweet = tweets.get(0);
-        tweet.setUsersWhoLiked(tweet.getUsersWhoLiked().stream().collect(Collectors.toList()));
-        tweet.setUsersWhoDisliked(tweet.getUsersWhoDisliked().stream().collect(Collectors.toList()));
+        tweet.setUsersWhoLiked(tweet.getUsersWhoLiked().stream().collect(Collectors.toSet()));
+        tweet.setUsersWhoDisliked(tweet.getUsersWhoDisliked().stream().collect(Collectors.toSet()));
 
         return tweet;
     }
@@ -86,7 +86,7 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
         Integer maximumEndIndexForTweetsInterval = pageParams.getSize() * (pageParams.getPage() + 1);
         Integer maximumStartIndexForTweetsInterval = pageParams.getPage() * pageParams.getSize();
 
-        Select select = QueryBuilder.select("id", "title", "body", "author", "date", "users_who_liked", "users_who_disliked").from("tweets", "tweet");
+        Select select = QueryBuilder.select().all().from("tweets", "tweet");
         select.where(QueryBuilder.eq("temp_key", 1));
         select.orderBy(QueryBuilder.desc("date"));
         select.limit(maximumEndIndexForTweetsInterval);
@@ -98,17 +98,42 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
                     .withBody(row.getString("body"))
                     .withAuthor(row.getString("author"))
                     .withDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(row.getDate("date").getTime()), ZoneId.systemDefault()))
-                    .withUsersWhoLikedCount(row.getList("users_who_liked", String.class).size())
-                    .withUsersWhoDislikedCount(row.getList("users_who_disliked", String.class).size())
+                    .withUsersWhoLikedCount(row.getSet("users_who_liked", String.class).size())
+                    .withUsersWhoDislikedCount(row.getSet("users_who_disliked", String.class).size())
+                    .withCommentsCount(countCommentsByTweet(row.getString("id")))
                     .build();
         });
 
         return tweets.subList(Math.min(tweets.size(), maximumStartIndexForTweetsInterval), Math.min(tweets.size(), maximumEndIndexForTweetsInterval));
     }
 
+    public Integer countCommentsByTweet(String tweetId) {
+        Select select = QueryBuilder.select().countAll().from("tweets", "comment");
+        select.where(QueryBuilder.eq("post_id", tweetId));
+
+        return cassandraOperations.queryForObject(select, Long.class).intValue();
+    }
+
     @Override
     public List<Comment> findCommentsByTweet(String tweetId, PageParams pageParams) {
-        return null;
+        Integer maximumEndIndexForCommentsInterval = pageParams.getSize() * (pageParams.getPage() + 1);
+        Integer maximumStartIndexForCommentsInterval = pageParams.getPage() * pageParams.getSize();
+
+        Select select = QueryBuilder.select().all().from("tweets", "comment");
+        select.where(QueryBuilder.eq("post_id", tweetId));
+        select.orderBy(QueryBuilder.desc("date"));
+        select.limit(maximumEndIndexForCommentsInterval);
+
+        List<Comment> comments = cassandraOperations.query(select, (row, rowNum) -> {
+            return Comment.CommentBuilder.comment()
+                    .withId(row.getString("id"))
+                    .withBody(row.getString("body"))
+                    .withAuthor(row.getString("author"))
+                    .withDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(row.getDate("date").getTime()), ZoneId.systemDefault()))
+                    .build();
+        });
+
+        return comments.subList(Math.min(comments.size(), maximumStartIndexForCommentsInterval), Math.min(comments.size(), maximumEndIndexForCommentsInterval));
     }
 
     @Override

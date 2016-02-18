@@ -4,7 +4,7 @@ import org.springframework.data.cassandra.mapping.Column;
 import org.springframework.data.cassandra.mapping.PrimaryKey;
 import org.springframework.data.cassandra.mapping.Table;
 
-import java.util.List;
+import java.util.Set;
 
 @Table(value = "tweet")
 public class TweetCassandra {
@@ -17,13 +17,11 @@ public class TweetCassandra {
 
     private String author;
 
-//    private List<String> comments;
-
     @Column(value = "users_who_liked")
-    private List<String> usersWhoLiked;
+    private Set<String> usersWhoLiked;
 
     @Column(value = "users_who_disliked")
-    private List<String> usersWhoDisliked;
+    private Set<String> usersWhoDisliked;
 
     @PrimaryKey
     private TweetKey pk;
@@ -60,27 +58,19 @@ public class TweetCassandra {
         this.author = author;
     }
 
-//    public List<String> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(List<String> comments) {
-//        this.comments = comments;
-//    }
-
-    public List<String> getUsersWhoLiked() {
+    public Set<String> getUsersWhoLiked() {
         return usersWhoLiked;
     }
 
-    public void setUsersWhoLiked(List<String> usersWhoLiked) {
+    public void setUsersWhoLiked(Set<String> usersWhoLiked) {
         this.usersWhoLiked = usersWhoLiked;
     }
 
-    public List<String> getUsersWhoDisliked() {
+    public Set<String> getUsersWhoDisliked() {
         return usersWhoDisliked;
     }
 
-    public void setUsersWhoDisliked(List<String> usersWhoDisliked) {
+    public void setUsersWhoDisliked(Set<String> usersWhoDisliked) {
         this.usersWhoDisliked = usersWhoDisliked;
     }
 

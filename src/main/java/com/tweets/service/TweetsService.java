@@ -15,6 +15,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,8 +34,8 @@ public class TweetsService {
         validateTweet(tweet);
 
         tweet.setComments(new ArrayList<>());
-        tweet.setUsersWhoDisliked(new ArrayList<>());
-        tweet.setUsersWhoLiked(new ArrayList<>());
+        tweet.setUsersWhoDisliked(new HashSet<>());
+        tweet.setUsersWhoLiked(new HashSet<>());
         tweet.setDate(LocalDateTime.now());
         tweet.setAuthor(userService.getPrincipalName());
 

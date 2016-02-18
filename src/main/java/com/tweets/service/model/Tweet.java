@@ -5,7 +5,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Tweet {
 
@@ -20,13 +22,13 @@ public class Tweet {
     private String body;
     private String author;
     private List<Comment> comments;
-    private List<String> usersWhoLiked;
-    private List<String> usersWhoDisliked;
+    private Set<String> usersWhoLiked;
+    private Set<String> usersWhoDisliked;
     private LocalDateTime date;
 
     public Tweet() {
-        usersWhoDisliked = new ArrayList<>();
-        usersWhoLiked = new ArrayList<>();
+        usersWhoDisliked = new HashSet<>();
+        usersWhoLiked = new HashSet<>();
     }
 
     public String getId() {
@@ -49,11 +51,11 @@ public class Tweet {
         return comments;
     }
 
-    public List<String> getUsersWhoLiked() {
+    public Set<String> getUsersWhoLiked() {
         return usersWhoLiked;
     }
 
-    public List<String> getUsersWhoDisliked() {
+    public Set<String> getUsersWhoDisliked() {
         return usersWhoDisliked;
     }
 
@@ -77,11 +79,11 @@ public class Tweet {
         this.comments = comments;
     }
 
-    public void setUsersWhoLiked(List<String> usersWhoLiked) {
+    public void setUsersWhoLiked(Set<String> usersWhoLiked) {
         this.usersWhoLiked = usersWhoLiked;
     }
 
-    public void setUsersWhoDisliked(List<String> usersWhoDisliked) {
+    public void setUsersWhoDisliked(Set<String> usersWhoDisliked) {
         this.usersWhoDisliked = usersWhoDisliked;
     }
 
@@ -125,12 +127,12 @@ public class Tweet {
             return this;
         }
 
-        public TweetBuilder withUsersWhoLiked(List<String> usersWhoLiked) {
+        public TweetBuilder withUsersWhoLiked(Set<String> usersWhoLiked) {
             tweet.usersWhoLiked = usersWhoLiked;
             return this;
         }
 
-        public TweetBuilder withUsersWhoDisliked(List<String> usersWhoDisliked) {
+        public TweetBuilder withUsersWhoDisliked(Set<String> usersWhoDisliked) {
             tweet.usersWhoDisliked = usersWhoDisliked;
             return this;
         }

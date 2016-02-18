@@ -6,6 +6,7 @@ import com.tweets.service.entity.mongo.CommentMongo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TweetsFixture {
 
@@ -18,8 +19,8 @@ public class TweetsFixture {
                 .withTitle(TWEET_TITLE)
                 .withBody(TWEET_BODY)
                 .withComments(new ArrayList<>())
-                .withUsersWhoLiked(new ArrayList<>())
-                .withUsersWhoDisliked(new ArrayList<>())
+                .withUsersWhoLiked(new HashSet<>())
+                .withUsersWhoDisliked(new HashSet<>())
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
                 .build();
@@ -29,8 +30,8 @@ public class TweetsFixture {
         return Tweet.TweetBuilder.tweet()
                 .withBody(TWEET_BODY)
                 .withComments(new ArrayList<>())
-                .withUsersWhoLiked(new ArrayList<>())
-                .withUsersWhoDisliked(new ArrayList<>())
+                .withUsersWhoLiked(new HashSet<>())
+                .withUsersWhoDisliked(new HashSet<>())
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
                 .build();
@@ -40,8 +41,8 @@ public class TweetsFixture {
         return Tweet.TweetBuilder.tweet()
                 .withTitle(TWEET_TITLE)
                 .withComments(new ArrayList<>())
-                .withUsersWhoLiked(new ArrayList<>())
-                .withUsersWhoDisliked(new ArrayList<>())
+                .withUsersWhoLiked(new HashSet<>())
+                .withUsersWhoDisliked(new HashSet<>())
                 .withDate(LocalDateTime.now())
                 .withAuthor(AUTHOR)
                 .build();
