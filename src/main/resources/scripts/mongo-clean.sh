@@ -1,0 +1,1 @@
+/opt/mongodb-linux/bin/mongo < ../mongo/drop_documents.js

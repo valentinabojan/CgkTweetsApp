@@ -1,0 +1,1 @@
+sudo /opt/mongodb-linux/bin/mongod
