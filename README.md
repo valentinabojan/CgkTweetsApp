@@ -24,7 +24,7 @@
     * run `./mongo-start.sh` and let it run in a terminal
 2. **_Clean_** MongoDB collections
     * run `./mongo-clean.sh`
-3 **_Populate_** MongoDB collections
+3. **_Populate_** MongoDB collections
     * run `./cassandra-create.sh`
 4. Start **_cassandra_** process
     * run `./cassandra-start.sh` and let it run in a terminal
