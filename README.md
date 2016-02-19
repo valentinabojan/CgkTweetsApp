@@ -33,5 +33,5 @@
 6. **_Populate_** Cassandra tables from the keyspace
     * run `./cassandra-create.sh`
 7. If you want to run the application using Cassandra/Mongo for storing your data, you have to specify the **_Spring profile_** at runtime
-    * `-D.spring.profiles.active=cassandra`
-    * `-D.spring.profiles.active=mongo`
+    * `-Dspring.profiles.active=cassandra`
+    * `-Dspring.profiles.active=mongo`
