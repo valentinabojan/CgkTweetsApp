@@ -1,10 +1,10 @@
-package com.tweets.repository.mongo;
+package com.tweets.repository;
 
 import com.tweets.service.entity.mongo.User;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepositoryMongo extends MongoRepository<User, String> {
 
     public User findByUsername(String username);
 }

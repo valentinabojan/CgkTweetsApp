@@ -48,8 +48,6 @@
         }
 
         function getTweetComments(tweet) {
-
-            console.log(tweet.page);
             tweetsService
                 .getTweetComments(tweet.id, tweet.page, vm.pageSize)
                 .then(function(data){
@@ -87,8 +85,8 @@
         }
 
         function getDate(dateArray){
-            var date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5]);
-            return moment(date).format('DD-MM-YYYY hh:mm:ss A');
+            var date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4]);
+            return moment(date).format('DD-MM-YYYY hh:mm A');
         }
 
         function pagingFunction() {
@@ -100,7 +98,6 @@
             tweetsService
                 .getTweets(vm.page, vm.pageSize)
                 .then(function(data){
-                    console.log(data);
                     data.forEach(function(tweet) {
                         tweet.commentsCollapsed = true;
                         tweet.page = 0;

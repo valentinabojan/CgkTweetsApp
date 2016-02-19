@@ -1,6 +1,6 @@
 package com.tweets.service;
 
-import com.tweets.repository.mongo.UserRepository;
+import com.tweets.repository.UserRepositoryMongo;
 import com.tweets.service.valueobject.UserSecurityDetails;
 import com.tweets.service.entity.mongo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserSecurityDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepositoryMongo userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

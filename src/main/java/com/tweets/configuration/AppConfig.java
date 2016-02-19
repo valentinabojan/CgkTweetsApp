@@ -9,8 +9,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
 @ComponentScan("com.tweets")
-@EnableMongoRepositories("com.tweets.repository.mongo")
-@EnableCassandraRepositories("com.tweets.repository.cassandra")
+@EnableMongoRepositories("com.tweets.repository")
+//@EnableCassandraRepositories("com.tweets.repository.cassandra")
 public class AppConfig {
 
     public static void main(String[] args) {

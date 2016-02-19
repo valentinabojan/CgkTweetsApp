@@ -1,4 +1,4 @@
-package com.tweets.repository.cassandra;
+package com.tweets.repository;
 
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;

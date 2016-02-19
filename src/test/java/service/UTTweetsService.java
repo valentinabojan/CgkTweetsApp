@@ -1,12 +1,11 @@
 package service;
 
 import com.tweets.application.transferobject.TweetTO;
-import com.tweets.repository.mongo.TweetsRepositoryMongo;
+import com.tweets.repository.TweetsRepositoryMongo;
 import com.tweets.service.TweetsService;
 import com.tweets.service.UserSecurityDetailsService;
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
-import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;

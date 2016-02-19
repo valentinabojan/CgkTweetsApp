@@ -1,4 +1,4 @@
-package com.tweets.repository.mongo;
+package com.tweets.repository;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;

@@ -1,6 +1,6 @@
 use tweets;
 
-create TABLE tweet(
+create TABLE if not exists tweet(
     id varchar,
     title varchar,
     body varchar,
@@ -12,11 +12,11 @@ create TABLE tweet(
     PRIMARY KEY(temp_key, date)
 );
 
-create INDEX idx ON tweet (id);
+create INDEX if not exists idx ON tweet (id);
 
 insert into tweet (temp_key, date, title, body, author, users_who_liked, users_who_disliked, id) values(
   1,
-  '2016-01-31',
+  '2016-01-31 20:00:00+0000',
   'Martians to use MongoDB',
   'Representatives from the planet Mars announced today that the planet would adopt MongoDB as a planetary standard. Head Martian Flipblip said that MongoDB was the perfect tool to store the diversity of life that exists on Mars.',
   'andrew',
