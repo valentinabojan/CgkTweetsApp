@@ -71,7 +71,7 @@ public class TweetsRepositoryIgnite implements TweetsRepository {
                         + "and Organization.name = ?");
 
         return CommentConverter.fromCommentIgniteToCommentModel(commentIgnite);*/
-        //return null;
+        return null;
     }
 
     @Override
