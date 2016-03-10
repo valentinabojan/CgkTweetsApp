@@ -104,7 +104,8 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
                     .build();
         });
 
-        return tweets.subList(Math.min(tweets.size(), maximumStartIndexForTweetsInterval), Math.min(tweets.size(), maximumEndIndexForTweetsInterval));
+        return tweets.subList(Math.min(tweets.size(), maximumStartIndexForTweetsInterval),
+                              Math.min(tweets.size(), maximumEndIndexForTweetsInterval));
     }
 
     public Integer countCommentsByTweet(String tweetId) {
@@ -133,7 +134,8 @@ public class TweetsRepositoryCassandra implements TweetsRepository {
                     .build();
         });
 
-        return comments.subList(Math.min(comments.size(), maximumStartIndexForCommentsInterval), Math.min(comments.size(), maximumEndIndexForCommentsInterval));
+        return comments.subList(Math.min(comments.size(), maximumStartIndexForCommentsInterval),
+                                Math.min(comments.size(), maximumEndIndexForCommentsInterval));
     }
 
     @Override
