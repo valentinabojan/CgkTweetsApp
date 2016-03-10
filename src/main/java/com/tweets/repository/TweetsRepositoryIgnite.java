@@ -1,12 +1,14 @@
 package com.tweets.repository;
 
 import com.tweets.application.transferobject.TweetTO;
+import com.tweets.service.entity.ignite.TweetIgnite;
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
+import com.tweets.service.model.TweetConverter;
 import com.tweets.service.valueobject.PageParams;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
-import org.apache.ignite.resources.IgniteInstanceResource;
+import org.apache.ignite.Ignition;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -17,15 +19,14 @@ import java.util.UUID;
 @Repository
 public class TweetsRepositoryIgnite implements TweetsRepository {
 
-    @IgniteInstanceResource
-    Ignite ignite;
+    private Ignite ignite = Ignition.start();
+    private IgniteCache<String, TweetIgnite> cache = ignite.getOrCreateCache("tweetsCache");
 
     @Override
     public Tweet insert(Tweet tweet) {
-        IgniteCache<Tweet, String> cache = ignite.getOrCreateCache("tweetsCache");
-
         tweet.setId(UUID.randomUUID().toString());
-        cache.put(tweet, tweet.getId());
+        
+        cache.put(tweet.getId(), TweetConverter.fromTweetModelToTweetIgnite(tweet));
 
         return tweet;
     }
@@ -42,7 +43,9 @@ public class TweetsRepositoryIgnite implements TweetsRepository {
 
     @Override
     public Tweet findTweetById(String tweetId) {
-        return null;
+        TweetIgnite tweetIgnite = cache.get(tweetId);
+
+        return TweetConverter.fromTweetIgniteToTweetModel(tweetIgnite);
     }
 
     @Override

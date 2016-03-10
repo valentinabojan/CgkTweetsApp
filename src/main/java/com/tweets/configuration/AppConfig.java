@@ -20,17 +20,17 @@ public class AppConfig {
         SpringApplication.run(AppConfig.class, args);
 
 
-        // Start Ignite in client mode.
-        Ignite ignite = Ignition.start();
-
-        IgniteCache<String, TweetIgnite> cache = ignite.getOrCreateCache("tweetsCache");
-
-        TweetIgnite ti = new TweetIgnite();
-        ti.setTitle("abcd dcba");
-        ti.setAuthor("someone");
-        ti.setId("1");
-        cache.put(ti.getId(), ti);
-
-        System.out.println(cache.get("1").getTitle());
+//        // Start Ignite in client mode.
+//        Ignite ignite = Ignition.start();
+//
+//        IgniteCache<String, TweetIgnite> cache = ignite.getOrCreateCache("tweetsCache");
+//
+//        TweetIgnite ti = new TweetIgnite();
+//        ti.setTitle("abcd dcba");
+//        ti.setAuthor("someone");
+//        ti.setId("1");
+//        cache.put(ti.getId(), ti);
+//
+//        System.out.println(cache.get("1").getTitle());
     }
 }

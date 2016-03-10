@@ -61,6 +61,13 @@ public class ITTweetsRepository {
     }
 
     @Test
+    public void givenATweetId_findTweetById_findTheTweet() {
+        Tweet foundTweet = tweetsRepository.findTweetById(newTweet.getId());
+
+        assertThat(foundTweet).isEqualTo(newTweet);
+    }
+
+    @Test
     public void givenATweetList_findTweets_findTheTweets() {
         List<TweetTO> foundTweets = tweetsRepository.findAllByOrderByDateDesc(new PageParams(0, 10));
 

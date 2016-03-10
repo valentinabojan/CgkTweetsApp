@@ -2,6 +2,7 @@ package com.tweets.service.model;
 
 import com.tweets.service.entity.cassandra.TweetCassandra;
 import com.tweets.service.entity.cassandra.TweetKey;
+import com.tweets.service.entity.ignite.TweetIgnite;
 import com.tweets.service.entity.mongo.TweetMongo;
 
 import java.time.Instant;
@@ -72,4 +73,33 @@ public class TweetConverter {
         return tweetMongo;
     }
 
+    public static TweetIgnite fromTweetModelToTweetIgnite(Tweet tweetModel) {
+        TweetIgnite tweetIgnite = new TweetIgnite();
+
+        tweetIgnite.setId(tweetModel.getId());
+        tweetIgnite.setTitle(tweetModel.getTitle());
+        tweetIgnite.setBody(tweetModel.getBody());
+        tweetIgnite.setAuthor(tweetModel.getAuthor());
+        tweetIgnite.setComments(tweetModel.getComments().stream().map(CommentConverter::fromCommentModelToCommentIgnite).collect(Collectors.toList()));
+        tweetIgnite.setUsersWhoDisliked(tweetModel.getUsersWhoDisliked());
+        tweetIgnite.setUsersWhoLiked(tweetModel.getUsersWhoLiked());
+        tweetIgnite.setDate(tweetModel.getDate());
+
+        return tweetIgnite;
+    }
+
+    public static Tweet fromTweetIgniteToTweetModel(TweetIgnite tweetIgnite) {
+        Tweet tweetModel = new Tweet();
+
+        tweetModel.setId(tweetIgnite.getId());
+        tweetModel.setTitle(tweetIgnite.getTitle());
+        tweetModel.setBody(tweetIgnite.getBody());
+        tweetModel.setAuthor(tweetIgnite.getAuthor());
+        tweetModel.setComments(tweetIgnite.getComments().stream().map(CommentConverter::fromCommentIgniteToCommentModel).collect(Collectors.toList()));
+        tweetModel.setUsersWhoDisliked(tweetIgnite.getUsersWhoDisliked());
+        tweetModel.setUsersWhoLiked(tweetIgnite.getUsersWhoLiked());
+        tweetModel.setDate(tweetIgnite.getDate());
+
+        return tweetModel;
+    }
 }

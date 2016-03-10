@@ -2,6 +2,7 @@ package com.tweets.service.model;
 
 import com.tweets.service.entity.cassandra.CommentCassandra;
 import com.tweets.service.entity.cassandra.CommentKey;
+import com.tweets.service.entity.ignite.CommentIgnite;
 import com.tweets.service.entity.mongo.CommentMongo;
 
 import java.time.Instant;
@@ -52,6 +53,28 @@ public class CommentConverter {
         commentModel.setBody(commentCassandra.getBody());
         commentModel.setAuthor(commentCassandra.getAuthor());
         commentModel.setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(commentCassandra.getPk().getDate().getTime()), ZoneId.systemDefault()));
+
+        return commentModel;
+    }
+
+    public static CommentIgnite fromCommentModelToCommentIgnite(Comment commentModel) {
+        CommentIgnite commentIgnite = new CommentIgnite();
+
+        commentIgnite.setId(commentModel.getId());
+        commentIgnite.setBody(commentModel.getBody());
+        commentIgnite.setAuthor(commentModel.getAuthor());
+        commentIgnite.setDate(commentModel.getDate());
+
+        return commentIgnite;
+    }
+
+    public static Comment fromCommentIgniteToCommentModel(CommentIgnite commentIgnite) {
+        Comment commentModel = new Comment();
+
+        commentModel.setId(commentIgnite.getId());
+        commentModel.setBody(commentIgnite.getBody());
+        commentModel.setAuthor(commentIgnite.getAuthor());
+        commentModel.setDate(commentIgnite.getDate());
 
         return commentModel;
     }
