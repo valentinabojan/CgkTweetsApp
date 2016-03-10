@@ -19,6 +19,9 @@ public class CommentIgnite implements Serializable {
     @QuerySqlField
     private String body;
 
+    @QuerySqlField
+    private String tweetId;
+
     public CommentIgnite() {
     }
 
@@ -52,5 +55,13 @@ public class CommentIgnite implements Serializable {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getTweetId() {
+        return tweetId;
+    }
+
+    public void setTweetId(String tweetId) {
+        this.tweetId = tweetId;
     }
 }

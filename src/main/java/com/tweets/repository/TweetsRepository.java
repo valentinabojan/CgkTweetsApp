@@ -5,6 +5,7 @@ import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
 import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.valueobject.PageParams;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

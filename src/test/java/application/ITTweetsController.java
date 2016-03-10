@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppConfig.class)
 @WebIntegrationTest(value = "server.port=9000")
-@ActiveProfiles("cassandra")
+//@ActiveProfiles("cassandra")
 public class ITTweetsController {
 
     private static String PATH = "http://localhost:9000";
