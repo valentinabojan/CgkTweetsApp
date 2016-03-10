@@ -1,11 +1,14 @@
 package com.tweets.configuration;
 
+import com.tweets.service.entity.ignite.TweetIgnite;
+import com.tweets.service.model.Tweet;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
+import org.apache.ignite.Ignition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
 @ComponentScan("com.tweets")
@@ -15,5 +18,19 @@ public class AppConfig {
 
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);
+
+
+        // Start Ignite in client mode.
+        Ignite ignite = Ignition.start();
+
+        IgniteCache<String, TweetIgnite> cache = ignite.getOrCreateCache("tweetsCache");
+
+        TweetIgnite ti = new TweetIgnite();
+        ti.setTitle("abcd dcba");
+        ti.setAuthor("someone");
+        ti.setId("1");
+        cache.put(ti.getId(), ti);
+
+        System.out.println(cache.get("1").getTitle());
     }
 }
