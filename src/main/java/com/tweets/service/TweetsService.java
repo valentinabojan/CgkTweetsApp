@@ -2,10 +2,9 @@ package com.tweets.service;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.repository.TweetsRepository;
+import com.tweets.service.exception.ValidationException;
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
-import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

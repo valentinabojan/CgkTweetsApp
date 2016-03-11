@@ -2,7 +2,6 @@ package fixture;
 
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
-import com.tweets.service.entity.mongo.CommentMongo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

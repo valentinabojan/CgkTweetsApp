@@ -5,7 +5,6 @@ import com.tweets.configuration.AppConfig;
 import com.tweets.repository.TweetsRepository;
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
-import com.tweets.service.entity.mongo.CommentMongo;
 import com.tweets.service.valueobject.PageParams;
 import fixture.TweetsFixture;
 import org.junit.Before;

@@ -1,10 +1,5 @@
 package com.tweets.configuration;
 
-import com.tweets.service.entity.ignite.TweetIgnite;
-import com.tweets.service.model.Tweet;
-import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteCache;
-import org.apache.ignite.Ignition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;

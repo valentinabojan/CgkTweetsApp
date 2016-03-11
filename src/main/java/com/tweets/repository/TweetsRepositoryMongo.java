@@ -1,12 +1,10 @@
 package com.tweets.repository;
 
 import com.tweets.application.transferobject.TweetTO;
-import com.tweets.repository.TweetsRepository;
+import com.tweets.service.entity.mongo.TweetMongo;
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.CommentConverter;
 import com.tweets.service.model.Tweet;
-import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.entity.mongo.TweetMongo;
 import com.tweets.service.model.TweetConverter;
 import com.tweets.service.valueobject.PageParams;
 import org.bson.types.ObjectId;

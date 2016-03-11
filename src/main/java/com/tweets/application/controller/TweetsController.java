@@ -3,22 +3,18 @@ package com.tweets.application.controller;
 import com.tweets.application.transferobject.StringTO;
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.TweetsService;
+import com.tweets.service.exception.ValidationException;
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.Tweet;
-import com.tweets.service.entity.mongo.CommentMongo;
-import com.tweets.service.exception.ValidationException;
 import com.tweets.service.valueobject.PageParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping("/tweets")
