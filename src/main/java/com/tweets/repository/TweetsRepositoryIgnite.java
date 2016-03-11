@@ -39,7 +39,7 @@ public class TweetsRepositoryIgnite implements TweetsRepository {
         tweetsCache = ignite.getOrCreateCache(tweetCFG);
 
         CacheConfiguration commentCFG = new CacheConfiguration("commentsCache");
-        commentCFG.setIndexedTypes(CommentIgniteKey.class, CommentIgnite.class);
+        commentCFG.setIndexedTypes(String.class, CommentIgnite.class);
         commentsCache = ignite.getOrCreateCache(commentCFG);
     }
 
