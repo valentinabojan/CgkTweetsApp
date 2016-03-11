@@ -84,7 +84,7 @@ public class TweetsRepositoryIgnite implements TweetsRepository {
         SqlQuery sql = new SqlQuery(TweetIgnite.class, "order by date desc limit ? offset ?");
 
         List<TweetTO> tweets = new ArrayList<>();
-        QueryCursor<Cache.Entry<String, TweetIgnite>> cursor = tweetsCache.query(sql.setArgs(pageParams.getSize(), pageParams.getPage()));
+        QueryCursor<Cache.Entry<String, TweetIgnite>> cursor = tweetsCache.query(sql.setArgs(pageParams.getSize(), pageParams.getPage() * pageParams.getSize()));
 
         for (Cache.Entry<String, TweetIgnite> e : cursor) {
             TweetTO tweetTO = new TweetTO(TweetConverter.fromTweetIgniteToTweetModel(e.getValue()));
