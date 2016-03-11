@@ -15,6 +15,7 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AppConfig.class)
 @WebIntegrationTest(value = "server.port=9000")
-//@ActiveProfiles("cassandra")
+@ActiveProfiles("ignite")
 public class ITTweetsController {
 
     private static String PATH = "http://localhost:9000";
