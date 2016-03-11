@@ -108,16 +108,10 @@ public class TweetsRepositoryIgnite implements TweetsRepository {
 
     @Override
     public List<Comment> findCommentsByTweet(String tweetId, PageParams pageParams) {
-        //SqlFieldsQuery sql = new SqlFieldsQuery("select count(*) from CommentIgnite where CommentIgnite.tweetId = ?");
-
-        //QueryCursor<List<?>> cursor = commentsCache.query(sql.setArgs(tweetId));
-
-        //CommentIgnite commentIgnite = commentsCache.get(tweetId);
         CommentIgnite commentIgnite = new CommentIgnite();
         SqlFieldsQuery sql = new SqlFieldsQuery(
                 "select CommentIgnite.author, CommentIgnite.date, CommentIgnite.body from CommentIgnite where CommentIgnite.tweetId = ?" +
                         "order by date desc limit ? offset ?");
-        // "select CommentIgnite.author, CommentIgnite.date, CommentIgnite.body from CommentIgnite where CommentIgnite.tweetId = ?")
         QueryCursor<List<?>> cursor = commentsCache.query(sql.setArgs(tweetId,pageParams.getSize(), pageParams.getPage()));
         List<Comment> comments = new ArrayList<>();
         for (List<?> e : cursor) {
