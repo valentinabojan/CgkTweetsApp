@@ -2,7 +2,6 @@ package com.tweets.repository;
 
 import com.tweets.application.transferobject.TweetTO;
 import com.tweets.service.entity.ignite.CommentIgnite;
-import com.tweets.service.entity.ignite.CommentIgniteKey;
 import com.tweets.service.entity.ignite.TweetIgnite;
 import com.tweets.service.model.Comment;
 import com.tweets.service.model.CommentConverter;
@@ -20,6 +19,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import javax.cache.Cache;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -107,15 +108,26 @@ public class TweetsRepositoryIgnite implements TweetsRepository {
 
     @Override
     public List<Comment> findCommentsByTweet(String tweetId, PageParams pageParams) {
-        /*CommentIgnite commentIgnite = commentsCache.get(tweetId);
-        SqlFieldsQuery sql = new SqlFieldsQuery(
-                "select Person.name  "
-                        + "from Person, \"orgCache\".Organization where "
-                        + "Person.orgId = Organization.id "
-                        + "and Organization.name = ?");
+        //SqlFieldsQuery sql = new SqlFieldsQuery("select count(*) from CommentIgnite where CommentIgnite.tweetId = ?");
 
-        return CommentConverter.fromCommentIgniteToCommentModel(commentIgnite);*/
-        return null;
+        //QueryCursor<List<?>> cursor = commentsCache.query(sql.setArgs(tweetId));
+
+        //CommentIgnite commentIgnite = commentsCache.get(tweetId);
+        CommentIgnite commentIgnite = new CommentIgnite();
+        SqlFieldsQuery sql = new SqlFieldsQuery(
+                "select CommentIgnite.author, CommentIgnite.date, CommentIgnite.body from CommentIgnite where CommentIgnite.tweetId = ?" +
+                        "order by date desc limit ? offset ?");
+        // "select CommentIgnite.author, CommentIgnite.date, CommentIgnite.body from CommentIgnite where CommentIgnite.tweetId = ?")
+        QueryCursor<List<?>> cursor = commentsCache.query(sql.setArgs(tweetId,pageParams.getSize(), pageParams.getPage()));
+        List<Comment> comments = new ArrayList<>();
+        for (List<?> e : cursor) {
+            commentIgnite.setAuthor(e.get(0).toString());
+            commentIgnite.setDate(LocalDateTime.parse(e.get(1).toString()));
+            commentIgnite.setBody(e.get(2).toString());
+            comments.add(CommentConverter.fromCommentIgniteToCommentModel(commentIgnite));
+        }
+
+        return comments;
     }
 
     @Override
